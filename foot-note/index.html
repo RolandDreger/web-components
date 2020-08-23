@@ -1,0 +1,56 @@
+﻿<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Boilerplate</title>
+		<style>
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+			}
+			body { 
+				--footnote-theme-color: teal;
+				--footnote-max-width: 58rem;
+				--footnote-line-heigth: 1.4;
+				--footnote-font-size: 1rem;
+				font-size: 1.3em;
+				font-family: Vollkorn, serif;
+			}
+			.container { 
+				max-width: 55rem;
+				padding: 40px;
+				margin: auto;
+			}
+		</style>
+	</head>
+<body>
+	<div class="container">
+		<section>
+			<h2>Lorem ipsum dolor</h2>
+			<p>Sit amet consectetur<foot-note>Ipsam alias doloribus mollitia animi, aliquid laboriosam, quod, fugiat expedita itaque inventore hic illo.</foot-note> adipisicing elit. Magnam vel enim, quia perferendis recusandae at laboriosam dolor mollitia similique sed repudiandae eos iure accusamus consectetur officiis voluptatem necessitatibus.</p>
+		</section>
+		<section>
+			<h2>Natus fuga reiciendis dolores</h2>
+			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.<foot-note><strong>Est dolorem dicta voluptas</strong> quo nobis repudiandae dolores ipsam alias doloribus <a href="https://rolanddreger.net">mollitia animi</a>, aliquid laboriosam, quod, fugiat expedita itaque inventore hic illo.</foot-note> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus fuga reiciendis dolores, hic neque optio non, commodi nisi officiis necessitatibus pariatur ea debitis nulla error ipsum accusantium, accusamus aut harum.</p>
+			<p>Lorem ipsum dolor, sit amet consectetur<foot-note>Ipsam alias doloribus mollitia animi, aliquid laboriosam, quod, fugiat expedita itaque inventore hic illo.</foot-note> adipisicing elit. Magnam vel enim, quia perferendis recusandae.</p>
+		</section>
+	</div>
+	<script src="index.js" type="module"></script>
+	<!-- 
+		Set index of footnotes programmatically: 
+	 	The index attribute of footnote elements can be omitted. 
+ 		Alternatively, the attribute index="1" can be set in the footnote elements. 
+		The attribute visible controls the visibility. 
+	-->
+	<script>
+		const sections = document.querySelectorAll('section');
+		sections.forEach(section => {
+			const footnotes = section.querySelectorAll('foot-note');
+			footnotes.forEach((note, index) => {
+				note.setAttribute('index', index + 1);
+			});
+		});
+	</script>
+</body>
+</html>
