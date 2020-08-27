@@ -6,7 +6,7 @@ class FootNote extends HTMLElement {
 		super();
 		
 		this.root = this.attachShadow({ 
-			mode: 'open' 
+			mode: 'closed' 
 		});
 		
 		/* Styles */
