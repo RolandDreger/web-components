@@ -49,7 +49,7 @@ class FootNote extends HTMLElement {
 		button.classList.add('button');
 		button.classList.add('close');
 		button.setAttribute('aria-label','Close');
-		button.textContent = 'Close';
+		button.setAttribute('title','Close');
 
 		const area = document.createElement('aside');
 		area.classList.add('area');
@@ -150,10 +150,9 @@ class FootNote extends HTMLElement {
 			.button {	
 				position: relative;
 				border: none;
-				text-indent: -999rem;
 				text-decoration: none;
-				cursor: pointer;
 				text-align: center;
+				cursor: pointer;
 				-webkit-appearance: none;
 				-moz-appearance: none;
 			}
