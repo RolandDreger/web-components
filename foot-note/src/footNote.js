@@ -251,7 +251,11 @@ class FootNote extends HTMLElement {
 		}
 		this.hideAll();
 		this.visible = !this.visible;
-		const toggleEvent = new CustomEvent('footnote-toggled');
+		const toggleEvent = new CustomEvent('footnote-on-toggle', { 
+			detail: { 
+				visible: this.visible 
+			}
+		});
 		this.dispatchEvent(toggleEvent);
 	}
 
@@ -259,7 +263,11 @@ class FootNote extends HTMLElement {
 		if(this.visible !== false) {
 			this.visible = false;
 		}
-		const hideEvent = new CustomEvent('footnote-hidden');
+		const hideEvent = new CustomEvent('footnote-on-hide', { 
+			detail: { 
+				visible: this.visible 
+			}
+		});
 		this.dispatchEvent(hideEvent);
 	}
 

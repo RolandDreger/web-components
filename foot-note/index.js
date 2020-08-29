@@ -17,4 +17,15 @@ sections.forEach(section => {
 		note.setAttribute('index', index + 1);
 	});
 });
-	
+/* Add Event Listener */
+sections.forEach(section => {
+	const footnotes = section.querySelectorAll('foot-note');
+	footnotes.forEach((note, index) => {
+		note.addEventListener('footnote-on-toggle', (event) => {
+			console.log("Footonote toggled. Visible: " + event.detail.visible);
+		}, false);
+		note.addEventListener('footnote-on-hide', (event) => {
+			console.log("Footonote hidden. Visible: " + event.detail.visible);
+		}, false);
+	});
+});
