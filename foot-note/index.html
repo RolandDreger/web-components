@@ -37,20 +37,5 @@
 		</section>
 	</div>
 	<script src="index.js" type="module"></script>
-	<!-- 
-		Set index of footnotes programmatically: 
-	 	The index attribute of footnote elements can be omitted. 
- 		Alternatively, the attribute index="1" can be set in the footnote elements. 
-		The attribute visible controls the visibility. 
-	-->
-	<script>
-		const sections = document.querySelectorAll('section');
-		sections.forEach(section => {
-			const footnotes = section.querySelectorAll('foot-note');
-			footnotes.forEach((note, index) => {
-				note.setAttribute('index', index + 1);
-			});
-		});
-	</script>
 </body>
 </html>
