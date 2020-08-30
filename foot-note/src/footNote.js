@@ -244,7 +244,7 @@ class FootNote extends HTMLElement {
 	}
 	set visible(isVisible) {
 		if(isVisible) {
-			this.setAttribute('visible', true);	
+			this.setAttribute('visible', '');	
 		} else {
 			this.removeAttribute('visible');
 		}
