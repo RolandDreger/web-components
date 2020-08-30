@@ -37,23 +37,28 @@ class FootNote extends HTMLElement {
 		
 		const call = document.createElement('a');
 		call.classList.add('call');
+		call.setAttribute('part','call');
 		call.setAttribute('role','doc-noteref');
 
 		const marker = document.createElement('div');
 		marker.classList.add('marker');
+		marker.setAttribute('part','marker');
 
 		const element = document.createElement('div');
 		element.classList.add('element');
+		element.setAttribute('part','element');
 		element.appendChild(slot);
 		
 		const button = document.createElement('button');
 		button.classList.add('button');
 		button.classList.add('close');
+		button.setAttribute('part','button');
 		button.setAttribute('aria-label','Close');
 		button.setAttribute('title','Close');
 
 		const area = document.createElement('aside');
 		area.classList.add('area');
+		area.setAttribute('part','area');
 		area.setAttribute('role','doc-footnote');
 		area.setAttribute('aria-hidden','true');
 		area.appendChild(marker);
