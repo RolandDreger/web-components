@@ -73,7 +73,7 @@ class FootNote extends HTMLElement {
 
 	static createStyles() {
 		const styles = document.createDocumentFragment();
-		
+
 		const styleElement = document.createElement('style');
 		styleElement.setAttribute('type','text/css');
 
@@ -192,6 +192,9 @@ class FootNote extends HTMLElement {
 	}
 	
 	connectedCallback() {
+		if(!this.call.isConnected || !this.button.isConnected) {
+			return false;
+		}
 		/* EventListeners: add */
 		this.call.addEventListener('click', this.toggle);
 		this.button.addEventListener('click', this.hide);
