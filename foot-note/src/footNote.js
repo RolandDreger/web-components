@@ -22,7 +22,8 @@ class FootNote extends HTMLElement {
 		this.call = this.root.querySelector('.call');
 		this.marker = this.root.querySelector('.marker');
 		this.button = this.root.querySelector('.button');
-
+		this.slots = this.root.querySelectorAll('slot');
+		
 		/* Methods bind */
 		this.toggle = this.toggle.bind(this);
 		this.hide = this.hide.bind(this);
