@@ -73,7 +73,10 @@ class FootNote extends HTMLElement {
 
 	static createStyles() {
 		const styles = document.createDocumentFragment();
+		
 		const styleElement = document.createElement('style');
+		styleElement.setAttribute('type','text/css');
+
 		const styleText = document.createTextNode(`
 			:host {
 				font-family: inherit;
@@ -182,8 +185,6 @@ class FootNote extends HTMLElement {
 			}
 		`);
 		
-		styleElement.setAttribute('type','text/css');
-
 		styleElement.appendChild(styleText);
 		styles.appendChild(styleElement);
 
