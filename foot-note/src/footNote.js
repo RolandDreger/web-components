@@ -1,5 +1,10 @@
-﻿/* Component: Footnote */
-
+﻿/* 
+	Web Component:	FootNote
+	Custom Element:	<foot-note></foot-note>
+	Shadow DOM:			true, closed
+	Attributes:			index, visible (empty) 
+	Slots:					default	
+*/
 class FootNote extends HTMLElement {
 
 	constructor(/* element */) {
@@ -242,7 +247,7 @@ class FootNote extends HTMLElement {
 		}
 	}
 
-	/* Element attribute sync */
+	/* Attribute sync */
 	get visible() {
 		return this.hasAttribute('visible');
 	}
