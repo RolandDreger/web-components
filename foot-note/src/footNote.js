@@ -1,7 +1,7 @@
 ﻿/* 
 	Web Component:	FootNote
 	Custom Element:	<foot-note></foot-note>
-	Shadow DOM:			true, closed
+	Shadow DOM:			true, open
 	Attributes:			index, visible (empty) 
 	Slots:					default	
 */
@@ -10,24 +10,24 @@ class FootNote extends HTMLElement {
 	constructor(/* element */) {
 		super();
 		
-		this.root = this.attachShadow({ 
-			mode: 'closed' 
+		const root = this.attachShadow({ 
+			mode: 'open' 
 		});
 		
 		/* Styles */
 		const styles = FootNote.createStyles();
-		this.root.appendChild(styles);
+		root.appendChild(styles);
 		
 		/* Template */
 		const template = FootNote.createTemplate();
-		this.root.appendChild(template);
+		root.appendChild(template);
 
 		/* Properties */
-		this.area = this.root.querySelector('.area');
-		this.call = this.root.querySelector('.call');
-		this.marker = this.root.querySelector('.marker');
-		this.button = this.root.querySelector('.button');
-		this.slots = this.root.querySelectorAll('slot');
+		this.area = root.querySelector('.area');
+		this.call = root.querySelector('.call');
+		this.marker = root.querySelector('.marker');
+		this.button = root.querySelector('.button');
+		this.slots = root.querySelectorAll('slot');
 		
 		/* Methods bind */
 		this.toggle = this.toggle.bind(this);
