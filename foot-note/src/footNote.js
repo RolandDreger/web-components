@@ -215,7 +215,7 @@ class FootNote extends HTMLElement {
 		return ['index', 'visible']; 
 	}
 	
-	/* ShadowDOM update */
+	/* ShadowDOM sync */
 	attributeChangedCallback(name, oldValue, newValue) {
 		if(oldValue === newValue) {
 			return true;
