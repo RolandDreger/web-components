@@ -18,10 +18,10 @@ customElements.whenDefined('foot-note')
 		const footnotes = section.querySelectorAll('foot-note');
 		footnotes.forEach((note, index) => {
 			note.addEventListener('footnote-on-toggle', (event) => {
-				console.log("Footonote toggled. Visible: " + event.detail.visible);
+				console.log("Footnote toggled. Visible: " + event.detail.visible);
 			}, false);
 			note.addEventListener('footnote-on-hide', (event) => {
-				console.log("Footonote hidden. Visible: " + event.detail.visible);
+				console.log("Footnote hidden. Visible: " + event.detail.visible);
 			}, false);
 		});
 	});

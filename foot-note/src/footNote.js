@@ -11,7 +11,7 @@ class FootNote extends HTMLElement {
 		super();
 		
 		const root = this.attachShadow({ 
-			mode: 'open' 
+			mode: 'open'
 		});
 		
 		/* Styles */
@@ -26,6 +26,7 @@ class FootNote extends HTMLElement {
 		this.area = root.querySelector('.area');
 		this.call = root.querySelector('.call');
 		this.marker = root.querySelector('.marker');
+		this.element = root.querySelector('.element');
 		this.button = root.querySelector('.button');
 		this.slots = root.querySelectorAll('slot');
 		
@@ -38,29 +39,36 @@ class FootNote extends HTMLElement {
 
 	static createTemplate() {
 		const template = document.createDocumentFragment();
+		
+		/* Slot */
 		const slot = document.createElement('slot');
 		
+		/* Note call */
 		const call = document.createElement('a');
 		call.classList.add('call');
 		call.setAttribute('part','call');
 		call.setAttribute('role','doc-noteref');
-
+		
+		/* Note marker */
 		const marker = document.createElement('div');
 		marker.classList.add('marker');
 		marker.setAttribute('part','marker');
-
+		
+		/* Note element (content) */
 		const element = document.createElement('div');
 		element.classList.add('element');
 		element.setAttribute('part','element');
 		element.appendChild(slot);
 		
+		/* Close button */
 		const button = document.createElement('button');
 		button.classList.add('button');
 		button.classList.add('close');
 		button.setAttribute('part','button');
 		button.setAttribute('aria-label','Close');
 		button.setAttribute('title','Close');
-
+		
+		/* Note area */
 		const area = document.createElement('aside');
 		area.classList.add('area');
 		area.setAttribute('part','area');
@@ -85,6 +93,10 @@ class FootNote extends HTMLElement {
 		const styleText = document.createTextNode(`
 			:host {
 				font-family: inherit;
+				contain: content;
+			}
+			:host([hidden]) {
+				display: none;
 			}
 			::slotted(*) {
 				/* Elements in slot e.g. Links */
@@ -107,6 +119,9 @@ class FootNote extends HTMLElement {
 			}
 			.call::after {
 				content: "]";
+			}
+			.call:focus {
+				font-weight: bolder;
 			}
 			.area {
 				position: fixed;
@@ -228,6 +243,7 @@ class FootNote extends HTMLElement {
 				this.call.setAttribute('aria-label','Footnote ' + newValue + ' call');
 				this.marker.textContent = newValue;
 				this.marker.setAttribute('aria-label','Footnote ' + newValue + ' marker');
+				this.element.setAttribute('aria-label','Footnote ' + newValue + ' content');
 				break;
 			/* Attribute: visible */
 			case 'visible':
@@ -257,7 +273,8 @@ class FootNote extends HTMLElement {
 	get visible() {
 		return this.hasAttribute('visible');
 	}
-	set visible(isVisible) {
+	set visible(value) {
+		const isVisible = Boolean(value);
 		if(isVisible) {
 			this.setAttribute('visible', '');	
 		} else {
