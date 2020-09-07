@@ -247,7 +247,13 @@ class FootNote extends HTMLElement {
 		}
 	}
 
-	/* Attribute sync */
+	/* Attributes sync */
+	get index() {
+		return this.getAttribute('index');
+	}
+	set index(value) {
+		this.setAttribute('index', value);
+	}
 	get visible() {
 		return this.hasAttribute('visible');
 	}
