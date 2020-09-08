@@ -10,7 +10,9 @@ customElements.whenDefined('foot-note')
 	sections.forEach(section => {
 		const footnotes = section.querySelectorAll('foot-note');
 		footnotes.forEach((note, index) => {
-			note.setAttribute('index', index + 1);
+			if(!note.hasAttribute('index')) {
+				note.setAttribute('index', index + 1);
+			}
 		});
 	});
 	/* Add Event Listener (optional) */
