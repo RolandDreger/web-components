@@ -209,12 +209,10 @@ class FootNote extends HTMLElement {
 		this.marker = root.querySelector('.marker');
 		this.element = root.querySelector('.element');
 		this.button = root.querySelector('.button');
-		this.slots = root.querySelectorAll('slot');
 		
-		/* Methods bind */
+		/* Event handler */
 		this.toggle = this.toggle.bind(this);
 		this.hide = this.hide.bind(this);
-		this.hideAll = this.hideAll.bind(this);
 		this._watchEsc = this._watchEsc.bind(this);
 	}
 
@@ -331,6 +329,9 @@ class FootNote extends HTMLElement {
 	}
 
 	_watchEsc(event) {
+		if(!event || !(event instanceof Event)) {
+			return false;
+		}
 		if(event.key === 'Escape') {
 			this.hide();
 		}
