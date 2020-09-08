@@ -67,6 +67,7 @@ class FootNote extends HTMLElement {
 		button.setAttribute('part','button');
 		button.setAttribute('aria-label','Close');
 		button.setAttribute('title','Close');
+		button.setAttribute('tabindex','0');
 		
 		/* Note area */
 		const area = document.createElement('aside');
@@ -212,12 +213,18 @@ class FootNote extends HTMLElement {
 	}
 	
 	connectedCallback() {
-		if(!this.call.isConnected || !this.button.isConnected) {
-			return false;
+		/* Attribute: tabindex */
+		if(!this.hasAttribute('tabindex')) {
+			this.setAttribute('tabindex','0');
 		}
-		/* EventListeners: add */
-		this.call.addEventListener('click', this.toggle);
-		this.button.addEventListener('click', this.hide);
+		/* EventListener: call */
+		if(this.call.isConnected) {
+			this.call.addEventListener('click', this.toggle);
+		}
+		/* EventListener: button */
+		if(this.button.isConnected) {
+			this.button.addEventListener('click', this.hide);
+		}
 	}
 
 	disconnectedCallback() {

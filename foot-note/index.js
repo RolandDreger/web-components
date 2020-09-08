@@ -11,7 +11,6 @@ customElements.whenDefined('foot-note')
 		const footnotes = section.querySelectorAll('foot-note');
 		footnotes.forEach((note, index) => {
 			note.setAttribute('index', index + 1);
-			note.setAttribute('tabindex','0');
 		});
 	});
 	/* Add Event Listener (optional) */
