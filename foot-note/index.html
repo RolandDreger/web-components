@@ -22,20 +22,44 @@
 				padding: 40px;
 				margin: auto;
 			}
+			/* Custom styles */
 			foot-note::part(call) {
-				/* Custom styles: Footnote call */
+				/* Footnote call */
 			}
 			foot-note::part(area) {
-				/* Custom styles: Footnote area */
+				/* Footnote area */
 			}
 			foot-note::part(marker) {
-				/* Custom styles: Footnote marker */
+				/* Footnote marker */
 			}
 			foot-note::part(element) {
-				/* Custom styles: Footnote element */
+				/* Footnote element */
 			}
 			foot-note::part(button) {
-				/* Custom styles: Close button */
+				/* Close button */
+			}
+			section {
+				counter-reset: foot-note;
+			}
+			/* Fallback */
+			foot-note:not(:defined) {
+				margin-left: 0.5rem;
+				margin-right: 0.5rem;
+				padding-left: 0.5rem;
+				padding-right: 0.5rem;
+				color: #000000;
+				color: var(--footnote-theme-color, #000000);
+			}
+			foot-note:not(:defined)::before {
+				padding-right: 0.5rem;
+				color: #000000;
+				color: var(--footnote-theme-color, #000000);
+				text-decoration: none;
+				counter-increment: foot-note;                  
+  			content: "[" counter(foot-note);
+			}
+			foot-note:not(:defined)::after {             
+  			content: "]";
 			}
 		</style>
 	</head>
