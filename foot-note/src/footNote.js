@@ -1,42 +1,17 @@
 ﻿/* 
 	Web Component:	FootNote
+	
 	Custom Element:	<foot-note></foot-note>
 	Shadow DOM:			true, open
 	Attributes:			index, visible (empty) 
 	Slots:					default	
+
+	Author:					Roland Dreger, www.rolanddreger.net
+	Date: 					8 Sept. 2020
 */
 class FootNote extends HTMLElement {
 
-	constructor(/* element */) {
-		super();
-		
-		const root = this.attachShadow({ 
-			mode: 'open'
-		});
-		
-		/* Styles */
-		const styles = FootNote.createStyles();
-		root.appendChild(styles);
-		
-		/* Template */
-		const template = FootNote.createTemplate();
-		root.appendChild(template);
-
-		/* Properties */
-		this.area = root.querySelector('.area');
-		this.call = root.querySelector('.call');
-		this.marker = root.querySelector('.marker');
-		this.element = root.querySelector('.element');
-		this.button = root.querySelector('.button');
-		this.slots = root.querySelectorAll('slot');
-		
-		/* Methods bind */
-		this.toggle = this.toggle.bind(this);
-		this.hide = this.hide.bind(this);
-		this.hideAll = this.hideAll.bind(this);
-		this._watchEsc = this._watchEsc.bind(this);
-	}
-
+	/* Template */
 	static createTemplate() {
 		const template = document.createDocumentFragment();
 		
@@ -67,7 +42,6 @@ class FootNote extends HTMLElement {
 		button.setAttribute('part','button');
 		button.setAttribute('aria-label','Close');
 		button.setAttribute('title','Close');
-		button.setAttribute('tabindex','0');
 		
 		/* Note area */
 		const area = document.createElement('aside');
@@ -85,6 +59,7 @@ class FootNote extends HTMLElement {
 		return template;
 	}
 
+	/* Styles */
 	static createStyles() {
 		const styles = document.createDocumentFragment();
 
@@ -211,17 +186,47 @@ class FootNote extends HTMLElement {
 
 		return styles;
 	}
-	
+
+	/* Livecycle hooks */
+	constructor(/* element */) {
+		super();
+		
+		const root = this.attachShadow({ 
+			mode: 'open'
+		});
+		
+		/* Styles */
+		const styles = FootNote.createStyles();
+		root.appendChild(styles);
+		
+		/* Template */
+		const template = FootNote.createTemplate();
+		root.appendChild(template);
+
+		/* Properties */
+		this.area = root.querySelector('.area');
+		this.call = root.querySelector('.call');
+		this.marker = root.querySelector('.marker');
+		this.element = root.querySelector('.element');
+		this.button = root.querySelector('.button');
+		this.slots = root.querySelectorAll('slot');
+		
+		/* Methods bind */
+		this.toggle = this.toggle.bind(this);
+		this.hide = this.hide.bind(this);
+		this.hideAll = this.hideAll.bind(this);
+		this._watchEsc = this._watchEsc.bind(this);
+	}
+
 	connectedCallback() {
 		/* Attribute: tabindex */
 		if(!this.hasAttribute('tabindex')) {
 			this.setAttribute('tabindex','0');
 		}
-		/* EventListener: call */
+		/* EventListeners: add */
 		if(this.call.isConnected) {
 			this.call.addEventListener('click', this.toggle);
 		}
-		/* EventListener: button */
 		if(this.button.isConnected) {
 			this.button.addEventListener('click', this.hide);
 		}
@@ -233,11 +238,11 @@ class FootNote extends HTMLElement {
 		this.button.removeEventListener('click', this.hide);
 	}
 
+	/* Attributes */
 	static get observedAttributes() { 
 		return ['index', 'visible']; 
 	}
 	
-	/* ShadowDOM sync */
 	attributeChangedCallback(name, oldValue, newValue) {
 		if(oldValue === newValue) {
 			return true;
@@ -270,7 +275,6 @@ class FootNote extends HTMLElement {
 		}
 	}
 
-	/* Attributes sync */
 	get index() {
 		return this.getAttribute('index');
 	}
