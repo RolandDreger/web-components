@@ -232,8 +232,12 @@ class FootNote extends HTMLElement {
 
 	disconnectedCallback() {
 		/* EventListeners: remove */
-		this.call.removeEventListener('click', this.toggle);
-		this.button.removeEventListener('click', this.hide);
+		if(this.call) {
+			this.call.removeEventListener('click', this.toggle);
+		}
+		if(this.button) {
+			this.button.removeEventListener('click', this.hide);
+		}
 	}
 
 	/* Attributes */
