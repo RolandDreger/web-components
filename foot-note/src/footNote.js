@@ -13,6 +13,21 @@
 */
 
 class FootNote extends HTMLElement {
+	
+	/* 
+		Properties:
+		index		->	Type: String
+		visible	->	Type: Boolean
+
+		Methods:
+		hide		->	Hide element with close button.
+		hideAll	->	Hide all elements in document.
+		toggle	->	Toggle visibility of element.
+	*/
+
+	static get observedAttributes() { 
+		return ['index', 'visible']; 
+	}
 
 	/* Template */
 	static createTemplate() {
@@ -217,14 +232,13 @@ class FootNote extends HTMLElement {
 		this.element = root.querySelector('.element');
 		this.button = root.querySelector('.button');
 		
-		/* Event handler */
+		/* Event handler: bind */
 		this.toggle = this.toggle.bind(this);
 		this.hide = this.hide.bind(this);
 		this._watchEsc = this._watchEsc.bind(this);
 	}
 
 	connectedCallback() {
-		/* EventListeners: add */
 		if(this.call.isConnected) {
 			this.call.addEventListener('click', this.toggle);
 		}
@@ -234,18 +248,12 @@ class FootNote extends HTMLElement {
 	}
 
 	disconnectedCallback() {
-		/* EventListeners: remove */
 		if(this.call) {
 			this.call.removeEventListener('click', this.toggle);
 		}
 		if(this.button) {
 			this.button.removeEventListener('click', this.hide);
 		}
-	}
-
-	/* Attributes */
-	static get observedAttributes() { 
-		return ['index', 'visible']; 
 	}
 	
 	attributeChangedCallback(name, oldValue, newValue) {
@@ -282,12 +290,14 @@ class FootNote extends HTMLElement {
 		}
 	}
 
+	/* Getter/Setter */
 	get index() {
 		return this.getAttribute('index');
 	}
 	set index(value) {
 		this.setAttribute('index', value);
 	}
+
 	get visible() {
 		return this.hasAttribute('visible');
 	}
