@@ -7,8 +7,11 @@
 	Slots:					default	
 
 	Author:					Roland Dreger, www.rolanddreger.net
-	Date: 					8 Sept. 2020
+	License:				MIT
+
+	Date: 					10 Sept. 2020
 */
+
 class FootNote extends HTMLElement {
 
 	/* Template */
@@ -25,7 +28,7 @@ class FootNote extends HTMLElement {
 		call.setAttribute('role','doc-noteref');
 		
 		/* Note marker */
-		const marker = document.createElement('div');
+		const marker = document.createElement('sup');
 		marker.classList.add('marker');
 		marker.setAttribute('part','marker');
 		
@@ -42,7 +45,8 @@ class FootNote extends HTMLElement {
 		button.setAttribute('part','button');
 		button.setAttribute('aria-label','Close');
 		button.setAttribute('title','Close');
-		
+		button.setAttribute('tabindex','-1');
+
 		/* Note area */
 		const area = document.createElement('aside');
 		area.classList.add('area');
@@ -95,6 +99,9 @@ class FootNote extends HTMLElement {
 			}
 			.call::after {
 				content: "]";
+			}
+			.call:hover {
+				text-decoration: underline;
 			}
 			.call:focus {
 				font-weight: bolder;
@@ -217,10 +224,6 @@ class FootNote extends HTMLElement {
 	}
 
 	connectedCallback() {
-		/* Attribute: tabindex */
-		if(!this.hasAttribute('tabindex')) {
-			this.setAttribute('tabindex','0');
-		}
 		/* EventListeners: add */
 		if(this.call.isConnected) {
 			this.call.addEventListener('click', this.toggle);
@@ -254,23 +257,25 @@ class FootNote extends HTMLElement {
 			case 'index':
 				this.call.textContent = newValue;
 				this.call.setAttribute('href','#footnote-' + newValue);
-				this.call.setAttribute('aria-label','Footnote ' + newValue + ' call');
+				this.call.setAttribute('aria-label','Call footnote ' + newValue);
 				this.marker.textContent = newValue;
-				this.marker.setAttribute('aria-label','Footnote ' + newValue + ' marker');
-				this.element.setAttribute('aria-label','Footnote ' + newValue + ' content');
+				this.marker.setAttribute('aria-label','Marker footnote ' + newValue);
 				break;
 			/* Attribute: visible */
 			case 'visible':
 				this.visible = this.hasAttribute('visible');
-				this.area.setAttribute('aria-hidden', !this.visible);
 				if(this.visible) {
 					this._wasFocused = document.activeElement;
 					this.area.classList.add('visible');
+					this.area.setAttribute('aria-hidden', "false");
+					this.button.setAttribute('tabindex','0');
 					document.addEventListener('keydown', this._watchEsc);
-					this.focus();
+					this.area.focus();
 				} else {
 					this._wasFocused && this._wasFocused.focus && this._wasFocused.focus();
 					this.area.classList.remove('visible');
+					this.area.setAttribute('aria-hidden', "true");
+					this.button.setAttribute('tabindex','-1');
 					document.removeEventListener('keydown', this._watchEsc);
 				}
 				break;
