@@ -318,6 +318,9 @@ class FootNote extends HTMLElement {
 		this.hideAll();
 		this.visible = !this.visible;
 		const toggleEvent = new CustomEvent('footnote-on-toggle', { 
+			bubbles: true,
+			cancelable: true,
+			composed: true,
 			detail: { 
 				visible: this.visible 
 			}
@@ -330,6 +333,9 @@ class FootNote extends HTMLElement {
 			this.visible = false;
 		}
 		const hideEvent = new CustomEvent('footnote-on-hide', { 
+			bubbles: true,
+			cancelable: true,
+			composed: true,
 			detail: { 
 				visible: this.visible 
 			}
