@@ -21,7 +21,6 @@ class FootNote extends HTMLElement {
 
 		Methods:
 		hide		->	Hide element with close button.
-		hideAll	->	Hide all elements in document.
 		toggle	->	Toggle visibility of element.
 	*/
 
@@ -315,7 +314,7 @@ class FootNote extends HTMLElement {
 		if(event && event instanceof Event) {
 			event.preventDefault();
 		}
-		this.hideAll();
+		this._hideAll();
 		this.visible = !this.visible;
 		const toggleEvent = new CustomEvent('footnote-on-toggle', { 
 			bubbles: true,
@@ -343,7 +342,7 @@ class FootNote extends HTMLElement {
 		this.dispatchEvent(hideEvent);
 	}
 
-	hideAll() {
+	_hideAll() {
 		const openNotes = document.querySelectorAll('foot-note[visible]');
 		openNotes.forEach(note => {
 			if(note === this) {
