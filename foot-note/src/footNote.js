@@ -12,6 +12,8 @@
 	Date: 					10 Sept. 2020
 */
 
+'use strict';
+
 class FootNote extends HTMLElement {
 	
 	/* 
