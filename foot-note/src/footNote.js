@@ -9,7 +9,7 @@
 	Author:					Roland Dreger, www.rolanddreger.net
 	License:				MIT
 
-	Date: 					10 Sept. 2020
+	Date: 					12 Sept. 2020
 */
 
 
@@ -31,6 +31,8 @@ class FootNote extends HTMLElement {
 
 	/* Template */
 	static createTemplate() {
+
+		
 		const template = document.createDocumentFragment();
 		
 		/* Slot */
@@ -130,14 +132,15 @@ class FootNote extends HTMLElement {
 				flex-direction: row;
 				flex-wrap: nowrap;
 				justify-content: space-between;
-				align-items: center;
+				align-items: stretch;
 				border-top-color: #000000;
 				border-top: 1px solid var(--footnote-theme-color, #000000);
 				width: 100%;
 				max-width: var(--footnote-max-width, 58rem);
 				max-height: 100%;
+				min-height: 0;
 				margin-bottom: -100%;
-				overflow: auto;
+				overflow-y: auto;
 				opacity: 0;
 				padding: 2rem 4rem 2rem 4rem;
 				font-size: var(--footnote-font-size, 1rem);
@@ -151,17 +154,19 @@ class FootNote extends HTMLElement {
 			}
 			.element {
 				flex: 1 1 auto;
-				max-height: 100%;
-				overflow: auto;
+				min-height: 0;
+				overflow-y: auto;
 			}
 			.marker,
 			.close {
 				flex: 0 0 auto;
+				align-self: center;
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				min-width: 1.8rem;
 				height: 1.8rem;
+				min-height: 0;
 				padding: 0.4rem;
 				border-radius: 1rem;
 				text-align: center;
@@ -173,7 +178,6 @@ class FootNote extends HTMLElement {
 			}
 			.marker {
 				margin-right: 1.6rem;
-		
 			}
 			.close {
 				margin-left: 1.6rem;
