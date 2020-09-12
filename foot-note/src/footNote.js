@@ -29,63 +29,11 @@ class FootNote extends HTMLElement {
 		return ['index', 'visible']; 
 	}
 
-	/* Template */
-	static createTemplate() {
-
-		
-		const template = document.createDocumentFragment();
-		
-		/* Slot */
-		const slot = document.createElement('slot');
-		
-		/* Note call */
-		const call = document.createElement('a');
-		call.classList.add('call');
-		call.setAttribute('part','call');
-		call.setAttribute('role','doc-noteref');
-		
-		/* Note marker */
-		const marker = document.createElement('sup');
-		marker.classList.add('marker');
-		marker.setAttribute('part','marker');
-		
-		/* Note element (content) */
-		const element = document.createElement('div');
-		element.classList.add('element');
-		element.setAttribute('part','element');
-		element.appendChild(slot);
-		
-		/* Close button */
-		const button = document.createElement('button');
-		button.classList.add('button');
-		button.classList.add('close');
-		button.setAttribute('part','button');
-		button.setAttribute('aria-label','Close');
-		button.setAttribute('title','Close');
-		button.setAttribute('tabindex','-1');
-
-		/* Note area */
-		const area = document.createElement('aside');
-		area.classList.add('area');
-		area.setAttribute('part','area');
-		area.setAttribute('role','doc-footnote');
-		area.setAttribute('aria-hidden','true');
-		area.appendChild(marker);
-		area.appendChild(element);
-		area.appendChild(button);
-		
-		template.appendChild(call);
-		template.appendChild(area);
-		
-		return template;
-	}
-
 	/* Styles */
 	static createStyles() {
-		const styles = document.createDocumentFragment();
-
-		const styleElement = document.createElement('style');
-		styleElement.setAttribute('type','text/css');
+		
+		const style = document.createElement('style');
+		style.setAttribute('type','text/css');
 
 		const styleText = document.createTextNode(`
 			:host {
@@ -211,10 +159,98 @@ class FootNote extends HTMLElement {
 			}
 		`);
 		
-		styleElement.appendChild(styleText);
-		styles.appendChild(styleElement);
+		style.appendChild(styleText);
+
+		const styles = document.createDocumentFragment();
+		styles.appendChild(style);
 
 		return styles;
+	}
+
+	/* Template */
+	static createTemplate() {
+
+		/* Styles */
+		const styles = FootNote.createStyles();
+
+		/* Note call */
+		const call = document.createElement('a');
+		call.classList.add('call');
+		call.setAttribute('part','call');
+		call.setAttribute('role','doc-noteref');
+		
+		/* Note marker */
+		const marker = document.createElement('sup');
+		marker.classList.add('marker');
+		marker.setAttribute('part','marker');
+		
+		/* Slot */
+		const slot = document.createElement('slot');
+		
+		/* Note element */
+		const element = document.createElement('div');
+		element.classList.add('element');
+		element.setAttribute('part','element');
+		element.appendChild(slot);
+
+		/* Close button */
+		const button = document.createElement('button');
+		button.classList.add('button');
+		button.classList.add('close');
+		button.setAttribute('part','button');
+		button.setAttribute('aria-label','Close');
+		button.setAttribute('title','Close');
+		button.setAttribute('tabindex','-1');
+
+		/* Note area */
+		const area = document.createElement('aside');
+		area.classList.add('area');
+		area.setAttribute('part','area');
+		area.setAttribute('role','doc-footnote');
+		area.setAttribute('aria-hidden','true');
+		area.appendChild(marker);
+		area.appendChild(element);
+		area.appendChild(button);
+		
+		/* Template */
+		const template = document.createDocumentFragment();
+		template.appendChild(styles);
+		template.appendChild(call);
+		template.appendChild(area);
+
+		return template;
+	}
+
+	static renderTemplateNode() {
+
+		const template = FootNote.createTemplate();
+
+		const comment = document.createComment("FootNote component template");
+		document.body.appendChild(comment);
+
+		const templateElement = document.createElement('template');
+		templateElement.setAttribute('id','foot-note-template');
+		templateElement.content.appendChild(template);
+
+		const templateNode = document.body.appendChild(templateElement);
+
+		return templateNode;
+	}
+
+	static getTemplate() {
+
+		let templateNode;
+		let template;
+
+		templateNode = document.querySelector('#foot-note-template');
+		if(templateNode !== null) {
+			template = templateNode.content.cloneNode(true);
+		} else {
+			templateNode = FootNote.renderTemplateNode();
+			template = templateNode.content.cloneNode(true);
+		}
+
+		return template;
 	}
 
 	/* Livecycle hooks */
@@ -225,12 +261,8 @@ class FootNote extends HTMLElement {
 			mode: 'open'
 		});
 		
-		/* Styles */
-		const styles = FootNote.createStyles();
-		root.appendChild(styles);
-		
 		/* Template */
-		const template = FootNote.createTemplate();
+		const template = FootNote.getTemplate();
 		root.appendChild(template);
 
 		/* Properties */
