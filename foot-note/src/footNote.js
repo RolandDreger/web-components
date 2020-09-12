@@ -12,7 +12,6 @@
 	Date: 					10 Sept. 2020
 */
 
-'use strict';
 
 class FootNote extends HTMLElement {
 	
@@ -136,7 +135,9 @@ class FootNote extends HTMLElement {
 				border-top: 1px solid var(--footnote-theme-color, #000000);
 				width: 100%;
 				max-width: var(--footnote-max-width, 58rem);
+				max-height: 100%;
 				margin-bottom: -100%;
+				overflow: auto;
 				opacity: 0;
 				padding: 2rem 4rem 2rem 4rem;
 				font-size: var(--footnote-font-size, 1rem);
@@ -150,6 +151,8 @@ class FootNote extends HTMLElement {
 			}
 			.element {
 				flex: 1 1 auto;
+				max-height: 100%;
+				overflow: auto;
 			}
 			.marker,
 			.close {
