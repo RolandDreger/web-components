@@ -15,7 +15,7 @@ if('customElements' in window) {
 }
 ```
 
-# Usage
+# Usage (Document HTML)
 
 ## Manual footnote index
 ```
