@@ -9,7 +9,7 @@
 	Author:					Roland Dreger, www.rolanddreger.net
 	License:				MIT
 
-	Date: 					12 Sept. 2020
+	Date: 					13 Sept. 2020
 */
 
 
@@ -225,7 +225,7 @@ class FootNote extends HTMLElement {
 
 		const template = FootNote.createTemplate();
 
-		const comment = document.createComment("FootNote component template");
+		const comment = document.createComment("Foot-Note component template");
 		document.body.appendChild(comment);
 
 		const templateElement = document.createElement('template');
@@ -272,7 +272,7 @@ class FootNote extends HTMLElement {
 		this.element = root.querySelector('.element');
 		this.button = root.querySelector('.button');
 		
-		/* Event handler: bind */
+		/* Event handler */
 		this.toggle = this.toggle.bind(this);
 		this.hide = this.hide.bind(this);
 		this._watchEsc = this._watchEsc.bind(this);
@@ -305,9 +305,9 @@ class FootNote extends HTMLElement {
 			case 'index':
 				this.call.textContent = newValue;
 				this.call.setAttribute('href','#footnote-' + newValue);
-				this.call.setAttribute('aria-label','Call footnote ' + newValue);
+				this.call.setAttribute('aria-label','Call note ' + newValue);
 				this.marker.textContent = newValue;
-				this.marker.setAttribute('aria-label','Marker footnote ' + newValue);
+				this.marker.setAttribute('aria-label','Marker note ' + newValue);
 				break;
 			/* Attribute: visible */
 			case 'visible':
