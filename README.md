@@ -2,9 +2,6 @@
 
 Components for typographic projects.
 
-[![License: MIT](http://img.shields.io/:license-mit-blue.svg?style=flat)](http://www.opensource.org/licenses/mit-license.php)
-![GitHub issues](https://img.shields.io/github/issues/RolandDreger/web-components)
-
 ## `<foot-note>`
 Creates a new HTML tag `<foot-note>` displayed in the footer.
 
@@ -12,7 +9,7 @@ Creates a new HTML tag `<foot-note>` displayed in the footer.
 
 ## License
 
-[![License: MIT](http://img.shields.io/:license-mit-blue.svg?style=flat)](http://www.opensource.org/licenses/mit-license.php)
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat)](http://www.opensource.org/licenses/mit-license.php)
 
 ## Author
 
