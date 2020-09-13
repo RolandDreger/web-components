@@ -2,7 +2,7 @@
 
 Components for typographic projects.
 
-[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://github.com/RolandDreger/web-components/blob/master/MIT-LICENSE.md)
 
 ## `<foot-note>`
 Creates a new HTML tag `<foot-note>` displayed in the footer.
