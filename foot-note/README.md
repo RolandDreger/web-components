@@ -51,6 +51,18 @@ sections.forEach(section => {
 });
 ```
 
+### Event Listener (optional)
+```
+const footnotes = document.querySelectorAll('foot-note');
+footnotes.forEach((note, index) => {
+	note.addEventListener('footnote-on-toggle', (event) => {
+		console.log("Footnote toggled. Visible: " + event.detail.visible);
+	}, false);
+	note.addEventListener('footnote-on-hide', (event) => {
+		console.log("Footnote hidden. Visible: " + event.detail.visible);
+	}, false);
+});
+```
 
 ## Shortcuts
 
