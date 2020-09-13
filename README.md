@@ -2,7 +2,7 @@
 
 Components for typographic projects.
 
-[![License](http://img.shields.io/github/license/:user/:repo?style=flat-square)](https://github.com/RolandDreger/web-components/blob/master/MIT-LICENSE.md)
+![GitHub](https://img.shields.io/github/license/RolandDreger/web-components)
 ![GitHub issues](https://img.shields.io/github/issues/RolandDreger/web-components)
 
 ## `<foot-note>`
