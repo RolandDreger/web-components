@@ -17,29 +17,15 @@ if('customElements' in window) {
 				note.setAttribute('index', index + 1);
 			}
 		});
-		/* Example: Sections */
-		// const sections = document.querySelectorAll('section');
-		// sections.forEach(section => {
-		// 	const footnotes = section.querySelectorAll('foot-note');
-		// 	footnotes.forEach((note, index) => {
-		// 		if(!note.hasAttribute('index')) {
-		// 			note.setAttribute('index', index + 1);
-		// 		}
-		// 	});
-		// });
-
 
 		/* Add Event Listener (optional) */
-		sections.forEach(section => {
-			const footnotes = section.querySelectorAll('foot-note');
-			footnotes.forEach((note, index) => {
-				note.addEventListener('footnote-on-toggle', (event) => {
-					console.log("Footnote toggled. Visible: " + event.detail.visible);
-				}, false);
-				note.addEventListener('footnote-on-hide', (event) => {
-					console.log("Footnote hidden. Visible: " + event.detail.visible);
-				}, false);
-			});
+		footnotes.forEach((note, index) => {
+			note.addEventListener('footnote-on-toggle', (event) => {
+				console.log("Footnote toggled. Visible: " + event.detail.visible);
+			}, false);
+			note.addEventListener('footnote-on-hide', (event) => {
+				console.log("Footnote hidden. Visible: " + event.detail.visible);
+			}, false);
 		});
 		
 	})
