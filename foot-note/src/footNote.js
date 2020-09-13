@@ -1,15 +1,15 @@
 ﻿/* 
-	Web Component:	FootNote
+	Web Component: FootNote
 	
-	Custom Element:	<foot-note></foot-note>
-	Shadow DOM:			true, open
-	Attributes:			index, visible (empty) 
-	Slots:					default	
+	Custom Element: <foot-note></foot-note>
+	Shadow DOM: true, open
+	Attributes: index, visible (empty) 
+	Slots: default	
 
-	Author:					Roland Dreger, www.rolanddreger.net
-	License:				MIT
+	Author: Roland Dreger, www.rolanddreger.net
+	License: MIT
 
-	Date: 					13 Sept. 2020
+	Date: 13 Sept. 2020
 */
 
 
@@ -24,12 +24,12 @@ class FootNote extends HTMLElement {
 	
 	/* 
 		Properties:
-		index		->	Type: String
-		visible	->	Type: Boolean
+		index -> Type: String
+		visible -> Type: Boolean
 
 		Methods:
-		hide		->	Hide element with close button.
-		toggle	->	Toggle visibility of element.
+		hide -> Hide element with close button.
+		toggle -> Toggle visibility of element.
 	*/
 
 	static get observedAttributes() { 
