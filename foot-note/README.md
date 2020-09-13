@@ -4,8 +4,6 @@ Web component that creates a custom element with the HTML tag `<foot-note>`. The
 
 <img src="https://github.com/RolandDreger/web-components/raw/master/foot-note/foot-note_web_component.png" title="Footnote web component" alt="Footnote web component">
 
-[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://github.com/RolandDreger/web-components/blob/master/MIT-LICENSE.md)
-
 
 ## Installation
 
