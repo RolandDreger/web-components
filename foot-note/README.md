@@ -5,7 +5,7 @@ Web component that creates a custom element with the HTML tag `<foot-note>`. The
 
 <img src="https://github.com/RolandDreger/web-components/raw/master/foot-note/foot-note_web_component.png" title="Footnote web component" alt="Footnote web component">
 
-# Installation
+## Installation
 
 ```
 import FootNote from './src/footNote.js';
@@ -15,19 +15,19 @@ if('customElements' in window) {
 }
 ```
 
-# Usage (Document HTML)
+## Usage (Document HTML)
 
-## Manual footnote index
+### Manual footnote index
 ```
 <foot-note index="1"><strong>15: Footnotes, indexes, contents, and outlines.</strong> U.S. Government Printing Office Style Manual.  Retrieved October 26, 2015.</foot-note>
 ```
 
-## Programmatically footnote index
+### Programmatically footnote index
 ```
 <foot-note><strong>15: Footnotes, indexes, contents, and outlines.</strong> U.S. Government Printing Office Style Manual.  Retrieved October 26, 2015.</foot-note>
 ```
 
-### JavaScript example 1: Document
+#### JavaScript example 1: Document
 
 ```
 const footnotes = document.querySelectorAll('foot-note');
@@ -38,7 +38,7 @@ footnotes.forEach((note, index) => {
 });
 ```
 
-### JavaScript example 2: Sections
+#### JavaScript example 2: Sections
 ```
 const sections = document.querySelectorAll('section');
 sections.forEach(section => {
