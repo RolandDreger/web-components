@@ -105,7 +105,7 @@ foot-note:not(:defined)::after {
 
 ## License
 
-[MIT](http://www.opensource.org/licenses/mit-license.php)
+[MIT](https://github.com/RolandDreger/web-components/blob/master/MIT-LICENSE.md)
 
 ## Author
 
