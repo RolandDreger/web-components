@@ -10,15 +10,24 @@ if('customElements' in window) {
 	.then(_ => {
 
 		/* Set index of footnotes programmatically (optional) */
-		const sections = document.querySelectorAll('section');
-		sections.forEach(section => {
-			const footnotes = section.querySelectorAll('foot-note');
-			footnotes.forEach((note, index) => {
-				if(!note.hasAttribute('index')) {
-					note.setAttribute('index', index + 1);
-				}
-			});
+		/* Example: Document */
+		const footnotes = document.querySelectorAll('foot-note');
+		footnotes.forEach((note, index) => {
+			if(!note.hasAttribute('index')) {
+				note.setAttribute('index', index + 1);
+			}
 		});
+		/* Example: Sections */
+		// const sections = document.querySelectorAll('section');
+		// sections.forEach(section => {
+		// 	const footnotes = section.querySelectorAll('foot-note');
+		// 	footnotes.forEach((note, index) => {
+		// 		if(!note.hasAttribute('index')) {
+		// 			note.setAttribute('index', index + 1);
+		// 		}
+		// 	});
+		// });
+
 
 		/* Add Event Listener (optional) */
 		sections.forEach(section => {
