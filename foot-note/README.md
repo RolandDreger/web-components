@@ -1,7 +1,7 @@
 # Web Component: `<foot-note>`
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
-Web component that creates a new HTML tag `<foot-note>`. The custom element is displayed in the footer after clicking on the footnote call.
+Web component that creates a custom element with the HTML tag `<foot-note>`. The element is displayed in the footer after clicking on the footnote call.
 
 <img src="https://github.com/RolandDreger/web-components/raw/master/foot-note/foot-note_web_component.png" title="Footnote web component" alt="Footnote web component">
 
