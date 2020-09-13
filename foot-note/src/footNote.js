@@ -13,6 +13,13 @@
 */
 
 
+const COMPONENT_TAG_NAME = 'foot-note';
+const TEMPLATE_ID = 'foot-note-template';
+const TEMPLATE_COMMENT = 'Foot-Note component template';
+const SHADOW_DOM_MODE = 'open';
+const TOGGLE_EVENT_NAME = 'footnote-on-toggle';
+const HIDE_EVENT_NAME = 'footnote-on-hide';
+
 class FootNote extends HTMLElement {
 	
 	/* 
@@ -32,10 +39,7 @@ class FootNote extends HTMLElement {
 	/* Styles */
 	static createStyles() {
 		
-		const style = document.createElement('style');
-		style.setAttribute('type','text/css');
-
-		const styleText = document.createTextNode(`
+		const styleString = document.createTextNode(`
 			:host {
 				font-family: inherit;
 				contain: content;
@@ -159,19 +163,18 @@ class FootNote extends HTMLElement {
 			}
 		`);
 		
-		style.appendChild(styleText);
+		const style = document.createElement('style');
+		style.setAttribute('type','text/css');
+		style.appendChild(styleString);
 
-		const styles = document.createDocumentFragment();
-		styles.appendChild(style);
+		const styleFragment = document.createDocumentFragment();
+		styleFragment.appendChild(style);
 
-		return styles;
+		return styleFragment;
 	}
 
 	/* Template */
 	static createTemplate() {
-
-		/* Styles */
-		const styles = FootNote.createStyles();
 
 		/* Note call */
 		const call = document.createElement('a');
@@ -213,57 +216,47 @@ class FootNote extends HTMLElement {
 		area.appendChild(button);
 		
 		/* Template */
-		const template = document.createDocumentFragment();
-		template.appendChild(styles);
-		template.appendChild(call);
-		template.appendChild(area);
+		const templateFragment = document.createDocumentFragment();
+		templateFragment.appendChild(call);
+		templateFragment.appendChild(area);
 
-		return template;
+		return templateFragment;
 	}
 
-	static renderTemplateNode() {
+	static render() {
 
-		const template = FootNote.createTemplate();
-
-		const comment = document.createComment("Foot-Note component template");
+		/* Comment */
+		const comment = document.createComment(TEMPLATE_COMMENT);
 		document.body.appendChild(comment);
+		
+		/* Styles */
+		const styleFragment = FootNote.createStyles();
 
+		/* Template */
+		const templateFragment = FootNote.createTemplate();
 		const templateElement = document.createElement('template');
-		templateElement.setAttribute('id','foot-note-template');
-		templateElement.content.appendChild(template);
-
+		templateElement.setAttribute('id', TEMPLATE_ID);
+		templateElement.content.appendChild(styleFragment);
+		templateElement.content.appendChild(templateFragment);
+		
+		/* Document */
 		const templateNode = document.body.appendChild(templateElement);
 
 		return templateNode;
 	}
 
-	static getTemplate() {
-
-		let templateNode;
-		let template;
-
-		templateNode = document.querySelector('#foot-note-template');
-		if(templateNode !== null) {
-			template = templateNode.content.cloneNode(true);
-		} else {
-			templateNode = FootNote.renderTemplateNode();
-			template = templateNode.content.cloneNode(true);
-		}
-
-		return template;
-	}
-
 	/* Livecycle hooks */
-	constructor(/* element */) {
+	constructor() {
 		super();
 		
+		/* Shadow DOM */
 		const root = this.attachShadow({ 
-			mode: 'open'
+			mode: SHADOW_DOM_MODE
 		});
 		
 		/* Template */
-		const template = FootNote.getTemplate();
-		root.appendChild(template);
+		const template = document.getElementById(TEMPLATE_ID) || FootNote.render();
+		root.appendChild(template.content.cloneNode(true));
 
 		/* Properties */
 		this.area = root.querySelector('.area');
@@ -304,7 +297,7 @@ class FootNote extends HTMLElement {
 			/* Attribute: index */
 			case 'index':
 				this.call.textContent = newValue;
-				this.call.setAttribute('href','#footnote-' + newValue);
+				this.call.setAttribute('href','#' + COMPONENT_TAG_NAME + '-' + newValue);
 				this.call.setAttribute('aria-label','Call note ' + newValue);
 				this.marker.textContent = newValue;
 				this.marker.setAttribute('aria-label','Marker note ' + newValue);
@@ -357,7 +350,7 @@ class FootNote extends HTMLElement {
 		}
 		this._hideAll();
 		this.visible = !this.visible;
-		const toggleEvent = new CustomEvent('footnote-on-toggle', { 
+		const toggleEvent = new CustomEvent(TOGGLE_EVENT_NAME, { 
 			bubbles: true,
 			cancelable: true,
 			composed: true,
@@ -372,7 +365,7 @@ class FootNote extends HTMLElement {
 		if(this.visible !== false) {
 			this.visible = false;
 		}
-		const hideEvent = new CustomEvent('footnote-on-hide', { 
+		const hideEvent = new CustomEvent(HIDE_EVENT_NAME, { 
 			bubbles: true,
 			cancelable: true,
 			composed: true,
@@ -384,7 +377,7 @@ class FootNote extends HTMLElement {
 	}
 
 	_hideAll() {
-		const openNotes = document.querySelectorAll('foot-note[visible]');
+		const openNotes = document.querySelectorAll(COMPONENT_TAG_NAME + '[visible]');
 		openNotes.forEach(note => {
 			if(note === this) {
 				return false;
