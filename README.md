@@ -1,3 +1,6 @@
 ﻿# Web components
 
-## 1 Footnote
+Components for typographic projects.
+
+## <foot-note>
+
