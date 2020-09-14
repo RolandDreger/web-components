@@ -13,7 +13,7 @@
 */
 
 
-/* Setup */
+/* Configuration */
 const COMPONENT_TAG_NAME = 'foot-note';
 const TEMPLATE_ID = 'foot-note-template';
 const TEMPLATE_COMMENT = 'FootNote component template';
