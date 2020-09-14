@@ -9,28 +9,19 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 13 Sept. 2020
+	Date: 14 Sept. 2020
 */
 
 
+/* Setup */
 const COMPONENT_TAG_NAME = 'foot-note';
 const TEMPLATE_ID = 'foot-note-template';
-const TEMPLATE_COMMENT = 'Foot-Note component template';
+const TEMPLATE_COMMENT = 'FootNote component template';
 const SHADOW_DOM_MODE = 'open';
 const TOGGLE_EVENT_NAME = 'footnote-on-toggle';
 const HIDE_EVENT_NAME = 'footnote-on-hide';
 
 class FootNote extends HTMLElement {
-	
-	/* 
-		Properties:
-		index -> Type: String
-		visible -> Type: Boolean
-
-		Methods:
-		hide -> Hide element with close button.
-		toggle -> Toggle visibility of element.
-	*/
 
 	static get observedAttributes() { 
 		return ['index', 'visible']; 
@@ -39,6 +30,7 @@ class FootNote extends HTMLElement {
 	/* Styles */
 	static createStyles() {
 		
+		/* CSS */
 		const styleString = document.createTextNode(`
 			:host {
 				font-family: inherit;
@@ -266,26 +258,26 @@ class FootNote extends HTMLElement {
 		this.button = root.querySelector('.button');
 		
 		/* Event handler */
-		this.toggle = this.toggle.bind(this);
-		this.hide = this.hide.bind(this);
-		this._watchEsc = this._watchEsc.bind(this);
+		this._toggle = this.toggle.bind(this);
+		this._hide = this.hide.bind(this);
+		this.__watchEsc = this._watchEsc.bind(this);
 	}
 
 	connectedCallback() {
 		if(this.call.isConnected) {
-			this.call.addEventListener('click', this.toggle);
+			this.call.addEventListener('click', this._toggle);
 		}
 		if(this.button.isConnected) {
-			this.button.addEventListener('click', this.hide);
+			this.button.addEventListener('click', this._hide);
 		}
 	}
 
 	disconnectedCallback() {
 		if(this.call) {
-			this.call.removeEventListener('click', this.toggle);
+			this.call.removeEventListener('click', this._toggle);
 		}
 		if(this.button) {
-			this.button.removeEventListener('click', this.hide);
+			this.button.removeEventListener('click', this._hide);
 		}
 	}
 	
@@ -310,14 +302,14 @@ class FootNote extends HTMLElement {
 					this.area.classList.add('visible');
 					this.area.setAttribute('aria-hidden', "false");
 					this.button.setAttribute('tabindex','0');
-					document.addEventListener('keydown', this._watchEsc);
+					document.addEventListener('keydown', this.__watchEsc);
 					this.area.focus();
 				} else {
 					this._wasFocused && this._wasFocused.focus && this._wasFocused.focus();
 					this.area.classList.remove('visible');
 					this.area.setAttribute('aria-hidden', "true");
 					this.button.setAttribute('tabindex','-1');
-					document.removeEventListener('keydown', this._watchEsc);
+					document.removeEventListener('keydown', this.__watchEsc);
 				}
 				break;
 		}
@@ -348,7 +340,7 @@ class FootNote extends HTMLElement {
 		if(event && event instanceof Event) {
 			event.preventDefault();
 		}
-		this._hideAll();
+		this.hideOthers();
 		this.visible = !this.visible;
 		const toggleEvent = new CustomEvent(TOGGLE_EVENT_NAME, { 
 			bubbles: true,
@@ -376,12 +368,19 @@ class FootNote extends HTMLElement {
 		this.dispatchEvent(hideEvent);
 	}
 
-	_hideAll() {
+	hideOthers() {
 		const openNotes = document.querySelectorAll(COMPONENT_TAG_NAME + '[visible]');
 		openNotes.forEach(note => {
 			if(note === this) {
 				return false;
 			}
+			note.removeAttribute('visible');
+		});
+	}
+
+	hideAll() {
+		const openNotes = document.querySelectorAll(COMPONENT_TAG_NAME + '[visible]');
+		openNotes.forEach(note => {
 			note.removeAttribute('visible');
 		});
 	}
