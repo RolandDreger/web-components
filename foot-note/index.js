@@ -1,23 +1,29 @@
 ﻿import FootNote from './src/footNote.js';
 
+(function() {
+  
+	if(!('customElements' in window)) {
+		return false;
+	}
 
-if('customElements' in window) {
-
-	/* Define <foot-note> */
+	/* Define <foot-note> element */
 	window.customElements.define('foot-note', FootNote);
 
-	customElements.whenDefined('foot-note')
-	.then(_ => {
+	const definePromiseArray = [
+		customElements.whenDefined('foot-note')
+	];
 
-		/* Set index of footnotes programmatically (optional) */
-		/* Example: Document */
+	Promise.all(definePromiseArray)
+	.then(() => {
+
+		/* Web component: FootNote */
+		/* Set index programmatically (optional) */
 		const footnotes = document.querySelectorAll('foot-note');
 		footnotes.forEach((note, index) => {
 			if(!note.hasAttribute('index')) {
 				note.setAttribute('index', index + 1);
 			}
 		});
-
 		/* Add Event Listener (optional) */
 		footnotes.forEach((note, index) => {
 			note.addEventListener('footnote-on-toggle', (event) => {
@@ -33,4 +39,4 @@ if('customElements' in window) {
 		console.error(error);
 	});
 
-}
+})();
