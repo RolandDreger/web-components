@@ -15,8 +15,8 @@ if('customElements' in window) {
 }
 ```
 
-## Usage (Document HTML)
 
+## Usage (Document HTML)
 ### Manual footnote index
 `
 <foot-note index="1"><strong>15: Footnotes, indexes, contents, and outlines.</strong> U.S. Government Printing Office Style Manual.  Retrieved October 26, 2015.</foot-note>
@@ -64,12 +64,13 @@ footnotes.forEach((note, index) => {
 });
 ```
 
+
 ## Shortcuts
 
 Hide note with ESC key.
 
-## Style (Document CSS)
 
+## Style (Document CSS)
 ### Custom properties
 ```
 --footnote-theme-color: teal;
@@ -113,9 +114,29 @@ foot-note:not(:defined)::after {
 }
 ```
 
+
+## Attributes
+
+| Name    | Value  | Description                                              | 
+| ------- | ------ | -------------------------------------------------------- | 
+| index   | String | Footnote index: can be set manually or via Javascript.   | 
+| visible | Empty  | If the attribute has been set, the element is displayed. |
+
+
+## Methods
+
+| Prototype  | Description                     | 
+| ---------- | ------------------------------- | 
+| hide       | Hide element with close button. | 
+| hideAll    | Hide all elements.              |
+| hideOthers | Hide all elements but this.     |
+| toggle     | Toggle visibility of element.   |
+
+
 ## License
 
 [MIT](https://github.com/RolandDreger/web-components/blob/master/MIT-LICENSE.md)
+
 
 ## Author
 
