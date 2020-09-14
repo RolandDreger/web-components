@@ -4,7 +4,7 @@
 	Custom Element: <foot-note></foot-note>
 	Shadow DOM: true, open
 	Attributes: index, visible (empty) 
-	Slots: default	
+	Slots: default
 
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
