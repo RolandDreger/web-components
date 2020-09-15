@@ -52,11 +52,6 @@ sections.forEach(section => {
 ```
 
 
-## Shortcuts
-
-Hide note with ESC key.
-
-
 ## Style (Document CSS)
 ### Custom properties
 ```
@@ -100,6 +95,12 @@ foot-note:not(:defined)::after {
 	/* Custom styles */
 }
 ```
+
+## Shortcuts
+
+| Key | Description            |
+| --- | ---------------------- |
+| ESC | Hide note with ESC key.|
 
 
 ## Options
