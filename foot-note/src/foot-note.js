@@ -251,11 +251,11 @@ class FootNote extends HTMLElement {
 		root.appendChild(template.content.cloneNode(true));
 
 		/* Properties */
-		this.area = root.querySelector('.area');
-		this.call = root.querySelector('.call');
-		this.marker = root.querySelector('.marker');
-		this.element = root.querySelector('.element');
-		this.button = root.querySelector('.button');
+		this.$area = root.querySelector('.area');
+		this.$call = root.querySelector('.call');
+		this.$marker = root.querySelector('.marker');
+		this.$element = root.querySelector('.element');
+		this.$button = root.querySelector('.button');
 		
 		/* Event handler */
 		this._toggle = this.toggle.bind(this);
@@ -264,20 +264,20 @@ class FootNote extends HTMLElement {
 	}
 
 	connectedCallback() {
-		if(this.call.isConnected) {
-			this.call.addEventListener('click', this._toggle);
+		if(this.$call.isConnected) {
+			this.$call.addEventListener('click', this._toggle);
 		}
-		if(this.button.isConnected) {
-			this.button.addEventListener('click', this._hide);
+		if(this.$button.isConnected) {
+			this.$button.addEventListener('click', this._hide);
 		}
 	}
 
 	disconnectedCallback() {
-		if(this.call) {
-			this.call.removeEventListener('click', this._toggle);
+		if(this.$call) {
+			this.$call.removeEventListener('click', this._toggle);
 		}
-		if(this.button) {
-			this.button.removeEventListener('click', this._hide);
+		if(this.$button) {
+			this.$button.removeEventListener('click', this._hide);
 		}
 	}
 	
@@ -288,27 +288,27 @@ class FootNote extends HTMLElement {
 		switch(name) {
 			/* Attribute: index */
 			case 'index':
-				this.call.textContent = newValue;
-				this.call.setAttribute('href','#' + COMPONENT_TAG_NAME + '-' + newValue);
-				this.call.setAttribute('aria-label','Call note ' + newValue);
-				this.marker.textContent = newValue;
-				this.marker.setAttribute('aria-label','Marker note ' + newValue);
+				this.$call.textContent = newValue;
+				this.$call.setAttribute('href','#' + COMPONENT_TAG_NAME + '-' + newValue);
+				this.$call.setAttribute('aria-label','Call note ' + newValue);
+				this.$marker.textContent = newValue;
+				this.$marker.setAttribute('aria-label','Marker note ' + newValue);
 				break;
 			/* Attribute: visible */
 			case 'visible':
 				this.visible = this.hasAttribute('visible');
 				if(this.visible) {
 					this._wasFocused = document.activeElement;
-					this.area.classList.add('visible');
-					this.area.setAttribute('aria-hidden', "false");
-					this.button.setAttribute('tabindex','0');
+					this.$area.classList.add('visible');
+					this.$area.setAttribute('aria-hidden', "false");
+					this.$button.setAttribute('tabindex','0');
 					document.addEventListener('keydown', this.__watchEsc);
-					this.area.focus();
+					this.$area.focus();
 				} else {
 					this._wasFocused && this._wasFocused.focus && this._wasFocused.focus();
-					this.area.classList.remove('visible');
-					this.area.setAttribute('aria-hidden', "true");
-					this.button.setAttribute('tabindex','-1');
+					this.$area.classList.remove('visible');
+					this.$area.setAttribute('aria-hidden', "true");
+					this.$button.setAttribute('tabindex','-1');
 					document.removeEventListener('keydown', this.__watchEsc);
 				}
 				break;
