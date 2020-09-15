@@ -18,12 +18,12 @@ if('customElements' in window) {
 
 ## Usage (Document HTML)
 ### Manual footnote index
-`html
+`
 <foot-note index="1"><strong>15: Footnotes, indexes, contents, and outlines.</strong> U.S. Government Printing Office Style Manual.  Retrieved October 26, 2015.</foot-note>
 `
 
 ### Programmatically footnote index (optional)
-`html
+`
 <foot-note><strong>15: Footnotes, indexes, contents, and outlines.</strong> U.S. Government Printing Office Style Manual.  Retrieved October 26, 2015.</foot-note>
 `
 
