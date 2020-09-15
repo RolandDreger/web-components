@@ -1,11 +1,11 @@
-# Web Component: `<foot-note>`
+# `<foot-note>`
 
 Web component that creates a custom element with the HTML tag `<foot-note>`. The element is displayed in the footer after clicking on the footnote call.
 
 <img src="https://github.com/RolandDreger/web-components/raw/master/foot-note/foot-note_web_component.png" title="Footnote web component" alt="Footnote web component">
 
 
-## Installation
+## Install
 
 ```
 import FootNote from './src/footNote.js';
@@ -48,19 +48,6 @@ sections.forEach(section => {
 			note.setAttribute('index', index + 1);
 		}
 	});
-});
-```
-
-### Event Listener (optional)
-```
-const footnotes = document.querySelectorAll('foot-note');
-footnotes.forEach((note, index) => {
-	note.addEventListener('footnote-on-toggle', (event) => {
-		console.log("Footnote toggled. Visible: " + event.detail.visible);
-	}, false);
-	note.addEventListener('footnote-on-hide', (event) => {
-		console.log("Footnote hidden. Visible: " + event.detail.visible);
-	}, false);
 });
 ```
 
@@ -115,22 +102,43 @@ foot-note:not(:defined)::after {
 ```
 
 
-## Attributes
+## Options
 
-| Name    | Value  | Description                                              | 
-| ------- | ------ | -------------------------------------------------------- | 
-| index   | String | Footnote index: can be set manually or via Javascript.   | 
-| visible | Empty  | If the attribute has been set, the element is displayed. |
+| Attribute | Options  | Default | Description                                              | 
+| --------- | -------- | ------- | -------------------------------------------------------- | 
+| `index`   | *String* | unset   | Footnote index: can be set manually or via Javascript.   | 
+| `visible` | Empty    | unset   | If the attribute has been set, the element is displayed. |
 
 
 ## Methods
 
-| Prototype  | Description                     | 
-| ---------- | ------------------------------- | 
-| hide       | Hide element with close button. | 
-| hideAll    | Hide all elements.              |
-| hideOthers | Hide all elements but this.     |
-| toggle     | Toggle visibility of element.   |
+| Prototype    | Parameters | Returns | Description                     | 
+| ------------ | ---------- | ------- | ------------------------------- | 
+| hide()       | None       | Nothing | Hide element with close button. | 
+| hideAll()    | None       | Nothing | Hide all elements.              |
+| hideOthers() | None       | Nothing | Hide all elements but this.     |
+| toggle()     | None       | Nothing | Toggle visibility of element.   |
+
+
+## Events
+
+| Event                | Description                                               | 
+| -------------------- | --------------------------------------------------------- | 
+| `footnote-on-toggle` | Triggers when element toggles. (Click on footnote call.)  | 
+| `footnote-on-hide`   | Triggers when element is hidden. (Click on close button.) |
+
+### Event Listener (optional)
+```
+const footnotes = document.querySelectorAll('foot-note');
+footnotes.forEach((note, index) => {
+	note.addEventListener('footnote-on-toggle', (event) => {
+		console.log("Footnote toggled. Visible: " + event.detail.visible);
+	}, false);
+	note.addEventListener('footnote-on-hide', (event) => {
+		console.log("Footnote hidden. Visible: " + event.detail.visible);
+	}, false);
+});
+```
 
 
 ## License
