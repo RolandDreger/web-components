@@ -247,7 +247,7 @@ class FootNote extends HTMLElement {
 		});
 		
 		/* Template */
-		const template = document.getElementById(TEMPLATE_ID) || FootNote.render();
+		const template = (document.getElementById(TEMPLATE_ID) || FootNote.render());
 		root.appendChild(template.content.cloneNode(true));
 
 		/* Properties */
@@ -305,7 +305,9 @@ class FootNote extends HTMLElement {
 					document.addEventListener('keydown', this.__watchEsc);
 					this.$area.focus();
 				} else {
-					this._wasFocused && this._wasFocused.focus && this._wasFocused.focus();
+					if(this._wasFocused && this._wasFocused.focus) {
+						this._wasFocused.focus();
+					}
 					this.$area.classList.remove('visible');
 					this.$area.setAttribute('aria-hidden', "true");
 					this.$button.setAttribute('tabindex','-1');
