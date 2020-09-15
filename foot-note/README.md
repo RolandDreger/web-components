@@ -7,7 +7,7 @@ Web component that creates a custom element with the HTML tag `<foot-note>`. The
 
 ## Install
 
-```
+```javascript
 import FootNote from './src/footNote.js';
 
 if('customElements' in window) {
@@ -18,18 +18,18 @@ if('customElements' in window) {
 
 ## Usage (Document HTML)
 ### Manual footnote index
-`
+`html
 <foot-note index="1"><strong>15: Footnotes, indexes, contents, and outlines.</strong> U.S. Government Printing Office Style Manual.  Retrieved October 26, 2015.</foot-note>
 `
 
 ### Programmatically footnote index (optional)
-`
+`html
 <foot-note><strong>15: Footnotes, indexes, contents, and outlines.</strong> U.S. Government Printing Office Style Manual.  Retrieved October 26, 2015.</foot-note>
 `
 
 #### JavaScript example 1: Document
 
-```
+```javascript
 const footnotes = document.querySelectorAll('foot-note');
 footnotes.forEach((note, index) => {
 	if(!note.hasAttribute('index')) {
@@ -39,7 +39,7 @@ footnotes.forEach((note, index) => {
 ```
 
 #### JavaScript example 2: Sections
-```
+```javascript
 const sections = document.querySelectorAll('section');
 sections.forEach(section => {
 	const footnotes = section.querySelectorAll('foot-note');
@@ -54,7 +54,7 @@ sections.forEach(section => {
 
 ## Style (Document CSS)
 ### Custom properties
-```
+```css
 --footnote-theme-color: teal;
 --footnote-max-width: 58rem;
 --footnote-line-heigth: 1.4;
@@ -62,7 +62,7 @@ sections.forEach(section => {
 ```
 
 ### Pseudoelement: part
-```
+```css
 foot-note::part(call) {
 	/* Custom styles: Footnote call */
 }
@@ -81,7 +81,7 @@ foot-note::part(button) {
 ```
 
 ### Fallback (JavaScript disabled)
-```
+```css
 foot-note:not(:defined) {
 	/* Custom styles */
 }
@@ -129,7 +129,7 @@ foot-note:not(:defined)::after {
 | `footnote-on-hide`   | Triggers when element is hidden. (Click on close button.) |
 
 ### Event Listener (optional)
-```
+```javascript
 const footnotes = document.querySelectorAll('foot-note');
 footnotes.forEach((note, index) => {
 	note.addEventListener('footnote-on-toggle', (event) => {
