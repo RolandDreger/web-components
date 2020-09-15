@@ -1,4 +1,4 @@
-﻿import FootNote from './src/FootNote.js';
+﻿import FootNote from './src/foot-note.js';
 
 (function() {
   

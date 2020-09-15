@@ -8,7 +8,7 @@ Web component that creates a custom element with the HTML tag `<foot-note>`. The
 ## Install
 
 ```javascript
-import FootNote from './src/footNote.js';
+import FootNote from './src/foot-note.js';
 
 if('customElements' in window) {
 	window.customElements.define('foot-note', FootNote);
