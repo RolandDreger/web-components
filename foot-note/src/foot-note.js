@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 14 Sept. 2020
+	Date: 16 Sept. 2020
 */
 
 
@@ -92,6 +92,12 @@ class FootNote extends HTMLElement {
 				background-color: #ffffff;
 				transition: all 0.4s ease-in-out;
 			}
+			@media (max-width: 30rem) {
+				.area {
+					flex-direction: column;
+					padding: 1rem 2rem 1rem 2rem;
+				}
+			}
 			.visible {
 				margin-bottom: 0;
 				opacity: 1;
@@ -125,6 +131,14 @@ class FootNote extends HTMLElement {
 			}
 			.close {
 				margin-left: 1.6rem;
+			}
+			@media (max-width: 30rem) {
+				.marker {
+					margin: 0 0 0.5rem 0;
+				}
+				.close {
+					margin: 0.5rem 0 0 0;
+				}
 			}
 			.button {	
 				position: relative;
