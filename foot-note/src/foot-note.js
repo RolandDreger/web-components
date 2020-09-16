@@ -278,10 +278,13 @@ class FootNote extends HTMLElement {
 	}
 
 	connectedCallback() {
-		if(this.$call.isConnected) {
+		if(!this.isConnected) {
+			return false;
+		}
+		if(this.$call && this.$call.isConnected) {
 			this.$call.addEventListener('click', this._toggle);
 		}
-		if(this.$button.isConnected) {
+		if(this.$button && this.$button.isConnected) {
 			this.$button.addEventListener('click', this._hide);
 		}
 	}
