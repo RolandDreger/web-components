@@ -264,7 +264,7 @@ class FootNote extends HTMLElement {
 		const template = (document.getElementById(TEMPLATE_ID) || FootNote.render());
 		root.appendChild(template.content.cloneNode(true));
 
-		/* Part elements */
+		/* Note elements */
 		this.$area = root.querySelector('.area');
 		this.$call = root.querySelector('.call');
 		this.$marker = root.querySelector('.marker');
