@@ -1,0 +1,34 @@
+﻿{
+  "name": "@rd-web-components/foot-note",
+  "version": "1.0.0",
+  "description": "Web component that creates a custom element with the HTML tag <foot-note>.",
+  "type": "module",
+	"main": "./src/foot-note.js",
+	"module": "./src/foot-note.js",
+  "scripts": {
+	},
+	"repository": {
+    "type": "git",
+    "url": "https://github.com/RolandDreger/web-components"
+	},
+	"author": {
+		"name": "Roland Dreger",
+		"email": "roland.dreger@a1.net"
+	},
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RolandDreger/web-components/issues"
+	},
+	"dependencies": {
+  },
+  "devDependencies": {
+	},
+  "keywords": [
+    "web-components",
+		"webcomponents",
+		"custom-elements",
+		"html",
+		"javascript",
+		"vanillajs"
+  ]
+}

@@ -1,0 +1,31 @@
+﻿{
+  "name": "rd-web-components",
+  "version": "1.0.0",
+  "description": "Native web components for typographic projects.",
+  "scripts": {
+	},
+	"repository": {
+    "type": "git",
+    "url": "https://github.com/RolandDreger/web-components"
+	},
+	"author": {
+		"name": "Roland Dreger",
+		"email": "roland.dreger@a1.net"
+	},
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RolandDreger/web-components/issues"
+	},
+	"dependencies": {
+  },
+  "devDependencies": {
+	},
+  "keywords": [
+		"web-components",
+		"webcomponents",
+		"custom-elements",
+		"html",
+		"javascript",
+		"vanillajs"
+  ]
+}
