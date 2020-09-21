@@ -212,11 +212,7 @@ class FootNote extends HTMLElement {
 		button.setAttribute('tabindex','-1');
 
 		/* Note area */
-		const area = document.createElement('aside');
-		area.classList.add('area');
-		area.setAttribute('part','area');
-		area.setAttribute('role','doc-footnote');
-		area.setAttribute('aria-hidden','true');
+		const area = this.areaEl;
 		area.appendChild(marker);
 		area.appendChild(element);
 		area.appendChild(button);
@@ -227,6 +223,15 @@ class FootNote extends HTMLElement {
 		templateFragment.appendChild(area);
 
 		return templateFragment;
+	}
+	
+	static get areaEl() {
+		const area = document.createElement('aside');
+		area.classList.add('area');
+		area.setAttribute('part','area');
+		area.setAttribute('role','doc-footnote');
+		area.setAttribute('aria-hidden','true');
+		return area;
 	}
 
 	static render() {
