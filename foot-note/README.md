@@ -7,7 +7,7 @@ Web component that creates a custom element with the HTML tag `<foot-note>`. The
 
 ## Demo
 
-[Check it life!](https://www.rolanddreger.net/components/foot-note/index.html) 
+[Check it life!](https://rolanddreger.github.io/web-component-demo/foot-note/) 
 
 
 ## Install
