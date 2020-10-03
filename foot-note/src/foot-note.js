@@ -90,6 +90,7 @@ class FootNote extends HTMLElement {
 				font-size: var(--footnote-font-size, 1rem);
 				line-height: var(--footnote-line-heigth, 1.4);
 				background-color: #ffffff;
+				background-color: var(--footnote-area-color, #ffffff);
 				transition: all 0.4s ease-in-out;
 			}
 			@media (max-width: 30rem) {
