@@ -409,7 +409,7 @@ class FootNote extends HTMLElement {
 		if(!event || !(event instanceof Event)) {
 			return false;
 		}
-		if(event.key === 'Escape') {
+		if(event.key === 'Escape' || event.key === 'Esc') {
 			this.hide();
 		}
 	}
