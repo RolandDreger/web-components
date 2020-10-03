@@ -51,8 +51,9 @@ class FootNote extends HTMLElement {
 				cursor: pointer;
 				color: #000000;
 				color: var(--footnote-theme-color, #000000);
-				vertical-align: super; 
-				font-size: 0.8rem;
+				vertical-align: super;
+				vertical-align: var(--footnote-call-vertical-align, super); 
+				font-size: var(--footnote-call-font-size, 0.8rem);
 				text-decoration: none;
 			}
 			.call::before {
