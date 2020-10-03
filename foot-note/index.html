@@ -17,6 +17,7 @@
 				--footnote-font-size: 1rem;
 				font-size: 1.3em;
 				font-family: Vollkorn, serif;
+				counter-reset: foot-note;
 			}
 			.container { 
 				max-width: 55rem;
@@ -40,9 +41,9 @@
 			foot-note::part(button) {
 				/* Close button */
 			}
-			section {
+			/* section {
 				counter-reset: foot-note;
-			}
+			} */
 			/* Fallback */
 			foot-note:not(:defined) {
 				margin-left: 0.5rem;
