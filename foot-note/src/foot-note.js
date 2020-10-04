@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 16 Sept. 2020
+	Date: 4 Okt. 2020
 */
 
 
