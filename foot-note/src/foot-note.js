@@ -23,6 +23,10 @@ const HIDE_EVENT_NAME = 'footnote-on-hide';
 
 class FootNote extends HTMLElement {
 
+	static get tag() {
+    return COMPONENT_TAG_NAME;
+	}
+	
 	static get observedAttributes() { 
 		return ['index', 'visible']; 
 	}
