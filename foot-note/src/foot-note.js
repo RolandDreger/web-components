@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 14 Okt. 2020
+	Date: 15 Okt. 2020
 */
 
 
@@ -77,6 +77,7 @@ class FootNote extends HTMLElement {
 				font-weight: bolder;
 			}
 			.area {
+				visibility: hidden;
 				position: fixed;
 				bottom: 0;
 				left: 50%;
@@ -109,6 +110,7 @@ class FootNote extends HTMLElement {
 				}
 			}
 			.visible {
+				visibility: visible;
 				margin-bottom: 0;
 				opacity: 1;
 			}
