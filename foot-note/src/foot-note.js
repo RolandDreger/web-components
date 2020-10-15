@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 4 Okt. 2020
+	Date: 14 Okt. 2020
 */
 
 
@@ -20,6 +20,10 @@ const TEMPLATE_COMMENT = 'FootNote component template';
 const SHADOW_DOM_MODE = 'open';
 const TOGGLE_EVENT_NAME = 'footnote-on-toggle';
 const HIDE_EVENT_NAME = 'footnote-on-hide';
+const CALL_ARIA_LABEL = 'Call note';
+const MARKER_ARIA_LABEL = 'Marker note';
+const CLOSE_BUTTON_ARIA_LABEL = 'Close';
+
 
 class FootNote extends HTMLElement {
 
@@ -213,8 +217,8 @@ class FootNote extends HTMLElement {
 		button.classList.add('button');
 		button.classList.add('close');
 		button.setAttribute('part','button');
-		button.setAttribute('aria-label','Close');
-		button.setAttribute('title','Close');
+		button.setAttribute('aria-label',CLOSE_BUTTON_ARIA_LABEL);
+		button.setAttribute('title',CLOSE_BUTTON_ARIA_LABEL);
 		button.setAttribute('tabindex','-1');
 
 		/* Note area */
@@ -288,19 +292,19 @@ class FootNote extends HTMLElement {
 			return false;
 		}
 		if(this.$call && this.$call.isConnected) {
-			this.$call.addEventListener('click', this._toggle);
+			this.$call.addEventListener('click',this._toggle);
 		}
 		if(this.$button && this.$button.isConnected) {
-			this.$button.addEventListener('click', this._hide);
+			this.$button.addEventListener('click',this._hide);
 		}
 	}
 
 	disconnectedCallback() {
 		if(this.$call) {
-			this.$call.removeEventListener('click', this._toggle);
+			this.$call.removeEventListener('click',this._toggle);
 		}
 		if(this.$button) {
-			this.$button.removeEventListener('click', this._hide);
+			this.$button.removeEventListener('click',this._hide);
 		}
 	}
 	
@@ -313,9 +317,9 @@ class FootNote extends HTMLElement {
 			case 'index':
 				this.$call.textContent = newValue;
 				this.$call.setAttribute('href','#' + COMPONENT_TAG_NAME + '-' + newValue);
-				this.$call.setAttribute('aria-label','Call note ' + newValue);
+				this.$call.setAttribute('aria-label',CALL_ARIA_LABEL + ' ' + newValue);
 				this.$marker.textContent = newValue;
-				this.$marker.setAttribute('aria-label','Marker note ' + newValue);
+				this.$marker.setAttribute('aria-label',MARKER_ARIA_LABEL + ' ' + newValue);
 				break;
 			/* Attribute: visible */
 			case 'visible':
@@ -323,18 +327,18 @@ class FootNote extends HTMLElement {
 				if(this.visible) {
 					this._wasFocused = document.activeElement;
 					this.$area.classList.add('visible');
-					this.$area.setAttribute('aria-hidden', "false");
+					this.$area.setAttribute('aria-hidden',"false");
 					this.$button.setAttribute('tabindex','0');
-					document.addEventListener('keydown', this.__watchEsc);
+					document.addEventListener('keydown',this.__watchEsc);
 					this.$area.focus();
 				} else {
 					if(this._wasFocused && this._wasFocused.focus) {
 						this._wasFocused.focus();
 					}
 					this.$area.classList.remove('visible');
-					this.$area.setAttribute('aria-hidden', "true");
+					this.$area.setAttribute('aria-hidden',"true");
 					this.$button.setAttribute('tabindex','-1');
-					document.removeEventListener('keydown', this.__watchEsc);
+					document.removeEventListener('keydown',this.__watchEsc);
 				}
 				break;
 		}
