@@ -241,11 +241,11 @@ class FootNote extends HTMLElement {
 		return templateFragment;
 	}
 
-	static render() {
-
+	static render(targetNode) {
+		
 		/* Comment */
 		const comment = document.createComment(TEMPLATE_COMMENT);
-		document.body.appendChild(comment);
+		targetNode.appendChild(comment);
 		
 		/* Styles */
 		const styleFragment = FootNote.createStyles();
@@ -258,7 +258,7 @@ class FootNote extends HTMLElement {
 		templateElement.content.appendChild(templateFragment);
 		
 		/* Document */
-		const templateNode = document.body.appendChild(templateElement);
+		const templateNode = targetNode.appendChild(templateElement);
 
 		return templateNode;
 	}
@@ -273,7 +273,7 @@ class FootNote extends HTMLElement {
 		});
 		
 		/* Template */
-		const template = (document.getElementById(TEMPLATE_ID) || FootNote.render());
+		const template = (document.getElementById(TEMPLATE_ID) || FootNote.render(document.body));
 		root.appendChild(template.content.cloneNode(true));
 
 		/* Note elements */
