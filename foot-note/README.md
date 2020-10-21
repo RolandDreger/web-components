@@ -59,6 +59,9 @@ sections.forEach(section => {
 ### Custom properties
 ```css
 --footnote-theme-color: teal;
+--footnote-call-vertical-align: super;
+--footnote-call-font-size: 0.8rem;
+--footnote-area-color: white;
 --footnote-max-width: 58rem;
 --footnote-line-heigth: 1.4;
 --footnote-font-size: 1rem;
