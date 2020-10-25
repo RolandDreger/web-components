@@ -16,18 +16,22 @@
 class FootNote extends HTMLElement {
 
 	/* Configuration */
-	static COMPONENT_TAG_NAME = 'foot-note';
-	static TEMPLATE_ID = 'foot-note-template';
-	static TEMPLATE_COMMENT = 'FootNote component template';
-	static SHADOW_DOM_MODE = 'open';
-	static TOGGLE_EVENT_NAME = 'footnote-on-toggle';
-	static HIDE_EVENT_NAME = 'footnote-on-hide';
-	static CALL_ARIA_LABEL = 'Call note';
-	static MARKER_ARIA_LABEL = 'Marker note';
-	static CLOSE_BUTTON_ARIA_LABEL = 'Close';
+	static get config() {
+		return {
+			COMPONENT_TAG_NAME:'foot-note',
+			TEMPLATE_ID:'foot-note-template',
+			TEMPLATE_COMMENT:'FootNote component template',
+			SHADOW_DOM_MODE:'open',
+			TOGGLE_EVENT_NAME:'footnote-on-toggle',
+			HIDE_EVENT_NAME:'footnote-on-hide',
+			CALL_ARIA_LABEL:'Call note',
+			MARKER_ARIA_LABEL:'Marker note',
+			CLOSE_BUTTON_ARIA_LABEL:'Close'
+		};
+	};
 
 	static get tag() {
-    return FootNote.COMPONENT_TAG_NAME;
+    return FootNote.config.COMPONENT_TAG_NAME;
 	}
 	
 	static get observedAttributes() { 
@@ -218,8 +222,8 @@ class FootNote extends HTMLElement {
 		button.classList.add('button');
 		button.classList.add('close');
 		button.setAttribute('part','button');
-		button.setAttribute('aria-label',FootNote.CLOSE_BUTTON_ARIA_LABEL);
-		button.setAttribute('title',FootNote.CLOSE_BUTTON_ARIA_LABEL);
+		button.setAttribute('aria-label',FootNote.config.CLOSE_BUTTON_ARIA_LABEL);
+		button.setAttribute('title',FootNote.config.CLOSE_BUTTON_ARIA_LABEL);
 		button.setAttribute('tabindex','-1');
 
 		/* Note area */
@@ -243,7 +247,7 @@ class FootNote extends HTMLElement {
 	static render(targetNode) {
 		
 		/* Comment */
-		const comment = document.createComment(FootNote.TEMPLATE_COMMENT);
+		const comment = document.createComment(FootNote.config.TEMPLATE_COMMENT);
 		targetNode.appendChild(comment);
 		
 		/* Styles */
@@ -252,7 +256,7 @@ class FootNote extends HTMLElement {
 		/* Template */
 		const templateFragment = FootNote.createTemplate();
 		const templateElement = document.createElement('template');
-		templateElement.setAttribute('id',FootNote.TEMPLATE_ID);
+		templateElement.setAttribute('id',FootNote.config.TEMPLATE_ID);
 		templateElement.content.appendChild(styleFragment);
 		templateElement.content.appendChild(templateFragment);
 		
@@ -265,14 +269,14 @@ class FootNote extends HTMLElement {
 	/* Livecycle hooks */
 	constructor() {
 		super();
-		
+
 		/* Shadow DOM */
 		const root = this.attachShadow({ 
-			mode: FootNote.SHADOW_DOM_MODE
+			mode: FootNote.config.SHADOW_DOM_MODE
 		});
 		
 		/* Template */
-		const template = (document.getElementById(FootNote.TEMPLATE_ID) || FootNote.render(document.body));
+		const template = (document.getElementById(FootNote.config.TEMPLATE_ID) || FootNote.render(document.body));
 		root.appendChild(template.content.cloneNode(true));
 
 		/* Note elements */
@@ -317,10 +321,10 @@ class FootNote extends HTMLElement {
 			/* Attribute: index */
 			case 'index':
 				this.$call.textContent = newValue;
-				this.$call.setAttribute('href','#' + FootNote.COMPONENT_TAG_NAME + '-' + newValue);
-				this.$call.setAttribute('aria-label',FootNote.CALL_ARIA_LABEL + ' ' + newValue);
+				this.$call.setAttribute('href','#' + FootNote.config.COMPONENT_TAG_NAME + '-' + newValue);
+				this.$call.setAttribute('aria-label',FootNote.config.CALL_ARIA_LABEL + ' ' + newValue);
 				this.$marker.textContent = newValue;
-				this.$marker.setAttribute('aria-label',FootNote.MARKER_ARIA_LABEL + ' ' + newValue);
+				this.$marker.setAttribute('aria-label',FootNote.config.MARKER_ARIA_LABEL + ' ' + newValue);
 				break;
 			/* Attribute: visible */
 			case 'visible':
@@ -372,14 +376,17 @@ class FootNote extends HTMLElement {
 		}
 		this.hideOthers();
 		this.visible = !this.visible;
-		const toggleEvent = new CustomEvent(FootNote.TOGGLE_EVENT_NAME, { 
-			bubbles: true,
-			cancelable: true,
-			composed: true,
-			detail: { 
-				visible: this.visible 
+		const toggleEvent = new CustomEvent(
+			FootNote.config.TOGGLE_EVENT_NAME, 
+			{ 
+				bubbles: true,
+				cancelable: true,
+				composed: true,
+				detail: { 
+					visible: this.visible 
+				}
 			}
-		});
+		);
 		this.dispatchEvent(toggleEvent);
 	}
 
@@ -387,19 +394,22 @@ class FootNote extends HTMLElement {
 		if(this.visible !== false) {
 			this.visible = false;
 		}
-		const hideEvent = new CustomEvent(FootNote.HIDE_EVENT_NAME, { 
-			bubbles: true,
-			cancelable: true,
-			composed: true,
-			detail: { 
-				visible: this.visible 
+		const hideEvent = new CustomEvent(
+			FootNote.config.HIDE_EVENT_NAME, 
+			{ 
+				bubbles: true,
+				cancelable: true,
+				composed: true,
+				detail: { 
+					visible: this.visible 
+				}
 			}
-		});
+		);
 		this.dispatchEvent(hideEvent);
 	}
 
 	hideOthers() {
-		const openNotes = document.querySelectorAll(FootNote.COMPONENT_TAG_NAME + '[visible]');
+		const openNotes = document.querySelectorAll(FootNote.config.COMPONENT_TAG_NAME + '[visible]');
 		openNotes.forEach(note => {
 			if(note === this) {
 				return false;
@@ -409,7 +419,7 @@ class FootNote extends HTMLElement {
 	}
 
 	hideAll() {
-		const openNotes = document.querySelectorAll(FootNote.COMPONENT_TAG_NAME + '[visible]');
+		const openNotes = document.querySelectorAll(FootNote.config.COMPONENT_TAG_NAME + '[visible]');
 		openNotes.forEach(note => {
 			note.removeAttribute('visible');
 		});
