@@ -292,9 +292,9 @@ class FootNote extends HTMLElement {
 		this.buttonElement = root.getElementById('button');
 		
 		/* Event handler */
-		this._toggle = this.toggle.bind(this);
-		this._hide = this.hide.bind(this);
-		this.__watchEsc = this._watchEsc.bind(this);
+		this.toggle = this.toggle.bind(this);
+		this.hide = this.hide.bind(this);
+		this._watchEsc = this._watchEsc.bind(this);
 	}
 
 	connectedCallback() {
@@ -302,19 +302,19 @@ class FootNote extends HTMLElement {
 			return false;
 		}
 		if(this.callElement && this.callElement.isConnected) {
-			this.callElement.addEventListener('click',this._toggle);
+			this.callElement.addEventListener('click',this.toggle);
 		}
 		if(this.buttonElement && this.buttonElement.isConnected) {
-			this.buttonElement.addEventListener('click',this._hide);
+			this.buttonElement.addEventListener('click',this.hide);
 		}
 	}
 
 	disconnectedCallback() {
 		if(this.callElement) {
-			this.callElement.removeEventListener('click',this._toggle);
+			this.callElement.removeEventListener('click',this.toggle);
 		}
 		if(this.buttonElement) {
-			this.buttonElement.removeEventListener('click',this._hide);
+			this.buttonElement.removeEventListener('click',this.hide);
 		}
 	}
 	
@@ -338,13 +338,13 @@ class FootNote extends HTMLElement {
 					this.areaElement.classList.add('visible');
 					this.areaElement.setAttribute('aria-hidden',"false");
 					this.buttonElement.setAttribute('tabindex','0');
-					document.addEventListener('keydown',this.__watchEsc);
+					document.addEventListener('keydown',this._watchEsc);
 					this.areaElement.focus();
 				} else {
 					this.areaElement.classList.remove('visible');
 					this.areaElement.setAttribute('aria-hidden',"true");
 					this.buttonElement.setAttribute('tabindex','-1');
-					document.removeEventListener('keydown',this.__watchEsc);
+					document.removeEventListener('keydown',this._watchEsc);
 				}
 				break;
 		}
