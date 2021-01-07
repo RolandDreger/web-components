@@ -12,27 +12,21 @@
 	Date: 07 Jan. 2021
 */
 
+/* Configuration */
+const COMPONENT_TAG_NAME = 'foot-note';
+const TEMPLATE_ID = 'foot-note-template';
+const TEMPLATE_COMMENT = 'FootNote component template';
+const SHADOW_DOM_MODE = 'open';
+const TOGGLE_EVENT_NAME = 'footnote-on-toggle';
+const HIDE_EVENT_NAME = 'footnote-on-hide';
+const CALL_ARIA_LABEL = 'Call note';
+const MARKER_ARIA_LABEL = 'Marker note';
+const CLOSE_BUTTON_ARIA_LABEL = 'Close';
 
 class FootNote extends HTMLElement {
 
-	/* Configuration */
-	static get config() {
-		return {
-			COMPONENT_TAG_NAME:'foot-note',
-			TEMPLATE_ID:'foot-note-template',
-			TEMPLATE_COMMENT:'FootNote component template',
-			SHADOW_DOM_MODE:'open',
-			TOGGLE_EVENT_NAME:'footnote-on-toggle',
-			HIDE_EVENT_NAME:'footnote-on-hide',
-			CALL_ARIA_LABEL:'Call note',
-			MARKER_ARIA_LABEL:'Marker note',
-			CLOSE_BUTTON_ARIA_LABEL:'Close'
-			/* die Klammern auch definieren ( open und ) close  */
-		};
-	};
-
 	static get tag() {
-    return FootNote.config.COMPONENT_TAG_NAME;
+    return COMPONENT_TAG_NAME;
 	}
 	
 	static get observedAttributes() { 
@@ -227,8 +221,8 @@ class FootNote extends HTMLElement {
 		button.classList.add('button');
 		button.classList.add('close');
 		button.setAttribute('part','button');
-		button.setAttribute('aria-label',FootNote.config.CLOSE_BUTTON_ARIA_LABEL);
-		button.setAttribute('title',FootNote.config.CLOSE_BUTTON_ARIA_LABEL);
+		button.setAttribute('aria-label',CLOSE_BUTTON_ARIA_LABEL);
+		button.setAttribute('title',CLOSE_BUTTON_ARIA_LABEL);
 		button.setAttribute('tabindex','-1');
 
 		/* Note area */
@@ -253,7 +247,7 @@ class FootNote extends HTMLElement {
 	static mount(targetNode) {
 		
 		/* Comment */
-		const comment = document.createComment(FootNote.config.TEMPLATE_COMMENT);
+		const comment = document.createComment(TEMPLATE_COMMENT);
 		targetNode.appendChild(comment);
 		
 		/* Styles */
@@ -262,7 +256,7 @@ class FootNote extends HTMLElement {
 		/* Template */
 		const templateFragment = FootNote.createTemplate();
 		const templateElement = document.createElement('template');
-		templateElement.setAttribute('id',FootNote.config.TEMPLATE_ID);
+		templateElement.setAttribute('id',TEMPLATE_ID);
 		templateElement.content.appendChild(styleFragment);
 		templateElement.content.appendChild(templateFragment);
 		
@@ -278,11 +272,11 @@ class FootNote extends HTMLElement {
 
 		/* Shadow DOM */
 		const root = this.attachShadow({ 
-			mode: FootNote.config.SHADOW_DOM_MODE
+			mode: SHADOW_DOM_MODE
 		});
 		
 		/* Template */
-		const template = (document.getElementById(FootNote.config.TEMPLATE_ID) || FootNote.mount(document.body));
+		const template = (document.getElementById(TEMPLATE_ID) || FootNote.mount(document.body));
 		root.appendChild(template.content.cloneNode(true));
 
 		/* Note elements */
@@ -329,10 +323,10 @@ class FootNote extends HTMLElement {
 			/* Attribute: index */
 			case 'index':
 				this.callElement.textContent = newValue;
-				this.callElement.setAttribute('href','#' + FootNote.config.COMPONENT_TAG_NAME + '-' + newValue);
-				this.callElement.setAttribute('aria-label',FootNote.config.CALL_ARIA_LABEL + ' ' + newValue);
+				this.callElement.setAttribute('href','#' + COMPONENT_TAG_NAME + '-' + newValue);
+				this.callElement.setAttribute('aria-label',CALL_ARIA_LABEL + ' ' + newValue);
 				this.markerElement.textContent = newValue;
-				this.markerElement.setAttribute('aria-label',FootNote.config.MARKER_ARIA_LABEL + ' ' + newValue);
+				this.markerElement.setAttribute('aria-label',MARKER_ARIA_LABEL + ' ' + newValue);
 				break;
 			/* Attribute: visible */
 			case 'visible':
@@ -381,7 +375,7 @@ class FootNote extends HTMLElement {
 		this.hideOthers();
 		this.visible = !this.visible;
 		const toggleEvent = new CustomEvent( // Event in visible setter statt hier
-			FootNote.config.TOGGLE_EVENT_NAME, 
+			TOGGLE_EVENT_NAME, 
 			{ 
 				bubbles: true,
 				cancelable: true,
@@ -399,7 +393,7 @@ class FootNote extends HTMLElement {
 			this.visible = false;
 		}
 		const hideEvent = new CustomEvent( // Event in visible setter statt hier
-			FootNote.config.HIDE_EVENT_NAME, 
+			HIDE_EVENT_NAME, 
 			{ 
 				bubbles: true,
 				cancelable: true,
@@ -413,7 +407,7 @@ class FootNote extends HTMLElement {
 	}
 
 	hideOthers() {
-		const openNotes = document.querySelectorAll(FootNote.config.COMPONENT_TAG_NAME + '[visible]'); // Footnote-Tag-Name ermitteln falls subclass?
+		const openNotes = document.querySelectorAll(COMPONENT_TAG_NAME + '[visible]'); // Footnote-Tag-Name ermitteln falls subclass?
 		openNotes.forEach(note => {
 			if(note === this) {
 				return false;
@@ -423,7 +417,7 @@ class FootNote extends HTMLElement {
 	}
 
 	hideAll() {
-		const openNotes = document.querySelectorAll(FootNote.config.COMPONENT_TAG_NAME + '[visible]');
+		const openNotes = document.querySelectorAll(COMPONENT_TAG_NAME + '[visible]');
 		openNotes.forEach(note => {
 			note.removeAttribute('visible');
 		});
