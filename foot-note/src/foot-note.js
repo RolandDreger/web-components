@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 26 Okt. 2020
+	Date: 07 Jan. 2021
 */
 
 
@@ -27,6 +27,7 @@ class FootNote extends HTMLElement {
 			CALL_ARIA_LABEL:'Call note',
 			MARKER_ARIA_LABEL:'Marker note',
 			CLOSE_BUTTON_ARIA_LABEL:'Close'
+			/* die Klammern auch definieren ( open und ) close  */
 		};
 	};
 
@@ -249,7 +250,7 @@ class FootNote extends HTMLElement {
 		return templateFragment;
 	}
 
-	static render(targetNode) {
+	static mount(targetNode) {
 		
 		/* Comment */
 		const comment = document.createComment(FootNote.config.TEMPLATE_COMMENT);
@@ -281,7 +282,7 @@ class FootNote extends HTMLElement {
 		});
 		
 		/* Template */
-		const template = (document.getElementById(FootNote.config.TEMPLATE_ID) || FootNote.render(document.body));
+		const template = (document.getElementById(FootNote.config.TEMPLATE_ID) || FootNote.mount(document.body));
 		root.appendChild(template.content.cloneNode(true));
 
 		/* Note elements */
@@ -302,19 +303,21 @@ class FootNote extends HTMLElement {
 			return false;
 		}
 		if(this.callElement && this.callElement.isConnected) {
-			this.callElement.addEventListener('click',this.toggle);
+			this.callElement.addEventListener('click',this.toggle); //direkt this.toggle.bind(this), addEventListener in den constructor
 		}
 		if(this.buttonElement && this.buttonElement.isConnected) {
-			this.buttonElement.addEventListener('click',this.hide);
+			this.buttonElement.addEventListener('click',this.hide); //direkt bind()
 		}
+		//<a slot="index">1</a> wenn vorhanden, dann Inhalt als Attribut
+		// wenn Attribute target -> fetch content
 	}
 
 	disconnectedCallback() {
 		if(this.callElement) {
-			this.callElement.removeEventListener('click',this.toggle);
+			this.callElement.removeEventListener('click',this.toggle); // braucht man nicht
 		}
 		if(this.buttonElement) {
-			this.buttonElement.removeEventListener('click',this.hide);
+			this.buttonElement.removeEventListener('click',this.hide); // braucht man nicht
 		}
 	}
 	
@@ -377,7 +380,7 @@ class FootNote extends HTMLElement {
 		}
 		this.hideOthers();
 		this.visible = !this.visible;
-		const toggleEvent = new CustomEvent(
+		const toggleEvent = new CustomEvent( // Event in visible setter statt hier
 			FootNote.config.TOGGLE_EVENT_NAME, 
 			{ 
 				bubbles: true,
@@ -395,7 +398,7 @@ class FootNote extends HTMLElement {
 		if(this.visible !== false) {
 			this.visible = false;
 		}
-		const hideEvent = new CustomEvent(
+		const hideEvent = new CustomEvent( // Event in visible setter statt hier
 			FootNote.config.HIDE_EVENT_NAME, 
 			{ 
 				bubbles: true,
@@ -410,7 +413,7 @@ class FootNote extends HTMLElement {
 	}
 
 	hideOthers() {
-		const openNotes = document.querySelectorAll(FootNote.config.COMPONENT_TAG_NAME + '[visible]');
+		const openNotes = document.querySelectorAll(FootNote.config.COMPONENT_TAG_NAME + '[visible]'); // Footnote-Tag-Name ermitteln falls subclass?
 		openNotes.forEach(note => {
 			if(note === this) {
 				return false;
@@ -426,11 +429,13 @@ class FootNote extends HTMLElement {
 		});
 	}
 
-	_watchEsc(event) {
+	_watchEsc(event) { // watchEsc als Symbol
 		if(!event || !(event instanceof Event)) {
 			return false;
 		}
+		const { target } = event;
 		if(event.key === 'Escape' || event.key === 'Esc') {
+			// hat den keyboard focus -> element wenn Fußnote dann currentTarget.hide() (bind kann im constructor dann entfernt werden)
 			this.hide();
 		}
 	}
