@@ -1,11 +1,17 @@
 ﻿import FootNote from './src/foot-note.js';
 
 (function() {
-  
+	
+	/* Check: Custom elements supported? */
 	if(!('customElements' in window)) {
 		return false;
 	}
 
+	/* Check: <foot-note> already defined? */
+	if(window.customElements.get('foot-note')) {
+		return false;
+	}
+	
 	/* Define <foot-note> element */
 	window.customElements.define('foot-note', FootNote);
 
