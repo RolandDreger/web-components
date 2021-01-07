@@ -2,7 +2,13 @@
 
 (function() {
   
+	/* Check: Custom elements supported? */
 	if(!('customElements' in window)) {
+		return false;
+	}
+
+	/* Check: <foot-note> already defined? */
+	if(window.customElements.get('foot-note')) {
 		return false;
 	}
 
