@@ -13,7 +13,6 @@
 */
 
 /* Configuration */
-const COMPONENT_TAG_NAME = 'foot-note';
 const TEMPLATE_ID = 'foot-note-template';
 const TEMPLATE_COMMENT = 'FootNote component template';
 const SHADOW_DOM_MODE = 'open';
@@ -24,10 +23,6 @@ const MARKER_ARIA_LABEL = 'Marker note';
 const CLOSE_BUTTON_ARIA_LABEL = 'Close';
 
 class FootNote extends HTMLElement {
-
-	static get tag() {
-    return COMPONENT_TAG_NAME;
-	}
 	
 	static get observedAttributes() { 
 		return ['index', 'visible']; 
@@ -323,7 +318,7 @@ class FootNote extends HTMLElement {
 			/* Attribute: index */
 			case 'index':
 				this.callElement.textContent = newValue;
-				this.callElement.setAttribute('href','#' + COMPONENT_TAG_NAME + '-' + newValue);
+				this.callElement.setAttribute('href','#' + this.tagName + '-' + newValue);
 				this.callElement.setAttribute('aria-label',CALL_ARIA_LABEL + ' ' + newValue);
 				this.markerElement.textContent = newValue;
 				this.markerElement.setAttribute('aria-label',MARKER_ARIA_LABEL + ' ' + newValue);
@@ -407,7 +402,7 @@ class FootNote extends HTMLElement {
 	}
 
 	hideOthers() {
-		const openNotes = document.querySelectorAll(COMPONENT_TAG_NAME + '[visible]'); // Footnote-Tag-Name ermitteln falls subclass?
+		const openNotes = document.querySelectorAll(this.tagName + '[visible]');
 		openNotes.forEach(note => {
 			if(note === this) {
 				return false;
@@ -417,7 +412,7 @@ class FootNote extends HTMLElement {
 	}
 
 	hideAll() {
-		const openNotes = document.querySelectorAll(COMPONENT_TAG_NAME + '[visible]');
+		const openNotes = document.querySelectorAll(this.tagName + '[visible]');
 		openNotes.forEach(note => {
 			note.removeAttribute('visible');
 		});
