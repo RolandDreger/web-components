@@ -281,9 +281,15 @@ class FootNote extends HTMLElement {
 		this.elementElement = root.getElementById('element');
 		this.buttonElement = root.getElementById('button');
 		
+		/* Event listener */
+		if(this.callElement) {
+			this.callElement.addEventListener('click', this.toggle.bind(this));
+		}
+		if(this.buttonElement) {
+			this.buttonElement.addEventListener('click', this.hide.bind(this));
+		}
+
 		/* Event handler */
-		this.toggle = this.toggle.bind(this);
-		this.hide = this.hide.bind(this);
 		this._watchEsc = this._watchEsc.bind(this);
 	}
 
@@ -291,23 +297,12 @@ class FootNote extends HTMLElement {
 		if(!this.isConnected) {
 			return false;
 		}
-		if(this.callElement && this.callElement.isConnected) {
-			this.callElement.addEventListener('click',this.toggle); //direkt this.toggle.bind(this), addEventListener in den constructor
-		}
-		if(this.buttonElement && this.buttonElement.isConnected) {
-			this.buttonElement.addEventListener('click',this.hide); //direkt bind()
-		}
 		//<a slot="index">1</a> wenn vorhanden, dann Inhalt als Attribut
 		// wenn Attribute target -> fetch content
 	}
 
 	disconnectedCallback() {
-		if(this.callElement) {
-			this.callElement.removeEventListener('click',this.toggle); // braucht man nicht
-		}
-		if(this.buttonElement) {
-			this.buttonElement.removeEventListener('click',this.hide); // braucht man nicht
-		}
+		
 	}
 	
 	attributeChangedCallback(name, oldValue, newValue) {
@@ -422,9 +417,7 @@ class FootNote extends HTMLElement {
 		if(!event || !(event instanceof Event)) {
 			return false;
 		}
-		const { target } = event;
 		if(event.key === 'Escape' || event.key === 'Esc') {
-			// hat den keyboard focus -> element wenn Fußnote dann currentTarget.hide() (bind kann im constructor dann entfernt werden)
 			this.hide();
 		}
 	}
