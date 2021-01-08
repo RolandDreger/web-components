@@ -22,6 +22,10 @@ const CALL_ARIA_LABEL = 'Call note';
 const MARKER_ARIA_LABEL = 'Marker note';
 const CLOSE_BUTTON_ARIA_LABEL = 'Close';
 
+/* Symbols */
+const handleKeydown = Symbol('handleKeydown');
+
+
 class FootNote extends HTMLElement {
 	
 	static get observedAttributes() { 
@@ -290,7 +294,7 @@ class FootNote extends HTMLElement {
 		}
 
 		/* Event handler */
-		this._watchEsc = this._watchEsc.bind(this);
+		this[handleKeydown] = this[handleKeydown].bind(this);
 	}
 
 	connectedCallback() {
@@ -325,13 +329,13 @@ class FootNote extends HTMLElement {
 					this.areaElement.classList.add('visible');
 					this.areaElement.setAttribute('aria-hidden', "false");
 					this.buttonElement.setAttribute('tabindex', '0');
-					document.addEventListener('keydown', this._watchEsc);
+					document.addEventListener('keydown', this[handleKeydown]);
 					this.areaElement.focus();
 				} else {
 					this.areaElement.classList.remove('visible');
 					this.areaElement.setAttribute('aria-hidden', "true");
 					this.buttonElement.setAttribute('tabindex', '-1');
-					document.removeEventListener('keydown', this._watchEsc);
+					document.removeEventListener('keydown', this[handleKeydown]);
 				}
 				break;
 		}
@@ -413,7 +417,7 @@ class FootNote extends HTMLElement {
 		});
 	}
 
-	_watchEsc(event) { // watchEsc als Symbol
+	[handleKeydown](event) {
 		if(!event || !(event instanceof Event)) {
 			return false;
 		}
