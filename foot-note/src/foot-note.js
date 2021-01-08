@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 07 Jan. 2021
+	Date: 08 Jan. 2021
 */
 
 /* Configuration */
@@ -189,44 +189,44 @@ class FootNote extends HTMLElement {
 
 		/* Note call */
 		const call = document.createElement('a');
-		call.setAttribute('id','call');
+		call.setAttribute('id', 'call');
 		call.classList.add('call');
-		call.setAttribute('part','call');
-		call.setAttribute('role','doc-noteref');
+		call.setAttribute('part', 'call');
+		call.setAttribute('role', 'doc-noteref');
 		
 		/* Note marker */
 		const marker = document.createElement('sup');
-		marker.setAttribute('id','marker');
+		marker.setAttribute('id', 'marker');
 		marker.classList.add('marker');
-		marker.setAttribute('part','marker');
+		marker.setAttribute('part', 'marker');
 		
 		/* Slot */
 		const slot = document.createElement('slot');
 		
 		/* Note element */
 		const element = document.createElement('div');
-		element.setAttribute('id','element');
+		element.setAttribute('id', 'element');
 		element.classList.add('element');
-		element.setAttribute('part','element');
+		element.setAttribute('part', 'element');
 		element.appendChild(slot);
 
 		/* Close button */
 		const button = document.createElement('button');
-		button.setAttribute('id','button');
+		button.setAttribute('id', 'button');
 		button.classList.add('button');
 		button.classList.add('close');
-		button.setAttribute('part','button');
-		button.setAttribute('aria-label',CLOSE_BUTTON_ARIA_LABEL);
-		button.setAttribute('title',CLOSE_BUTTON_ARIA_LABEL);
-		button.setAttribute('tabindex','-1');
+		button.setAttribute('part', 'button');
+		button.setAttribute('aria-label', CLOSE_BUTTON_ARIA_LABEL);
+		button.setAttribute('title', CLOSE_BUTTON_ARIA_LABEL);
+		button.setAttribute('tabindex', '-1');
 
 		/* Note area */
 		const area = document.createElement('aside');
-		area.setAttribute('id','area');
+		area.setAttribute('id', 'area');
 		area.classList.add('area');
-		area.setAttribute('part','area');
-		area.setAttribute('role','doc-footnote');
-		area.setAttribute('aria-hidden','true');
+		area.setAttribute('part', 'area');
+		area.setAttribute('role', 'doc-footnote');
+		area.setAttribute('aria-hidden', 'true');
 		area.appendChild(marker);
 		area.appendChild(element);
 		area.appendChild(button);
@@ -251,7 +251,7 @@ class FootNote extends HTMLElement {
 		/* Template */
 		const templateFragment = FootNote.createTemplate();
 		const templateElement = document.createElement('template');
-		templateElement.setAttribute('id',TEMPLATE_ID);
+		templateElement.setAttribute('id', TEMPLATE_ID);
 		templateElement.content.appendChild(styleFragment);
 		templateElement.content.appendChild(templateFragment);
 		
@@ -313,25 +313,25 @@ class FootNote extends HTMLElement {
 			/* Attribute: index */
 			case 'index':
 				this.callElement.textContent = newValue;
-				this.callElement.setAttribute('href','#' + this.tagName + '-' + newValue);
-				this.callElement.setAttribute('aria-label',CALL_ARIA_LABEL + ' ' + newValue);
+				this.callElement.setAttribute('href', '#' + this.tagName + '-' + newValue);
+				this.callElement.setAttribute('aria-label', CALL_ARIA_LABEL + ' ' + newValue);
 				this.markerElement.textContent = newValue;
-				this.markerElement.setAttribute('aria-label',MARKER_ARIA_LABEL + ' ' + newValue);
+				this.markerElement.setAttribute('aria-label', MARKER_ARIA_LABEL + ' ' + newValue);
 				break;
 			/* Attribute: visible */
 			case 'visible':
 				this.visible = this.hasAttribute('visible');
 				if(this.visible) {
 					this.areaElement.classList.add('visible');
-					this.areaElement.setAttribute('aria-hidden',"false");
-					this.buttonElement.setAttribute('tabindex','0');
-					document.addEventListener('keydown',this._watchEsc);
+					this.areaElement.setAttribute('aria-hidden', "false");
+					this.buttonElement.setAttribute('tabindex', '0');
+					document.addEventListener('keydown', this._watchEsc);
 					this.areaElement.focus();
 				} else {
 					this.areaElement.classList.remove('visible');
-					this.areaElement.setAttribute('aria-hidden',"true");
-					this.buttonElement.setAttribute('tabindex','-1');
-					document.removeEventListener('keydown',this._watchEsc);
+					this.areaElement.setAttribute('aria-hidden', "true");
+					this.buttonElement.setAttribute('tabindex', '-1');
+					document.removeEventListener('keydown', this._watchEsc);
 				}
 				break;
 		}
