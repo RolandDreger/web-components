@@ -22,7 +22,7 @@ const CALL_ARIA_LABEL = 'Call note';
 const MARKER_ARIA_LABEL = 'Marker note';
 const CLOSE_BUTTON_ARIA_LABEL = 'Close';
 
-/* Symbols */
+/* Methode identifier */
 const handleKeydown = Symbol('handleKeydown');
 
 
@@ -306,7 +306,7 @@ class FootNote extends HTMLElement {
 	}
 
 	disconnectedCallback() {
-		
+		this.removeAttribute('visible');
 	}
 	
 	attributeChangedCallback(name, oldValue, newValue) {
@@ -417,6 +417,7 @@ class FootNote extends HTMLElement {
 		});
 	}
 
+	/* Internal Methods */
 	[handleKeydown](event) {
 		if(!event || !(event instanceof Event)) {
 			return false;
