@@ -39,8 +39,10 @@ class FootNote extends HTMLElement {
 		/* CSS */
 		const styleString = document.createTextNode(`
 			:host {
-				font-family: inherit;
 				contain: content;
+				font-family: inherit;
+				color: #000000;
+				color: var(--footnote-font-color, #000000);
 			}
 			:host([hidden]) {
 				display: none;
@@ -101,12 +103,6 @@ class FootNote extends HTMLElement {
 				background-color: var(--footnote-area-color, #ffffff);
 				transition: all 0.4s ease-in-out;
 			}
-			@media (max-width: 30rem) {
-				.area {
-					flex-direction: column;
-					padding: 1rem 2rem 1rem 2rem;
-				}
-			}
 			.visible {
 				visibility: visible;
 				margin-bottom: 0;
@@ -142,14 +138,6 @@ class FootNote extends HTMLElement {
 			.close {
 				margin-left: 1.6rem;
 			}
-			@media (max-width: 30rem) {
-				.marker {
-					margin: 0 0 0.5rem 0;
-				}
-				.close {
-					margin: 0.5rem 0 0 0;
-				}
-			}
 			.button {	
 				position: relative;
 				border: none;
@@ -177,6 +165,28 @@ class FootNote extends HTMLElement {
 			.close:after {
 				transform: rotate(-45deg);
 			}
+			@media (prefers-color-scheme: dark) {
+				:host {
+					color: #ffffff;
+					color: var(--footnote-dark-font-color, #ffffff);
+				}
+				.area {
+					background-color: #000000;
+					background-color: var(--footnote-dark-area-color, #000000);
+				}
+			}
+			@media (max-width: 30rem) {
+				.area {
+					flex-direction: column;
+					padding: 1rem 2rem 1rem 2rem;
+				}
+				.marker {
+					margin: 0 0 0.5rem 0;
+				}
+				.close {
+					margin: 0.5rem 0 0 0;
+				}
+			}			
 		`);
 		
 		const style = document.createElement('style');
