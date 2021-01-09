@@ -30,13 +30,11 @@
 				note.setAttribute('index', index + 1);
 			}
 		});
+		
 		/* Add Event Listener (optional) */
 		footnotes.forEach((note, index) => {
-			note.addEventListener('footnote-on-toggle', (event) => {
-				console.log("Footnote toggled. Visible: " + event.detail.visible);
-			}, false);
-			note.addEventListener('footnote-on-hide', (event) => {
-				console.log("Footnote hidden. Visible: " + event.detail.visible);
+			note.addEventListener('visible-changed', (event) => {
+				console.log(`Footnote ${note.getAttribute('index')}: ${event.detail.visible}`);
 			}, false);
 		});
 		

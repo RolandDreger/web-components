@@ -9,20 +9,21 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 08 Jan. 2021
+	Date: 09 Jan. 2021
 */
 
 /* Configuration */
 const TEMPLATE_ID = 'foot-note-template';
 const TEMPLATE_COMMENT = 'FootNote component template';
 const SHADOW_DOM_MODE = 'open';
-const TOGGLE_EVENT_NAME = 'footnote-on-toggle';
-const HIDE_EVENT_NAME = 'footnote-on-hide';
+const VISIBLE_CHANGED_EVENT_NAME = 'visible-changed';
 const CALL_ARIA_LABEL = 'Call note';
 const MARKER_ARIA_LABEL = 'Marker note';
 const CLOSE_BUTTON_ARIA_LABEL = 'Close';
 
-/* Methode identifier */
+
+/* Internal identifier */
+const isInternal = Symbol('isInternal');
 const handleKeydown = Symbol('handleKeydown');
 
 
@@ -269,6 +270,8 @@ class FootNote extends HTMLElement {
 	constructor() {
 		super();
 
+		this[isInternal] = false;
+		
 		/* Shadow DOM */
 		const root = this.attachShadow({ 
 			mode: SHADOW_DOM_MODE
@@ -287,10 +290,18 @@ class FootNote extends HTMLElement {
 		
 		/* Event listener */
 		if(this.callElement) {
-			this.callElement.addEventListener('click', this.toggle.bind(this));
+			this.callElement.addEventListener('click', event => {
+				this[isInternal] = true;
+				this.toggle(event);
+				this[isInternal] = false;
+			});
 		}
 		if(this.buttonElement) {
-			this.buttonElement.addEventListener('click', this.hide.bind(this));
+			this.buttonElement.addEventListener('click', event => {
+				this[isInternal] = true;
+				this.hide(event);
+				this[isInternal] = false;
+			});
 		}
 
 		/* Event handler */
@@ -301,8 +312,6 @@ class FootNote extends HTMLElement {
 		if(!this.isConnected) {
 			return false;
 		}
-		//<a slot="index">1</a> wenn vorhanden, dann Inhalt als Attribut
-		// wenn Attribute target -> fetch content
 	}
 
 	disconnectedCallback() {
@@ -354,10 +363,28 @@ class FootNote extends HTMLElement {
 	}
 	set visible(value) {
 		const isVisible = Boolean(value);
+		const hasChanged = (this.visible !== isVisible);
+		if(!hasChanged) {
+			return false;
+		}
 		if(isVisible) {
 			this.setAttribute('visible', '');	
 		} else {
 			this.removeAttribute('visible');
+		}
+		if(this[isInternal]) {
+			const visibleChangedEvent = new CustomEvent(
+				VISIBLE_CHANGED_EVENT_NAME, 
+				{ 
+					bubbles: true,
+					cancelable: true,
+					composed: true,
+					detail: { 
+						visible: this.visible
+					}
+				}
+			);
+			this.dispatchEvent(visibleChangedEvent);
 		}
 	}
 
@@ -368,36 +395,12 @@ class FootNote extends HTMLElement {
 		}
 		this.hideOthers();
 		this.visible = !this.visible;
-		const toggleEvent = new CustomEvent( // Event in visible setter statt hier
-			TOGGLE_EVENT_NAME, 
-			{ 
-				bubbles: true,
-				cancelable: true,
-				composed: true,
-				detail: { 
-					visible: this.visible 
-				}
-			}
-		);
-		this.dispatchEvent(toggleEvent);
 	}
 
 	hide(event) {
 		if(this.visible !== false) {
 			this.visible = false;
 		}
-		const hideEvent = new CustomEvent( // Event in visible setter statt hier
-			HIDE_EVENT_NAME, 
-			{ 
-				bubbles: true,
-				cancelable: true,
-				composed: true,
-				detail: { 
-					visible: this.visible 
-				}
-			}
-		);
-		this.dispatchEvent(hideEvent);
 	}
 
 	hideOthers() {
@@ -417,13 +420,14 @@ class FootNote extends HTMLElement {
 		});
 	}
 
-	/* Internal Methods */
 	[handleKeydown](event) {
 		if(!event || !(event instanceof Event)) {
 			return false;
 		}
 		if(event.key === 'Escape' || event.key === 'Esc') {
+			this[isInternal] = true;
 			this.hide();
+			this[isInternal] = false;
 		}
 	}
 }
