@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 09 Jan. 2021
+	Date: 10 Jan. 2021
 */
 
 /* Configuration */
@@ -254,6 +254,7 @@ class FootNote extends HTMLElement {
 		return templateFragment;
 	}
 
+	/* Mount: Comment, Styles, Template -> Target Node */
 	static mount(targetNode) {
 		
 		/* Comment */
@@ -291,14 +292,14 @@ class FootNote extends HTMLElement {
 		const template = (document.getElementById(TEMPLATE_ID) || FootNote.mount(document.body));
 		root.appendChild(template.content.cloneNode(true));
 
-		/* Note elements */
+		/* Note Elements */
 		this.areaElement = root.getElementById('area');
 		this.callElement = root.getElementById('call');
 		this.markerElement = root.getElementById('marker');
 		this.elementElement = root.getElementById('element');
 		this.buttonElement = root.getElementById('button');
 		
-		/* Event listener */
+		/* Event Listener */
 		if(this.callElement) {
 			this.callElement.addEventListener('click', event => {
 				this[isInternal] = true;
@@ -314,7 +315,7 @@ class FootNote extends HTMLElement {
 			});
 		}
 
-		/* Event handler */
+		/* Event Handler */
 		this[handleKeydown] = this[handleKeydown].bind(this);
 	}
 
@@ -325,7 +326,8 @@ class FootNote extends HTMLElement {
 	}
 
 	disconnectedCallback() {
-		this.removeAttribute('visible');
+		/* Clean up: remove event listener */
+		this.hide();
 	}
 	
 	attributeChangedCallback(name, oldValue, newValue) {
