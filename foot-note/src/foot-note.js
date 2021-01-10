@@ -20,7 +20,8 @@ const VISIBLE_CHANGED_EVENT_NAME = 'visible-changed';
 const CALL_ARIA_LABEL = 'Call note';
 const MARKER_ARIA_LABEL = 'Marker note';
 const CLOSE_BUTTON_ARIA_LABEL = 'Close';
-
+const CALL_OPENING_BRACKET = '[';
+const CALL_CLOSING_BRACKET = ']';
 
 /* Internal identifier */
 const isInternal = Symbol('isInternal');
@@ -66,10 +67,10 @@ class FootNote extends HTMLElement {
 				text-decoration: none;
 			}
 			.call::before {
-				content: "[";
+				content: "${CALL_OPENING_BRACKET}";
 			}
 			.call::after {
-				content: "]";
+				content: "${CALL_CLOSING_BRACKET}";
 			}
 			.call:hover {
 				text-decoration: underline;
