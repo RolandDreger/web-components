@@ -24,7 +24,9 @@ const CLOSE_BUTTON_ARIA_LABEL = 'Close';
 
 /* Internal identifier */
 const isInternal = Symbol('isInternal');
-const handleKeydown = Symbol('handleKeydown');
+const handleClickCloseElement = Symbol('handleClickCloseElement');
+const handleClickCallElement = Symbol('handleClickCallElement');
+const handleKeydownDocument = Symbol('handleKeydownDocument');
 
 
 class FootNote extends HTMLElement {
@@ -226,14 +228,14 @@ class FootNote extends HTMLElement {
 		element.appendChild(slot);
 
 		/* Close button */
-		const button = document.createElement('button');
-		button.setAttribute('id', 'button');
-		button.classList.add('button');
-		button.classList.add('close');
-		button.setAttribute('part', 'button');
-		button.setAttribute('aria-label', CLOSE_BUTTON_ARIA_LABEL);
-		button.setAttribute('title', CLOSE_BUTTON_ARIA_LABEL);
-		button.setAttribute('tabindex', '-1');
+		const closeButton = document.createElement('button');
+		closeButton.setAttribute('id', 'close-button');
+		closeButton.classList.add('button');
+		closeButton.classList.add('close');
+		closeButton.setAttribute('part', 'close-button');
+		closeButton.setAttribute('aria-label', CLOSE_BUTTON_ARIA_LABEL);
+		closeButton.setAttribute('title', CLOSE_BUTTON_ARIA_LABEL);
+		closeButton.setAttribute('tabindex', '-1');
 
 		/* Note area */
 		const area = document.createElement('aside');
@@ -244,7 +246,7 @@ class FootNote extends HTMLElement {
 		area.setAttribute('aria-hidden', 'true');
 		area.appendChild(marker);
 		area.appendChild(element);
-		area.appendChild(button);
+		area.appendChild(closeButton);
 		
 		/* Template */
 		const templateFragment = document.createDocumentFragment();
@@ -280,8 +282,6 @@ class FootNote extends HTMLElement {
 	/* Livecycle hooks */
 	constructor() {
 		super();
-
-		this[isInternal] = false;
 		
 		/* Shadow DOM */
 		const root = this.attachShadow({ 
@@ -297,26 +297,18 @@ class FootNote extends HTMLElement {
 		this.callElement = root.getElementById('call');
 		this.markerElement = root.getElementById('marker');
 		this.elementElement = root.getElementById('element');
-		this.buttonElement = root.getElementById('button');
+		this.closeElement = root.getElementById('close-button');
 		
 		/* Event Listener */
 		if(this.callElement) {
-			this.callElement.addEventListener('click', event => {
-				this[isInternal] = true;
-				this.toggle(event);
-				this[isInternal] = false;
-			});
+			this.callElement.addEventListener('click', this[handleClickCallElement].bind(this));
 		}
-		if(this.buttonElement) {
-			this.buttonElement.addEventListener('click', event => {
-				this[isInternal] = true;
-				this.hide(event);
-				this[isInternal] = false;
-			});
+		if(this.closeElement) {
+			this.closeElement.addEventListener('click', this[handleClickCloseElement].bind(this));
 		}
 
 		/* Event Handler */
-		this[handleKeydown] = this[handleKeydown].bind(this);
+		this[handleKeydownDocument] = this[handleKeydownDocument].bind(this);
 	}
 
 	connectedCallback() {
@@ -349,14 +341,14 @@ class FootNote extends HTMLElement {
 				if(this.visible) {
 					this.areaElement.classList.add('visible');
 					this.areaElement.setAttribute('aria-hidden', "false");
-					this.buttonElement.setAttribute('tabindex', '0');
-					document.addEventListener('keydown', this[handleKeydown]);
+					this.closeElement.setAttribute('tabindex', '0');
+					document.addEventListener('keydown', this[handleKeydownDocument]);
 					this.areaElement.focus();
 				} else {
 					this.areaElement.classList.remove('visible');
 					this.areaElement.setAttribute('aria-hidden', "true");
-					this.buttonElement.setAttribute('tabindex', '-1');
-					document.removeEventListener('keydown', this[handleKeydown]);
+					this.closeElement.setAttribute('tabindex', '-1');
+					document.removeEventListener('keydown', this[handleKeydownDocument]);
 				}
 				break;
 		}
@@ -432,13 +424,31 @@ class FootNote extends HTMLElement {
 		});
 	}
 
-	[handleKeydown](event) {
+	[handleClickCallElement](event) {
+		if(!event || !(event instanceof Event)) {
+			return false;
+		}
+		this[isInternal] = true;
+		this.toggle(event);
+		this[isInternal] = false;
+	}
+
+	[handleClickCloseElement](event) {
+		if(!event || !(event instanceof Event)) {
+			return false;
+		}
+		this[isInternal] = true;
+		this.hide(event);
+		this[isInternal] = false;
+	}
+
+	[handleKeydownDocument](event) {
 		if(!event || !(event instanceof Event)) {
 			return false;
 		}
 		if(event.key === 'Escape' || event.key === 'Esc') {
 			this[isInternal] = true;
-			this.hide();
+			this.hide(event);
 			this[isInternal] = false;
 		}
 	}
