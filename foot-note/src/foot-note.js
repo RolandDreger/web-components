@@ -24,8 +24,7 @@ const CLOSE_BUTTON_ARIA_LABEL = 'Close';
 
 /* Internal identifier */
 const isInternal = Symbol('isInternal');
-const handleClickCloseElement = Symbol('handleClickCloseElement');
-const handleClickCallElement = Symbol('handleClickCallElement');
+const getInternalEventHandler = Symbol('getInternalEventHandler');
 const handleKeydownDocument = Symbol('handleKeydownDocument');
 
 
@@ -299,15 +298,15 @@ class FootNote extends HTMLElement {
 		this.elementElement = root.getElementById('element');
 		this.closeElement = root.getElementById('close-button');
 		
-		/* Event Listener */
+		/* Note Event Listener */
 		if(this.callElement) {
-			this.callElement.addEventListener('click', this[handleClickCallElement].bind(this));
+			this.callElement.addEventListener('click', this[getInternalEventHandler](this.toggle).bind(this));
 		}
 		if(this.closeElement) {
-			this.closeElement.addEventListener('click', this[handleClickCloseElement].bind(this));
+			this.closeElement.addEventListener('click', this[getInternalEventHandler](this.hide).bind(this));
 		}
 
-		/* Event Handler */
+		/* Document Event Handler */
 		this[handleKeydownDocument] = this[handleKeydownDocument].bind(this);
 	}
 
@@ -424,22 +423,12 @@ class FootNote extends HTMLElement {
 		});
 	}
 
-	[handleClickCallElement](event) {
-		if(!event || !(event instanceof Event)) {
-			return false;
-		}
-		this[isInternal] = true;
-		this.toggle(event);
-		this[isInternal] = false;
-	}
-
-	[handleClickCloseElement](event) {
-		if(!event || !(event instanceof Event)) {
-			return false;
-		}
-		this[isInternal] = true;
-		this.hide(event);
-		this[isInternal] = false;
+	[getInternalEventHandler](callback) {
+		return function() {
+			this[isInternal] = true;
+			callback.apply(this, arguments);
+			this[isInternal] = false;
+		};
 	}
 
 	[handleKeydownDocument](event) {
