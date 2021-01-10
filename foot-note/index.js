@@ -34,7 +34,7 @@
 		/* Add Event Listener (optional) */
 		footnotes.forEach((note, index) => {
 			note.addEventListener('visible-changed', (event) => {
-				console.log(`Footnote ${note.getAttribute('index')}: ${event.detail.visible}`);
+				console.log(`Footnote ${note.getAttribute('index')}: visible = ${event.detail.visible}`);
 			}, false);
 		});
 		
