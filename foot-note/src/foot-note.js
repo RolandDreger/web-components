@@ -25,7 +25,7 @@ const CALL_CLOSING_BRACKET = ']';
 
 /* Internal identifier */
 const isInternal = Symbol('isInternal');
-const watchEcs = Symbol('watchEcs');
+const watchEsc = Symbol('watchEsc');
 const getInternalEventHandler = Symbol('getInternalEventHandler');
 const handleKeydownDocumentInternal = Symbol('handleKeydownDocumentInternal');
 
@@ -310,7 +310,7 @@ class FootNote extends HTMLElement {
 		}
 
 		/* Document Event Handler */
-		this[handleKeydownDocumentInternal] = this[getInternalEventHandler](this, this[watchEcs]);
+		this[handleKeydownDocumentInternal] = this[getInternalEventHandler](this, this[watchEsc]);
 	}
 
 	connectedCallback() {
@@ -426,7 +426,7 @@ class FootNote extends HTMLElement {
 		});
 	}
 
-	[watchEcs](event) {
+	[watchEsc](event) {
 		if(!event || !(event instanceof Event)) {
 			return false;
 		}
