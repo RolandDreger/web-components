@@ -435,10 +435,10 @@ class FootNote extends HTMLElement {
 		}
 	}
 
-	[getInternalEventHandler](context, externalHandler) {
-		return function internalHandler() {
+	[getInternalEventHandler](context, handleEventExternal) {
+		return function handleEventInternal() {
 			context[isInternal] = true;
-			externalHandler.apply(context, arguments);
+			handleEventExternal.apply(context, arguments);
 			context[isInternal] = false;
 		};
 	}
