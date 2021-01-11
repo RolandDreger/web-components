@@ -301,10 +301,12 @@ class FootNote extends HTMLElement {
 		
 		/* Note Event Listener */
 		if(this.callElement) {
-			this.callElement.addEventListener('click', this[getInternalEventHandler](this.toggle).bind(this));
+			const handleClickInternal = this[getInternalEventHandler](this.toggle);
+			this.callElement.addEventListener('click', handleClickInternal.bind(this));
 		}
 		if(this.closeElement) {
-			this.closeElement.addEventListener('click', this[getInternalEventHandler](this.hide).bind(this));
+			const handleClickInternal = this[getInternalEventHandler](this.hide);
+			this.closeElement.addEventListener('click', handleClickInternal.bind(this));
 		}
 
 		/* Document Event Handler */
