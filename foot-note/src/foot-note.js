@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 10 Jan. 2021
+	Date: 11 Jan. 2021
 */
 
 /* Configuration */
@@ -25,9 +25,9 @@ const CALL_CLOSING_BRACKET = ']';
 
 /* Internal identifier */
 const isInternal = Symbol('isInternal');
+const watchEcs = Symbol('watchEcs');
 const getInternalEventHandler = Symbol('getInternalEventHandler');
-const handleKeydownDocument = Symbol('handleKeydownDocument');
-
+const handleKeydownDocumentInternal = Symbol('handleKeydownDocumentInternal');
 
 class FootNote extends HTMLElement {
 	
@@ -301,16 +301,16 @@ class FootNote extends HTMLElement {
 		
 		/* Note Event Listener */
 		if(this.callElement) {
-			const handleClickInternal = this[getInternalEventHandler](this.toggle);
-			this.callElement.addEventListener('click', handleClickInternal.bind(this));
+			const handleClickInternal = this[getInternalEventHandler](this, this.toggle);
+			this.callElement.addEventListener('click', handleClickInternal);
 		}
 		if(this.closeElement) {
-			const handleClickInternal = this[getInternalEventHandler](this.hide);
-			this.closeElement.addEventListener('click', handleClickInternal.bind(this));
+			const handleClickInternal = this[getInternalEventHandler](this, this.hide);
+			this.closeElement.addEventListener('click', handleClickInternal);
 		}
 
 		/* Document Event Handler */
-		this[handleKeydownDocument] = this[handleKeydownDocument].bind(this);
+		this[handleKeydownDocumentInternal] = this[getInternalEventHandler](this, this[watchEcs]);
 	}
 
 	connectedCallback() {
@@ -344,13 +344,13 @@ class FootNote extends HTMLElement {
 					this.areaElement.classList.add('visible');
 					this.areaElement.setAttribute('aria-hidden', "false");
 					this.closeElement.setAttribute('tabindex', '0');
-					document.addEventListener('keydown', this[handleKeydownDocument]);
+					document.addEventListener('keydown', this[handleKeydownDocumentInternal]);
 					this.areaElement.focus();
 				} else {
 					this.areaElement.classList.remove('visible');
 					this.areaElement.setAttribute('aria-hidden', "true");
 					this.closeElement.setAttribute('tabindex', '-1');
-					document.removeEventListener('keydown', this[handleKeydownDocument]);
+					document.removeEventListener('keydown', this[handleKeydownDocumentInternal]);
 				}
 				break;
 		}
@@ -426,23 +426,21 @@ class FootNote extends HTMLElement {
 		});
 	}
 
-	[getInternalEventHandler](externalHandler) {
-		return function() {
-			this[isInternal] = true;
-			externalHandler.apply(this, arguments);
-			this[isInternal] = false;
-		};
-	}
-
-	[handleKeydownDocument](event) {
+	[watchEcs](event) {
 		if(!event || !(event instanceof Event)) {
 			return false;
 		}
 		if(event.key === 'Escape' || event.key === 'Esc') {
-			this[isInternal] = true;
 			this.hide(event);
-			this[isInternal] = false;
 		}
+	}
+
+	[getInternalEventHandler](context, externalHandler) {
+		return function internalHandler() {
+			context[isInternal] = true;
+			externalHandler.apply(context, arguments);
+			context[isInternal] = false;
+		};
 	}
 }
 
