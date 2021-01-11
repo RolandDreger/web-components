@@ -26,7 +26,7 @@ const CALL_CLOSING_BRACKET = ']';
 /* Internal identifier */
 const isInternal = Symbol('isInternal');
 const watchEsc = Symbol('watchEsc');
-const getInternalEventHandler = Symbol('getInternalEventHandler');
+const getInternalHandler = Symbol('getInternalHandler');
 const handleKeydownDocumentInternal = Symbol('handleKeydownDocumentInternal');
 
 class FootNote extends HTMLElement {
@@ -301,16 +301,16 @@ class FootNote extends HTMLElement {
 		
 		/* Note Event Listener */
 		if(this.callElement) {
-			const handleClickInternal = this[getInternalEventHandler](this, this.toggle);
+			const handleClickInternal = this[getInternalHandler](this, this.toggle);
 			this.callElement.addEventListener('click', handleClickInternal);
 		}
 		if(this.closeElement) {
-			const handleClickInternal = this[getInternalEventHandler](this, this.hide);
+			const handleClickInternal = this[getInternalHandler](this, this.hide);
 			this.closeElement.addEventListener('click', handleClickInternal);
 		}
 
 		/* Document Event Handler */
-		this[handleKeydownDocumentInternal] = this[getInternalEventHandler](this, this[watchEsc]);
+		this[handleKeydownDocumentInternal] = this[getInternalHandler](this, this[watchEsc]);
 	}
 
 	connectedCallback() {
@@ -435,10 +435,10 @@ class FootNote extends HTMLElement {
 		}
 	}
 
-	[getInternalEventHandler](context, handleEventExternal) {
-		return function handleEventInternal() {
+	[getInternalHandler](context, externalHandler) {
+		return function internalHandler() {
 			context[isInternal] = true;
-			handleEventExternal.apply(context, arguments);
+			externalHandler.apply(context, arguments);
 			context[isInternal] = false;
 		};
 	}
