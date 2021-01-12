@@ -301,16 +301,16 @@ class FootNote extends HTMLElement {
 		
 		/* Note Event Listener */
 		if(this.callElement) {
-			const handleClickInternal = this[getInternalHandler](this, this.toggle);
+			const handleClickInternal = this[getInternalHandler](this.toggle);
 			this.callElement.addEventListener('click', handleClickInternal);
 		}
 		if(this.closeElement) {
-			const handleClickInternal = this[getInternalHandler](this, this.hide);
+			const handleClickInternal = this[getInternalHandler](this.hide);
 			this.closeElement.addEventListener('click', handleClickInternal);
 		}
 
 		/* Document Event Handler */
-		this[handleKeydownDocumentInternal] = this[getInternalHandler](this, this[watchEsc]);
+		this[handleKeydownDocumentInternal] = this[getInternalHandler](this[watchEsc]);
 	}
 
 	connectedCallback() {
@@ -435,7 +435,8 @@ class FootNote extends HTMLElement {
 		}
 	}
 
-	[getInternalHandler](context, externalHandler) {
+	[getInternalHandler](externalHandler) {
+		const context = this;
 		return function internalHandler() {
 			context[isInternal] = true;
 			externalHandler.apply(context, arguments);
