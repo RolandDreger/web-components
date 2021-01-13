@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 11 Jan. 2021
+	Date: 12 Jan. 2021
 */
 
 /* Configuration */
@@ -435,13 +435,24 @@ class FootNote extends HTMLElement {
 		}
 	}
 
-	[getInternalHandler](externalHandler) {
-		const context = this;
-		return function internalHandler() {
+	[getInternalHandler](externalHandler, context) {
+		if(!externalHandler || !(externalHandler instanceof Function)) {
+			return null;
+		}
+		context = (context || this);
+		const name = externalHandler.name;
+		function internalHandler() {
 			context[isInternal] = true;
-			externalHandler.apply(context, arguments);
+			const result = externalHandler.apply(context, arguments);
 			context[isInternal] = false;
+			return result;
 		};
+		Object.defineProperty(
+			internalHandler, 
+			'name', 
+			{ value: name, configurable: true }
+		);
+		return internalHandler;
 	}
 }
 
