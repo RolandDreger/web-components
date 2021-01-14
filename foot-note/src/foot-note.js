@@ -26,7 +26,7 @@ const CALL_CLOSING_BRACKET = ']';
 /* Internal identifier */
 const isInternal = Symbol('isInternal');
 const watchEsc = Symbol('watchEsc');
-const getInternalHandler = Symbol('getInternalHandler');
+const getInternalProxy = Symbol('getInternalProxy');
 const handleKeydownDocumentInternal = Symbol('handleKeydownDocumentInternal');
 
 class FootNote extends HTMLElement {
@@ -301,16 +301,16 @@ class FootNote extends HTMLElement {
 		
 		/* Note Event Listener */
 		if(this.callElement) {
-			const handleClickInternal = this[getInternalHandler](this.toggle);
+			const handleClickInternal = this[getInternalProxy](this.toggle);
 			this.callElement.addEventListener('click', handleClickInternal);
 		}
 		if(this.closeElement) {
-			const handleClickInternal = this[getInternalHandler](this.hide);
+			const handleClickInternal = this[getInternalProxy](this.hide);
 			this.closeElement.addEventListener('click', handleClickInternal);
 		}
 
 		/* Document Event Handler */
-		this[handleKeydownDocumentInternal] = this[getInternalHandler](this[watchEsc]);
+		this[handleKeydownDocumentInternal] = this[getInternalProxy](this[watchEsc]);
 	}
 
 	connectedCallback() {
@@ -435,24 +435,18 @@ class FootNote extends HTMLElement {
 		}
 	}
 
-	[getInternalHandler](externalHandler, context) {
+	[getInternalProxy](externalHandler, context) {
 		if(!externalHandler || !(externalHandler instanceof Function)) {
 			return null;
 		}
 		context = (context || this);
-		const name = externalHandler.name;
-		function internalHandler() {
-			context[isInternal] = true;
-			const result = externalHandler.apply(context, arguments);
-			context[isInternal] = false;
-			return result;
-		};
-		Object.defineProperty(
-			internalHandler, 
-			'name', 
-			{ value: name, configurable: true }
-		);
-		return internalHandler;
+		return new Proxy(externalHandler, {
+			apply(target, thisParam, params) {
+				context[isInternal] = true;
+				Reflect.apply(target, context, params);
+				context[isInternal] = false;
+			}
+		});
 	}
 }
 
