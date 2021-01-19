@@ -27,7 +27,9 @@ const CALL_CLOSING_BRACKET = ']';
 const isInternal = Symbol('isInternal');
 const watchEsc = Symbol('watchEsc');
 const getInternalProxy = Symbol('getInternalProxy');
-const handleKeydownDocumentInternal = Symbol('handleKeydownDocumentInternal');
+const handleClickCallElement = Symbol('handleClickCallElement');
+const handleClickCloseElement = Symbol('handleClickCloseElement');
+const handleKeydownDocument = Symbol('handleKeydownDocument');
 
 class FootNote extends HTMLElement {
 	
@@ -299,18 +301,18 @@ class FootNote extends HTMLElement {
 		this.elementElement = root.getElementById('element');
 		this.closeElement = root.getElementById('close-button');
 		
-		/* Note Event Listener */
+		/* Event Handler (internal) */
+		this[handleClickCallElement] = this[getInternalProxy](this.toggle);
+		this[handleClickCloseElement] = this[getInternalProxy](this.hide);
+		this[handleKeydownDocument] = this[getInternalProxy](this[watchEsc]);
+		
+		/* Event Listener */
 		if(this.callElement) {
-			const handleClickInternal = this[getInternalProxy](this.toggle);
-			this.callElement.addEventListener('click', handleClickInternal);
+			this.callElement.addEventListener('click', this[handleClickCallElement]);
 		}
 		if(this.closeElement) {
-			const handleClickInternal = this[getInternalProxy](this.hide);
-			this.closeElement.addEventListener('click', handleClickInternal);
+			this.closeElement.addEventListener('click', this[handleClickCloseElement]);
 		}
-
-		/* Document Event Handler */
-		this[handleKeydownDocumentInternal] = this[getInternalProxy](this[watchEsc]);
 	}
 
 	connectedCallback() {
@@ -344,13 +346,13 @@ class FootNote extends HTMLElement {
 					this.areaElement.classList.add('visible');
 					this.areaElement.setAttribute('aria-hidden', "false");
 					this.closeElement.setAttribute('tabindex', '0');
-					document.addEventListener('keydown', this[handleKeydownDocumentInternal]);
+					document.addEventListener('keydown', this[handleKeydownDocument]);
 					this.areaElement.focus();
 				} else {
 					this.areaElement.classList.remove('visible');
 					this.areaElement.setAttribute('aria-hidden', "true");
 					this.closeElement.setAttribute('tabindex', '-1');
-					document.removeEventListener('keydown', this[handleKeydownDocumentInternal]);
+					document.removeEventListener('keydown', this[handleKeydownDocument]);
 				}
 				break;
 		}
