@@ -301,7 +301,7 @@ class FootNote extends HTMLElement {
 		this.elementElement = root.getElementById('element');
 		this.closeElement = root.getElementById('close-button');
 		
-		/* Event Handler (internal) */
+		/* Event Handler */
 		this[handleClickCallElement] = this[getInternalProxy](this.toggle);
 		this[handleClickCloseElement] = this[getInternalProxy](this.hide);
 		this[handleKeydownDocument] = this[getInternalProxy](this[watchEsc]);
