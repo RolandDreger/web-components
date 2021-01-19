@@ -322,7 +322,10 @@ class FootNote extends HTMLElement {
 	}
 
 	disconnectedCallback() {
-		/* Clean up: remove event listener */
+		/* 
+			Clean up: 
+			– remove event listener 
+		*/
 		this.hide();
 	}
 	
