@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 19 Jan. 2021
+	Date: 20 Jan. 2021
 */
 
 /* Configuration */
@@ -448,8 +448,11 @@ class FootNote extends HTMLElement {
 		return new Proxy(externalHandler, {
 			apply(target, thisParam, params) {
 				context[isInternal] = true;
-				Reflect.apply(target, context, params);
-				context[isInternal] = false;
+				try {
+					Reflect.apply(target, context, params);
+				} finally {
+					context[isInternal] = false;
+				}
 			}
 		});
 	}
