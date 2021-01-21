@@ -316,17 +316,15 @@ class FootNote extends HTMLElement {
 	}
 
 	connectedCallback() {
+		/* Set up */
 		if(!this.isConnected) {
 			return false;
 		}
 	}
 
 	disconnectedCallback() {
-		/* 
-			Clean up: 
-			– remove event listener 
-		*/
-		this.hide();
+		/* Clean up */
+		this.hide(); /* <- Remove event listener */
 	}
 	
 	attributeChangedCallback(name, oldValue, newValue) {
