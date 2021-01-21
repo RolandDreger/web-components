@@ -446,10 +446,10 @@ class FootNote extends HTMLElement {
 		}
 		context = (context || this);
 		return new Proxy(externalHandler, {
-			apply(target, thisParam, params) {
+			apply(target, thisArg, args) {
 				context[isInternal] = true;
 				try {
-					Reflect.apply(target, context, params);
+					Reflect.apply(target, context, args);
 				} finally {
 					context[isInternal] = false;
 				}
