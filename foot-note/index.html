@@ -14,9 +14,12 @@
 				--footnote-call-vertical-align: super;
 				--footnote-call-font-size: 0.8rem;
 				--footnote-area-color: white;
+				--footnote-dark-area-color: black;
 				--footnote-max-width: 58rem;
 				--footnote-line-heigth: 1.4;
 				--footnote-font-size: 1rem;
+				--footnote-font-color: black;
+				--footnote-dark-font-color: white;
 				font-size: 1.3em;
 				font-family: Vollkorn, serif;
 				counter-reset: foot-note;
@@ -43,7 +46,7 @@
 			foot-note::part(element) {
 				/* Footnote element */
 			}
-			foot-note::part(button) {
+			foot-note::part(close-button) {
 				/* Close button */
 			}
 			/* section {
