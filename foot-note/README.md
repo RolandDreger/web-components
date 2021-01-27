@@ -59,9 +59,15 @@ sections.forEach(section => {
 ### Custom properties
 ```css
 --footnote-theme-color: teal;
+--footnote-call-vertical-align: super;
+--footnote-call-font-size: 0.8rem;
+--footnote-area-color: white;
+--footnote-dark-area-color: black;
 --footnote-max-width: 58rem;
 --footnote-line-heigth: 1.4;
 --footnote-font-size: 1rem;
+--footnote-font-color: black;
+--footnote-dark-font-color: white;
 ```
 
 ### Pseudoelement: part
@@ -90,11 +96,11 @@ foot-note:not(:defined) {
 }
 foot-note:not(:defined)::before {
 	counter-increment: foot-note;                  
-  	content: "[" counter(foot-note);
+  content: "[" counter(foot-note);
 	/* Custom styles */
 }
 foot-note:not(:defined)::after {             
-  	content: "]";
+  content: "]";
 	/* Custom styles */
 }
 ```
@@ -112,6 +118,7 @@ foot-note:not(:defined)::after {
 | --------- | -------- | ------- | -------------------------------------------------------- | 
 | `index`   | *String* | unset   | Footnote index: can be set manually or via Javascript.   | 
 | `visible` | Empty    | unset   | If the attribute has been set, the element is displayed. |
+| `lang`    | *String* | unset   | Language support for aria-label, title, ...              |
 
 
 ## Methods
