@@ -101,12 +101,11 @@ class FootNote extends HTMLElement {
 				font-weight: bolder;
 			}
 			.area {
-				visibility: hidden;
+				display: none;
 				position: fixed;
 				bottom: 0;
 				left: 50%;
 				transform: translateX(-50%);
-				display: flex;
 				flex-direction: row;
 				flex-wrap: nowrap;
 				justify-content: space-between;
@@ -119,18 +118,22 @@ class FootNote extends HTMLElement {
 				min-height: 0;
 				margin-bottom: -100%;
 				overflow-y: auto;
-				opacity: 0;
 				padding: 2rem 4rem 2rem 4rem;
 				font-size: var(--footnote-font-size, 1rem);
 				line-height: var(--footnote-line-heigth, 1.4);
 				background-color: #ffffff;
 				background-color: var(--footnote-area-color, #ffffff);
-				transition: all 0.4s ease-in-out;
 			}
 			.visible {
-				visibility: visible;
-				margin-bottom: 0;
-				opacity: 1;
+				display: flex;
+				-webkit-animation: slide-in 0.4s ease-out forwards;
+				-moz-animation: slide-in 0.4s ease-out forwards;
+				-o-animation: slide-in 0.4s ease-out forwards;
+				animation: slide-in 0.4s ease-out forwards;
+			}
+			@keyframes slide-in {
+				from { margin-bottom: -100%; }
+				to { margin-bottom: 0; }
 			}
 			.element {
 				flex: 1 1 auto;
