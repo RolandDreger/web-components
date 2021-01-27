@@ -372,10 +372,10 @@ class FootNote extends HTMLElement {
 				language = (this.lang || document.documentElement.getAttribute("lang") || FALLBACK_LANG);
 				indexHrefSuffix = ((newValue && `-${newValue}`) || "");
 				indexAriaSuffix = ((newValue && ` ${newValue}`) || "");
-				this.callElement.textContent = newValue;
+				this.callElement.textContent = (newValue || "");
 				this.callElement.setAttribute('href', '#' + tagName + indexHrefSuffix);
 				this.callElement.setAttribute('aria-label', this[translate]("callElementAriaLabel", language) + indexAriaSuffix);
-				this.markerElement.textContent = newValue;
+				this.markerElement.textContent = (newValue || "");
 				this.markerElement.setAttribute('aria-label', this[translate]("markerElementAriaLabel", language) + indexAriaSuffix);
 				break;
 			/* Attribute: visible */
