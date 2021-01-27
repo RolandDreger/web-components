@@ -350,20 +350,20 @@ class FootNote extends HTMLElement {
 		}
 		let tagName;
 		let language;
-		let indexHrefSuffix;
-		let indexAriaSuffix;
+		let hrefIndexSuffix;
+		let ariaIndexSuffix;
 		switch(name) {
 			/* Attribute: index */
 			case 'index':
 				tagName = ((this.tagName && this.tagName.toLowerCase()) || "");
 				language = (this.lang || document.documentElement.getAttribute("lang") || FALLBACK_LANG);
-				indexHrefSuffix = ((newValue && `-${newValue}`) || "");
-				indexAriaSuffix = ((newValue && ` ${newValue}`) || "");
+				hrefIndexSuffix = ((newValue && `-${newValue}`) || "");
+				ariaIndexSuffix = ((newValue && ` ${newValue}`) || "");
 				this.callElement.textContent = (newValue || "");
-				this.callElement.setAttribute('href', '#' + tagName + indexHrefSuffix);
-				this.callElement.setAttribute('aria-label', this[translate]("callElementAriaLabel", language) + indexAriaSuffix);
+				this.callElement.setAttribute('href', '#' + tagName + hrefIndexSuffix);
+				this.callElement.setAttribute('aria-label', this[translate]("callElementAriaLabel", language) + ariaIndexSuffix);
 				this.markerElement.textContent = (newValue || "");
-				this.markerElement.setAttribute('aria-label', this[translate]("markerElementAriaLabel", language) + indexAriaSuffix);
+				this.markerElement.setAttribute('aria-label', this[translate]("markerElementAriaLabel", language) + ariaIndexSuffix);
 				break;
 			/* Attribute: visible */
 			case 'visible':
@@ -383,9 +383,9 @@ class FootNote extends HTMLElement {
 			/* Attribute: lang */
 			case 'lang':
 				language = (newValue || document.documentElement.getAttribute("lang") || FALLBACK_LANG);
-				indexAriaSuffix = ((this.index && ` ${this.index}`) || "");
-				this.callElement.setAttribute('aria-label', this[translate]("callElementAriaLabel", language) + indexAriaSuffix);
-				this.markerElement.setAttribute('aria-label', this[translate]("markerElementAriaLabel",language) + indexAriaSuffix);
+				ariaIndexSuffix = ((this.index && ` ${this.index}`) || "");
+				this.callElement.setAttribute('aria-label', this[translate]("callElementAriaLabel", language) + ariaIndexSuffix);
+				this.markerElement.setAttribute('aria-label', this[translate]("markerElementAriaLabel",language) + ariaIndexSuffix);
 				this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
 				this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
 				break;
