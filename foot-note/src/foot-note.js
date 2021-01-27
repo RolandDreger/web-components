@@ -32,6 +32,10 @@ const translate = Symbol('translate');
 
 class FootNote extends HTMLElement {
 	
+	static get observedAttributes() { 
+		return ['index', 'lang', 'visible']; 
+	}
+
 	static get translations() {
 		/* "en-US": default language */
 		return {
@@ -51,10 +55,6 @@ class FootNote extends HTMLElement {
 				"closeButtonAriaLabel": "Fermer"  
 			}
 		};
-	}
-
-	static get observedAttributes() { 
-		return ['index', 'lang', 'visible']; 
 	}
 
 	/* Styles */
