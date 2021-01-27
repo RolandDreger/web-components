@@ -325,12 +325,8 @@ class FootNote extends HTMLElement {
 		this[handleKeydownDocument] = this[getInternalProxy](this[watchEsc]);
 		
 		/* Event Listener */
-		if(this.callElement) {
-			this.callElement.addEventListener('click', this[handleClickCallElement]);
-		}
-		if(this.closeElement) {
-			this.closeElement.addEventListener('click', this[handleClickCloseElement]);
-		}
+		this.callElement.addEventListener('click', this[handleClickCallElement]);
+		this.closeElement.addEventListener('click', this[handleClickCloseElement]);
 	}
 
 	connectedCallback() {
@@ -339,17 +335,8 @@ class FootNote extends HTMLElement {
 		}
 		/* Set up */
 		const language = (this.lang || document.documentElement.getAttribute("lang") || FALLBACK_LANG);
-		if(this.closeElement) {
-			this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
-			this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
-		}
-		const indexAriaSuffix = (this.index && ` ${this.index}`) || "";
-		if(this.callElement) {
-			this.callElement.setAttribute('aria-label', this[translate]("callElementAriaLabel", language) + indexAriaSuffix);
-		}
-		if(this.markerElement) {
-			this.markerElement.setAttribute('aria-label', this[translate]("markerElementAriaLabel", language) + indexAriaSuffix);
-		}
+		this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
+		this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
 	}
 
 	disconnectedCallback() {
@@ -502,14 +489,12 @@ class FootNote extends HTMLElement {
 	}
 
 	[translate](term, lang) {
-
 		if(!term || typeof term !== "string") { 
 			throw new TypeError(`Argument [term] must be a string: ${typeof term}`); 
 		}
 		if(!lang || typeof lang !== "string") { 
 			throw new TypeError(`Argument [lang] must be a string: ${typeof lang}`); 
 		}
-	
 		const languageCodes = {
 			'en': 'en-US',
 			'en-us': 'en-US',
@@ -552,7 +537,6 @@ class FootNote extends HTMLElement {
 			'zh-hant-tw': 'zh-TW',
 			'zh-hant': 'zh-TW'
 		};
-	
 		const languageCodesProxy = new Proxy(languageCodes, {
 			get(target, code) {
 				code = code.toLowerCase();
@@ -563,7 +547,6 @@ class FootNote extends HTMLElement {
 				}
 			}
 		});
-		
 		const translationsProxy = new Proxy(FootNote.translations, {
 			get(target, code) {
 				if(target.hasOwnProperty(code)) {
@@ -573,12 +556,10 @@ class FootNote extends HTMLElement {
 				}
 			}
 		});
-
 		const translation = translationsProxy[languageCodesProxy[lang]][term];
 		if(!translation) {
 			throw new Error(`No translation available: ${term}`);
 		}
-	
 		return translation;
 	}
 }
