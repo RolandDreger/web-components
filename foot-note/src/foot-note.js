@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 25 Jan. 2021
+	Date: 27 Jan. 2021
 */
 
 /* Configuration */
@@ -17,11 +17,9 @@ const TEMPLATE_ID = 'foot-note-template';
 const TEMPLATE_COMMENT = 'FootNote component template';
 const SHADOW_DOM_MODE = 'open';
 const VISIBLE_CHANGED_EVENT_NAME = 'visible-changed';
-const CALL_ARIA_LABEL = 'Call note';
-const MARKER_ARIA_LABEL = 'Marker note';
-const CLOSE_BUTTON_ARIA_LABEL = 'Close';
 const CALL_OPENING_BRACKET = '[';
 const CALL_CLOSING_BRACKET = ']';
+const FALLBACK_LANG = "en";
 
 /* Internal identifier */
 const isInternal = Symbol('isInternal');
@@ -30,11 +28,33 @@ const getInternalProxy = Symbol('getInternalProxy');
 const handleClickCallElement = Symbol('handleClickCallElement');
 const handleClickCloseElement = Symbol('handleClickCloseElement');
 const handleKeydownDocument = Symbol('handleKeydownDocument');
+const translate = Symbol('translate');
 
 class FootNote extends HTMLElement {
 	
+	static get translations() {
+		/* "en-US": default language */
+		return {
+			"en-US": {
+				"callElementAriaLabel": "Note call",
+				"markerElementAriaLabel": "Note marker",
+				"closeButtonAriaLabel": "Close"
+			},
+			"de-DE": {
+				"callElementAriaLabel": "Notenaufruf",
+				"markerElementAriaLabel": "Notenzeichen",
+				"closeButtonAriaLabel": "Schließen"
+			},
+			"fr-FR": {
+				"callElementAriaLabel": "Appel de note",
+				"markerElementAriaLabel": "Marqueur de notes",
+				"closeButtonAriaLabel": "Fermer"  
+			}
+		};
+	}
+
 	static get observedAttributes() { 
-		return ['index', 'visible']; 
+		return ['index', 'lang', 'visible']; 
 	}
 
 	/* Styles */
@@ -235,8 +255,6 @@ class FootNote extends HTMLElement {
 		closeButton.classList.add('button');
 		closeButton.classList.add('close');
 		closeButton.setAttribute('part', 'close-button');
-		closeButton.setAttribute('aria-label', CLOSE_BUTTON_ARIA_LABEL);
-		closeButton.setAttribute('title', CLOSE_BUTTON_ARIA_LABEL);
 		closeButton.setAttribute('tabindex', '-1');
 
 		/* Note area */
@@ -316,9 +334,21 @@ class FootNote extends HTMLElement {
 	}
 
 	connectedCallback() {
-		/* Set up */
 		if(!this.isConnected) {
 			return false;
+		}
+		/* Set up */
+		const language = (this.lang || document.documentElement.getAttribute("lang") || FALLBACK_LANG);
+		if(this.closeElement) {
+			this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
+			this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
+		}
+		const indexAriaSuffix = (this.index && ` ${this.index}`) || "";
+		if(this.callElement) {
+			this.callElement.setAttribute('aria-label', this[translate]("callElementAriaLabel", language) + indexAriaSuffix);
+		}
+		if(this.markerElement) {
+			this.markerElement.setAttribute('aria-label', this[translate]("markerElementAriaLabel", language) + indexAriaSuffix);
 		}
 	}
 
@@ -331,19 +361,26 @@ class FootNote extends HTMLElement {
 		if(oldValue === newValue) {
 			return true;
 		}
+		let tagName;
+		let language;
+		let indexHrefSuffix;
+		let indexAriaSuffix;
 		switch(name) {
 			/* Attribute: index */
 			case 'index':
+				tagName = ((this.tagName && this.tagName.toLowerCase()) || "");
+				language = (this.lang || document.documentElement.getAttribute("lang") || FALLBACK_LANG);
+				indexHrefSuffix = ((newValue && `-${newValue}`) || "");
+				indexAriaSuffix = ((newValue && ` ${newValue}`) || "");
 				this.callElement.textContent = newValue;
-				this.callElement.setAttribute('href', '#' + this.tagName + '-' + newValue);
-				this.callElement.setAttribute('aria-label', CALL_ARIA_LABEL + ' ' + newValue);
+				this.callElement.setAttribute('href', '#' + tagName + indexHrefSuffix);
+				this.callElement.setAttribute('aria-label', this[translate]("callElementAriaLabel", language) + indexAriaSuffix);
 				this.markerElement.textContent = newValue;
-				this.markerElement.setAttribute('aria-label', MARKER_ARIA_LABEL + ' ' + newValue);
+				this.markerElement.setAttribute('aria-label', this[translate]("markerElementAriaLabel", language) + indexAriaSuffix);
 				break;
 			/* Attribute: visible */
 			case 'visible':
-				this.visible = this.hasAttribute('visible');
-				if(this.visible) {
+				if(newValue !== null) {
 					this.areaElement.classList.add('visible');
 					this.areaElement.setAttribute('aria-hidden', "false");
 					this.closeElement.setAttribute('tabindex', '0');
@@ -356,12 +393,21 @@ class FootNote extends HTMLElement {
 					document.removeEventListener('keydown', this[handleKeydownDocument]);
 				}
 				break;
+			/* Attribute: lang */
+			case 'lang':
+				language = (newValue || document.documentElement.getAttribute("lang") || FALLBACK_LANG);
+				indexAriaSuffix = ((this.index && ` ${this.index}`) || "");
+				this.callElement.setAttribute('aria-label', this[translate]("callElementAriaLabel", language) + indexAriaSuffix);
+				this.markerElement.setAttribute('aria-label', this[translate]("markerElementAriaLabel",language) + indexAriaSuffix);
+				this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
+				this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
+				break;
 		}
 	}
 
 	/* Getter/Setter */
 	get index() {
-		return this.getAttribute('index');
+		return (this.getAttribute('index') || "");
 	}
 	set index(value) {
 		this.setAttribute('index', value);
@@ -453,6 +499,87 @@ class FootNote extends HTMLElement {
 				}
 			}
 		});
+	}
+
+	[translate](term, lang) {
+
+		if(!term || typeof term !== "string") { 
+			throw new TypeError(`Argument [term] must be a string: ${typeof term}`); 
+		}
+		if(!lang || typeof lang !== "string") { 
+			throw new TypeError(`Argument [lang] must be a string: ${typeof lang}`); 
+		}
+	
+		const languageCodes = {
+			'en': 'en-US',
+			'en-us': 'en-US',
+			'cs': 'cs-CZ',
+			'cs-cz': 'cs-CZ',
+			'da': 'da-DK',
+			'da-dk': 'da-DK',
+			'de': 'de-DE',
+			'de-de': 'de-DE',
+			'es': 'es-ES',
+			'es-es': 'es-ES',
+			'fi': 'fi-FI',
+			'fi-fi': 'fi-FI',
+			'fr': 'fr-FR',
+			'fr-fr': 'fr-FR',
+			'it': 'it-IT',
+			'it-it': 'it-IT',
+			'ja': 'ja-JP',
+			'ja-jp': 'ja-JP',
+			'ko': 'ko-KR',
+			'ko-kr': 'ko-KR',
+			'nb': 'nb-NO',
+			'nb-no': 'nb-NO',
+			'nl': 'nl-NL',
+			'pl': 'pl-PL',
+			'pl-pl': 'pl-PL',
+			'nl-nl': 'nl-NL',
+			'pt': 'pt-BR',
+			'pt-br': 'pt-BR',
+			'ru': 'ru-RU',
+			'ru-ru': 'ru-RU',
+			'sv': 'sv-SE',
+			'sv-se': 'sv-SE',
+			'tr': 'tr-TR',
+			'tr-tr': 'tr-TR',
+			'zh-cn': 'zh-CN',
+			'zh-hans-cn': 'zh-CN',
+			'zh-hans': 'zh-CN',
+			'zh-tw': 'zh-TW',
+			'zh-hant-tw': 'zh-TW',
+			'zh-hant': 'zh-TW'
+		};
+	
+		const languageCodesProxy = new Proxy(languageCodes, {
+			get(target, code) {
+				code = code.toLowerCase();
+				if(target.hasOwnProperty(code)) {
+					return target[code];
+				} else {
+					return target['en'];
+				}
+			}
+		});
+		
+		const translationsProxy = new Proxy(FootNote.translations, {
+			get(target, code) {
+				if(target.hasOwnProperty(code)) {
+					return target[code];
+				} else {
+					return target['en-US'];
+				}
+			}
+		});
+
+		const translation = translationsProxy[languageCodesProxy[lang]][term];
+		if(!translation) {
+			throw new Error(`No translation available: ${term}`);
+		}
+	
+		return translation;
 	}
 }
 
