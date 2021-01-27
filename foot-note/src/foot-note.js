@@ -3,7 +3,7 @@
 	
 	Custom Element: <foot-note></foot-note>
 	Shadow DOM: true, open
-	Attributes: index, visible (empty) 
+	Attributes: index, visible (empty), lang 
 	Slots: default
 
 	Author: Roland Dreger, www.rolanddreger.net
