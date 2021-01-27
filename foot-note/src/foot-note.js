@@ -126,10 +126,10 @@ class FootNote extends HTMLElement {
 			}
 			.visible {
 				display: flex;
-				-webkit-animation: slide-in 0.4s ease-out forwards;
-				-moz-animation: slide-in 0.4s ease-out forwards;
-				-o-animation: slide-in 0.4s ease-out forwards;
-				animation: slide-in 0.4s ease-out forwards;
+				-webkit-animation: slide-in 0.4s ease forwards;
+				-moz-animation: slide-in 0.4s ease forwards;
+				-o-animation: slide-in 0.4s ease forwards;
+				animation: slide-in 0.4s ease forwards;
 			}
 			@keyframes slide-in {
 				from { margin-bottom: -100%; }
