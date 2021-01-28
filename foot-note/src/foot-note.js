@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 27 Jan. 2021
+	Date: 28 Jan. 2021
 */
 
 /* Configuration */
@@ -28,6 +28,7 @@ const getInternalProxy = Symbol('getInternalProxy');
 const handleClickCallElement = Symbol('handleClickCallElement');
 const handleClickCloseElement = Symbol('handleClickCloseElement');
 const handleKeydownDocument = Symbol('handleKeydownDocument');
+const documentLang = Symbol('documentLang');
 const translate = Symbol('translate');
 
 class FootNote extends HTMLElement {
@@ -337,7 +338,7 @@ class FootNote extends HTMLElement {
 			return false;
 		}
 		/* Set up */
-		const language = (this.lang || document.documentElement.getAttribute("lang") || FALLBACK_LANG);
+		const language = (this.lang || this[documentLang]);
 		this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
 		this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
 	}
@@ -359,7 +360,7 @@ class FootNote extends HTMLElement {
 			/* Attribute: index */
 			case 'index':
 				tagName = ((this.tagName && this.tagName.toLowerCase()) || "");
-				language = (this.lang || document.documentElement.getAttribute("lang") || FALLBACK_LANG);
+				language = (this.lang || this[documentLang]);
 				hrefIndexSuffix = ((newValue && `-${newValue}`) || "");
 				ariaIndexSuffix = ((newValue && ` ${newValue}`) || "");
 				this.callElement.textContent = (newValue || "");
@@ -385,7 +386,7 @@ class FootNote extends HTMLElement {
 				break;
 			/* Attribute: lang */
 			case 'lang':
-				language = (newValue || document.documentElement.getAttribute("lang") || FALLBACK_LANG);
+				language = (newValue || this[documentLang]);
 				ariaIndexSuffix = ((this.index && ` ${this.index}`) || "");
 				this.callElement.setAttribute('aria-label', this[translate]("callElementAriaLabel", language) + ariaIndexSuffix);
 				this.markerElement.setAttribute('aria-label', this[translate]("markerElementAriaLabel",language) + ariaIndexSuffix);
@@ -431,6 +432,16 @@ class FootNote extends HTMLElement {
 			);
 			this.dispatchEvent(visibleChangedEvent);
 		}
+	}
+
+	get [documentLang]() {
+		return (
+			document.body.getAttribute("xml:lang") ||
+			document.body.getAttribute("lang") ||
+			document.documentElement.getAttribute("xml:lang") || 
+			document.documentElement.getAttribute("lang") || 
+			FALLBACK_LANG
+		);
 	}
 
 	/* Methods (Prototype) */
