@@ -1,0 +1,105 @@
+﻿<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>InlineNote Web Component</title>
+		<style>
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+			}
+			body { 
+				--inline-note-theme-color: teal;
+				--inline-note-call-vertical-align: super;
+				--inline-note-call-font-size: 0.8rem;
+				--inline-note-area-color: white;
+				--inline-note-dark-area-color: black;
+				--inline-note-max-width: 58rem;
+				--inline-note-line-heigth: 1.4;
+				--inline-note-font-size: 1rem;
+				--inline-note-font-color: black;
+				--inline-note-dark-font-color: white;
+				font-size: 1.3em;
+				font-family: Vollkorn, serif;
+				counter-reset: inline-note;
+			}
+			.container { 
+				max-width: 55rem;
+				padding: 40px;
+				margin: auto;
+			}
+			/* Custom styles */
+			inline-note::part(call) {
+				/* Inline note call */
+				padding: 0.2em 0.4em;
+				margin-left: -0.4em;
+				margin-right: -0.4em;
+			}
+			inline-note::part(area) {
+				/* Inline note area */
+				z-index: 1;
+			}
+			inline-note::part(marker) {
+				/* Inline note marker */
+			}
+			inline-note::part(element) {
+				/* Inline note element */
+			}
+			inline-note::part(close-button) {
+				/* Close button */
+			}
+			/* section {
+				counter-reset: inline-note;
+			} */
+			/* Fallback */
+			inline-note:not(:defined) {
+				margin-left: 0.5rem;
+				margin-right: 0.5rem;
+				padding-left: 0.5rem;
+				padding-right: 0.5rem;
+				color: #000000;
+				color: var(--inline-note-theme-color, #000000);
+			}
+			inline-note:not(:defined)::before {
+				padding-right: 0.5rem;
+				color: #000000;
+				color: var(--inline-note-theme-color, #000000);
+				text-decoration: none;
+				counter-increment: inline-note;                  
+  			content: "[" counter(inline-note);
+			}
+			inline-note:not(:defined)::after {             
+  			content: "]";
+			}
+		</style>
+	</head>
+<body>
+	<div class="container">
+		<section>
+			<p>[...]</p>
+		</section>
+		<section>
+			<h2>Government documents</h2>
+			<p>The US Government Printing Office Style Manual devotes over 660 words to the topic of footnotes.<inline-note><strong>15: Footnotes, indexes, contents, and outlines.</strong> U.S. Government Printing Office Style Manual.  Retrieved October 26, 2015.</inline-note> NASA has guidance for footnote usage in its historical documents.<inline-note><strong>A Guide to Footnotes and Endnotes for NASA History Authors</strong>. NASA History Style Guide. Retrieved March 24, 2005.</inline-note></p>
+		</section>
+		<section>
+			<h2>Legal writing</h2>
+			<p>Associate Justice Stephen Breyer of the Supreme Court of the United States is famous in the American legal community for his writing style, in which he never uses notes. He prefers to keep all citations within the text (which is permitted in American legal citation).<inline-note><strong>In Justice Breyer's Opinion, A Footnote Has No Place.</strong> <a href="https://en.wikipedia.org/wiki/The_New_York_Times">The New York Times.</a> 1995-07-28. Retrieved 2008-04-30.</inline-note> Richard A. Posner has also written against the use of notes in judicial opinions.<inline-note>Posner, Richard A. (Summer 2001). <a href="http://aja.ncsc.dni.us/courtrv/cr38-2/CR38-2Posner.pdf">Against Footnotes</a> (PDF). Court Review. American Judges Association. Retrieved 2014-10-13.</inline-note> Bryan A. Garner, however, advocates using notes instead of inline citations.<inline-note>Oddi, Marcia (2005-01-07). <strong>Indiana Courts - Footnotes in Judicial Opinions.</strong> The Indiana Law Blog. Retrieved 2015-11-04.</inline-note></p>
+		</section>
+		<section>
+			<h2>HTML</h2>
+			<p>HTML, the predominant markup language for web pages, has no mechanism for marking up notes. Despite a number of different proposals over the years, and repeated pleas from the user base, the working group has been unable to reach a consensus on it. Because of this, MediaWiki, for example, has had to introduce its own <ref></ref> tag for citing references in notes, an idea which has since also been implemented for generic use by the Nelson HTML preprocessor.<inline-note><strong>Nelson HTML Preprocessor.</strong> Retrieved 2009-06-09.</inline-note></p>
+			<p>It might be argued that the hyperlink partially eliminates the need for notes, being the web's way to refer to another document. However, it does not allow citing to offline sources and if the destination of the link changes, the link can become dead or irrelevant.<inline-note>Jill Lepore. <strong>»The Cobweb«,</strong> The New Yorker, 26 January 2015 issue. Retrieved 25 January 2015. Archived from the original.</inline-note> A proposed solution is the use of a digital object identifier.</p>
+		</section>
+		<section>
+				<p>[...]</p>
+		</section>
+		<section>
+			<h3>Source:</h3> 
+			<p><a href="https://en.wikipedia.org/wiki/Note_(typography)">Note (typography)</a></p>
+		</section>
+	</div>
+	<script src="index.js" type="module"></script>
+</body>
+</html>
