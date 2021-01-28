@@ -123,30 +123,26 @@ foot-note:not(:defined)::after {
 
 ## Methods
 
-| Prototype      | Parameters | Returns | Description                     | 
-| ------------   | ---------- | ------- | ------------------------------- | 
-| `hide() `      | None       | Nothing | Hide element with close button. | 
-| `hideAll()`    | None       | Nothing | Hide all elements.              |
-| `hideOthers()` | None       | Nothing | Hide all elements but this.     |
-| `toggle()`     | None       | Nothing | Toggle visibility of element.   |
+| Prototype      | Parameters | Returns | Description                   | 
+| ------------   | ---------- | ------- | ----------------------------- | 
+| `hide() `      | Event      | Nothing | Hide element (close button).  | 
+| `hideAll()`    | None       | Nothing | Hide all elements.            |
+| `hideOthers()` | None       | Nothing | Hide all elements but this.   |
+| `toggle()`     | Event      | Nothing | Toggle visibility of element. |
 
 
 ## Events
 
-| Event                | Description                                               | 
-| -------------------- | --------------------------------------------------------- | 
-| `footnote-on-toggle` | Triggers when element toggles. (Click on footnote call.)  | 
-| `footnote-on-hide`   | Triggers when element is hidden. (Click on close button.) |
+| Event                | Description                                     | 
+| -------------------- | ----------------------------------------------- | 
+| `visible-changed`    | Triggered when the attribute `visible` changes. | 
 
 ### Event Listener (optional)
 ```javascript
 const footnotes = document.querySelectorAll('foot-note');
 footnotes.forEach((note, index) => {
-	note.addEventListener('footnote-on-toggle', (event) => {
-		console.log("Footnote toggled. Visible: " + event.detail.visible);
-	}, false);
-	note.addEventListener('footnote-on-hide', (event) => {
-		console.log("Footnote hidden. Visible: " + event.detail.visible);
+	note.addEventListener('visible-changed', (event) => {
+		console.log(`Footnote ${note.getAttribute('index')}: visible = ${event.detail.visible}`);
 	}, false);
 });
 ```
