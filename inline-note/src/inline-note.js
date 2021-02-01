@@ -425,7 +425,6 @@ class InlineNote extends HTMLElement {
 		if(event && event instanceof Event) {
 			event.preventDefault();
 		}
-		this.hideOthers();
 		this.visible = !this.visible;
 	}
 
