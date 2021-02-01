@@ -10,15 +10,14 @@
 				box-sizing: border-box;
 			}
 			body { 
-				--inline-note-theme-color: teal;
-				--inline-note-call-vertical-align: super;
-				--inline-note-call-font-size: 0.8rem;
-				--inline-note-area-color: white;
-				--inline-note-dark-area-color: black;
-				--inline-note-max-width: 58rem;
-				--inline-note-line-heigth: 1.4;
-				--inline-note-font-size: 1rem;
 				--inline-note-font-color: black;
+				--inline-note-theme-color: teal;
+				--inline-note-call-vertical-align: baseline;
+				--inline-note-call-font-size: inherit;
+				--inline-note-vertical-unit: 0;
+				--inline-note-border-radius: 0.2rem;
+				--inline-note-area-color: #f2f2f2; 
+				--inline-note-dark-area-color: #464646;
 				--inline-note-dark-font-color: white;
 				font-size: 1.3em;
 				font-family: Vollkorn, serif;
@@ -32,16 +31,13 @@
 			/* Custom styles */
 			inline-note::part(call) {
 				/* Inline note call */
-				padding: 0.2em 0.4em;
-				margin-left: -0.4em;
-				margin-right: -0.4em;
+			}
+			inline-note::part(call):hover,
+			inline-note::part(call):focus {
+				/* text-decoration: underline solid 1px; */
 			}
 			inline-note::part(area) {
 				/* Inline note area */
-				z-index: 1;
-			}
-			inline-note::part(marker) {
-				/* Inline note marker */
 			}
 			inline-note::part(element) {
 				/* Inline note element */
@@ -49,9 +45,6 @@
 			inline-note::part(close-button) {
 				/* Close button */
 			}
-			/* section {
-				counter-reset: inline-note;
-			} */
 			/* Fallback */
 			inline-note:not(:defined) {
 				margin-left: 0.5rem;
@@ -81,16 +74,16 @@
 		</section>
 		<section>
 			<h2>Quotation</h2>
-			<p>In their research on footnotes in scholarly journals in the field of communication, Michael Bugeja and Daniela V. Dimitrova have found that citations to online sources have a rate of decay (as cited pages are taken down), which they call a "half-life", that renders footnotes in those journals less useful for scholarship over time.<inline-note index="Begeja et al., 2010">Bugeja, Michael and Daniela V. Dimitrova (2010). Vanishing Act: The Erosion of Online Footnotes and Implications for Scholarship in the Digital Age. Duluth, Minnesota: Litwin Books. ISBN 978-1-936117-14-7</inline-note></p>
-			<p>Other experts have found that published replications do not have as many citations as original publications.<inline-note index="Hubbard et al., 1994">Raymond Hubbard and J. Scott Armstrong (1994). "Replications and Extensions in Marketing: Rarely Published But Quite Contrary" (PDF). International Journal of Research in Marketing. 11 (3): 233–248. doi:10.1016/0167-8116(94)90003-5.</inline-note></p>
-			<p>Another important issue is citation errors, which often occur due to carelessness on either the researcher or journal editor's part in the publication procedure. Experts have found that simple precautions, such as consulting the author of a cited source about proper citations, reduce the likelihood of citation errors and thus increase the quality of research.<inline-note index="Wright et al., 2008">Wright, Malcolm; Armstrong, J. Scott (2008). "The Ombudsman: Verification of Citations: Fawlty Towers of Knowledge?". Interfaces. 38 (2): 125–139. doi:10.1287/inte.1070.0317. eISSN 1526-551X. ISSN 0092-2102. JSTOR 25062982. OCLC 5582131729. SSRN 1941335.</inline-note></p>
+			<p>In their research on footnotes in scholarly journals in the field of communication, Michael Bugeja and Daniela V. Dimitrova have found that citations to online sources have a rate of decay (as cited pages are taken down), which they call a "half-life", <inline-note index="Begeja et al., 2010">Bugeja, Michael and Daniela V. Dimitrova (2010). Vanishing Act: The Erosion of Online Footnotes and Implications for Scholarship in the Digital Age. Duluth, Minnesota: Litwin Books. ISBN 978-1-936117-14-7</inline-note> that renders footnotes in those journals less useful for scholarship over time.</p>
+			<p>Other experts have found that published replications do not have as many citations as original publications. <inline-note index="Hubbard et al., 1994">Raymond Hubbard and J. Scott Armstrong (1994). "Replications and Extensions in Marketing: Rarely Published But Quite Contrary" (PDF). International Journal of Research in Marketing. 11 (3): 233–248. doi:10.1016/0167-8116(94)90003-5.</inline-note></p>
+			<p>Another important issue is citation errors, which often occur due to carelessness on either the researcher or journal editor's part in the publication procedure. Experts have found that simple precautions, such as consulting the author of a cited source about proper citations, reduce the likelihood of citation errors and thus increase the quality of research. <inline-note index="Wright et al., 2008">Wright, Malcolm; Armstrong, J. Scott (2008). "The Ombudsman: Verification of Citations: Fawlty Towers of Knowledge?". Interfaces. 38 (2): 125–139. doi:10.1287/inte.1070.0317. eISSN 1526-551X. ISSN 0092-2102. JSTOR 25062982. OCLC 5582131729. SSRN 1941335.</inline-note></p>
 		</section>
 		<section>
 				<p>[...]</p>
 		</section>
 		<section>
 			<h3>Source:</h3> 
-			<p><a href="https://en.wikipedia.org/wiki/Note_(typography)">Note (typography)</a></p>
+			<p><a href="https://en.wikipedia.org/wiki/Citation">Note (typography)</a></p>
 		</section>
 	</div>
 	<script src="index.js" type="module"></script>

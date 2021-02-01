@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 28 Jan. 2021
+	Date: 29 Jan. 2021
 */
 
 /* Configuration */
@@ -17,8 +17,8 @@ const TEMPLATE_ID = 'inline-note-template';
 const TEMPLATE_COMMENT = 'InlineNote component template';
 const SHADOW_DOM_MODE = 'open';
 const VISIBLE_CHANGED_EVENT_NAME = 'visible-changed';
-const CALL_OPENING_BRACKET = '[';
-const CALL_CLOSING_BRACKET = ']';
+const CALL_OPENING_BRACKET = '(';
+const CALL_CLOSING_BRACKET = ')';
 const FALLBACK_LANG = "en";
 
 /* Internal identifier */
@@ -31,6 +31,20 @@ const handleKeydownDocument = Symbol('handleKeydownDocument');
 const documentLang = Symbol('documentLang');
 const translate = Symbol('translate');
 
+const getIcon = (iconName) => {
+	return (fillColor) => {
+		fillColor = fillColor.replace(/#/,"%23");
+		const icons = {
+			eyeOn:`data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z' fill='${fillColor}'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M21.8944 11.5528C19.7362 7.23635 15.9031 5 12 5C8.09687 5 4.26379 7.23635 2.10557 11.5528C1.96481 11.8343 1.96481 12.1657 2.10557 12.4472C4.26379 16.7637 8.09687 19 12 19C15.9031 19 19.7362 16.7637 21.8944 12.4472C22.0352 12.1657 22.0352 11.8343 21.8944 11.5528ZM12 17C9.03121 17 5.99806 15.3792 4.12966 12C5.99806 8.62078 9.03121 7 12 7C14.9688 7 18.0019 8.62078 19.8703 12C18.0019 15.3792 14.9688 17 12 17Z' fill='${fillColor}'/%3E%3C/svg%3E`,
+			eyeOff:`data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M4.70711 3.29289C4.31658 2.90237 3.68342 2.90237 3.29289 3.29289C2.90237 3.68342 2.90237 4.31658 3.29289 4.70711L5.71706 7.13127C4.28639 8.20737 3.03925 9.68543 2.10557 11.5528C1.96481 11.8343 1.96481 12.1657 2.10557 12.4472C4.26379 16.7637 8.09687 19 12 19C13.5552 19 15.0992 18.645 16.5306 17.9448L19.2929 20.7071C19.6834 21.0976 20.3166 21.0976 20.7071 20.7071C21.0976 20.3166 21.0976 19.6834 20.7071 19.2929L4.70711 3.29289ZM15.0138 16.428L13.2934 14.7076C12.9018 14.8951 12.4631 15 12 15C10.3431 15 9 13.6569 9 12C9 11.5369 9.10495 11.0982 9.29237 10.7066L7.14838 8.56259C5.98778 9.3794 4.94721 10.5214 4.12966 12C5.99806 15.3792 9.03121 17 12 17C13.0134 17 14.0343 16.8112 15.0138 16.428Z' fill='${fillColor}'/%3E%3Cpath d='M18.5523 13.8955C19.0353 13.3402 19.4784 12.7088 19.8703 12C18.0019 8.62078 14.9687 7 12 7C11.888 7 11.7759 7.00231 11.6637 7.00693L9.87939 5.22258C10.5774 5.07451 11.2875 5 12 5C15.9031 5 19.7362 7.23635 21.8944 11.5528C22.0352 11.8343 22.0352 12.1657 21.8944 12.4472C21.3504 13.5352 20.7 14.491 19.9689 15.3121L18.5523 13.8955Z' fill='${fillColor}'/%3E%3C/svg%3E`,
+			accept:`data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.6644 5.25259C21.0772 5.61951 21.1143 6.25158 20.7474 6.66437L10.0808 18.6644C9.89099 18.8779 9.61898 19 9.33334 19C9.04771 19 8.7757 18.8779 8.58593 18.6644L3.2526 12.6644C2.88568 12.2516 2.92286 11.6195 3.33565 11.2526C3.74843 10.8857 4.3805 10.9229 4.74742 11.3356L9.33334 16.4948L19.2526 5.33564C19.6195 4.92286 20.2516 4.88568 20.6644 5.25259Z' fill='${fillColor}'/%3E%3C/svg%3E`,
+			reject:`data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M5.29289 5.29289C5.68342 4.90237 6.31658 4.90237 6.70711 5.29289L12 10.5858L17.2929 5.29289C17.6834 4.90237 18.3166 4.90237 18.7071 5.29289C19.0976 5.68342 19.0976 6.31658 18.7071 6.70711L13.4142 12L18.7071 17.2929C19.0976 17.6834 19.0976 18.3166 18.7071 18.7071C18.3166 19.0976 17.6834 19.0976 17.2929 18.7071L12 13.4142L6.70711 18.7071C6.31658 19.0976 5.68342 19.0976 5.29289 18.7071C4.90237 18.3166 4.90237 17.6834 5.29289 17.2929L10.5858 12L5.29289 6.70711C4.90237 6.31658 4.90237 5.68342 5.29289 5.29289Z' fill='${fillColor}'/%3E%3C/svg%3E`		
+		};
+		return icons[iconName];
+	};
+};
+
+
 class InlineNote extends HTMLElement {
 	
 	static get observedAttributes() { 
@@ -42,17 +56,14 @@ class InlineNote extends HTMLElement {
 		return {
 			"en-US": {
 				"callElementAriaLabel": "Note call",
-				"markerElementAriaLabel": "Note marker",
 				"closeButtonAriaLabel": "Close"
 			},
 			"de-DE": {
 				"callElementAriaLabel": "Notenaufruf",
-				"markerElementAriaLabel": "Notenzeichen",
 				"closeButtonAriaLabel": "Schließen"
 			},
 			"fr-FR": {
 				"callElementAriaLabel": "Appel de note",
-				"markerElementAriaLabel": "Marqueur de notes",
 				"closeButtonAriaLabel": "Fermer"  
 			}
 		};
@@ -69,6 +80,9 @@ class InlineNote extends HTMLElement {
 				color: #000000;
 				color: var(--inline-note-font-color, #000000);
 			}
+			:host([visible]) .area {
+				
+			}
 			:host([hidden]) {
 				display: none;
 			}
@@ -82,116 +96,96 @@ class InlineNote extends HTMLElement {
 			}
 			.call {
 				cursor: pointer;
+				margin-right: 0.4rem;
+				vertical-align: baseline;
+				vertical-align: var(--inline-note-call-vertical-align, baseline); 
+				font-size: var(--inline-note-call-font-size, inherit);
 				color: #000000;
 				color: var(--inline-note-theme-color, #000000);
-				vertical-align: super;
-				vertical-align: var(--inline-note-call-vertical-align, super); 
-				font-size: var(--inline-note-call-font-size, 0.8rem);
-				text-decoration: none;
+				text-decoration: underline dotted 1px;
 			}
 			.call::before {
-				content: "${CALL_OPENING_BRACKET}";
+				content: "${CALL_OPENING_BRACKET}"; 
 			}
 			.call::after {
-				content: "${CALL_CLOSING_BRACKET}";
+				content: "${CALL_CLOSING_BRACKET}"; 
 			}
-			.call:hover {
-				text-decoration: underline;
-			}
+			.call:hover,
 			.call:focus {
-				font-weight: bolder;
+				text-decoration: underline;
 			}
 			.area {
 				display: none;
-				position: fixed;
-				bottom: 0;
-				left: 50%;
-				transform: translateX(-50%);
-				flex-direction: row;
-				flex-wrap: nowrap;
-				justify-content: space-between;
-				align-items: stretch;
-				border-top-color: #000000;
-				border-top: 1px solid var(--inline-note-theme-color, #000000);
-				width: 100%;
-				max-width: var(--inline-note-max-width, 58rem);
-				max-height: 100%;
-				min-height: 0;
-				margin-bottom: -100%;
-				overflow-y: auto;
-				padding: 2rem 4rem 2rem 4rem;
-				font-size: var(--inline-note-font-size, 1rem);
-				line-height: var(--inline-note-line-heigth, 1.4);
-				background-color: #ffffff;
-				background-color: var(--inline-note-area-color, #ffffff);
+				position: relative;
+				padding-top: var(--inline-note-vertical-unit, 0.1rem);
+  			padding-bottom: var(--inline-note-vertical-unit, 0.1rem);
+				margin-left: 0.4rem;
+				margin-right: 0.4rem;
+				border-radius: var(--inline-note-border-radius, 0.2rem);
+				box-shadow: 0.4rem 0 0 var(--inline-note-area-color, #f2f2f2), -0.4rem 0 0 var(--inline-note-area-color, #f2f2f2);
+				-webkit-box-decoration-break: clone;
+  			-o-box-decoration-break: clone;
+				box-decoration-break: clone;
+				text-decoration: none;
+				background: var(--inline-note-theme-color, #000000);
+			}
+			.area::before {
+				content: "";
+				padding: var(--inline-note-vertical-unit, 0.1rem) 0.4rem;
+				box-shadow: -0.4rem 0 0 var(--inline-note-theme-color, #000);
+				border-top-left-radius: var(--inline-note-border-radius, 0.2rem);
+				border-bottom-left-radius: var(--inline-note-border-radius, 0.2rem);
+			}
+			.area::after {
+				content: "";
+				padding: var(--inline-note-vertical-unit, 0.1rem) 0.4rem;
+				border-top-right-radius: var(--inline-note-border-radius, 0.2rem);
+				border-bottom-right-radius: var(--inline-note-border-radius, 0.2rem);
+				box-shadow: 0.4rem 0 0 var(--inline-note-theme-color, #000000);
+				margin-left: calc(-3 * 0.4rem);
 			}
 			.visible {
-				display: flex;
-				-webkit-animation: slide-in 0.4s ease forwards;
-				-moz-animation: slide-in 0.4s ease forwards;
-				-o-animation: slide-in 0.4s ease forwards;
-				animation: slide-in 0.4s ease forwards;
-			}
-			@keyframes slide-in {
-				from { margin-bottom: -100%; }
-				to { margin-bottom: 0; }
+				display: inline;
 			}
 			.element {
-				flex: 1 1 auto;
-				min-height: 0;
-				overflow-y: auto;
+				padding: var(--inline-note-vertical-unit, 0.1rem) calc(2 * 0.4rem);
+				background-color: var(--inline-note-area-color, #f2f2f2);
 			}
-			.marker,
-			.close {
-				flex: 0 0 auto;
-				align-self: center;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				min-width: 1.8rem;
-				height: 1.8rem;
-				min-height: 0;
-				padding: 0.4rem;
-				border-radius: 1rem;
-				text-align: center;
-				font-size: 1rem;
-				line-height: 1.4;
-				color: #ffffff;
-				background-color: #000000;
-				background-color: var(--inline-note-theme-color, #000000);
-			}
-			.marker {
-				margin-right: 1.6rem;
-			}
-			.close {
-				margin-left: 1.6rem;
+			right-pointing-triangle {
+				display: inline-block;
+				vertical-align: middle;
+				width: 0; 
+				height: 0; 
+				margin-left: -0.6rem;
+				transform: translateX(0.3rem);
+				border-top: 0.6rem solid transparent;
+				border-bottom: 0.6rem solid transparent;
+				border-left: 0.6rem solid var(--inline-note-theme-color, #000000);
 			}
 			.button {	
-				position: relative;
+				display: inline-block;
+				overflow: hidden;
+				vertical-align: middle;
+				padding: calc(2 * 0.4rem) 2rem;
 				border: none;
 				text-decoration: none;
-				text-align: center;
 				cursor: pointer;
+				background-color: transparent;
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-position: center;
 				-webkit-appearance: none;
 				-moz-appearance: none;
 			}
-			.close:before, 
-			.close:after {
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				content: ' ';
-				height: 0.8rem;
-				width: 2px;
-				margin-top: -0.4rem;
-				margin-left: -1px;
-				background-color: #ffffff;
+			.button + .button {
+				border-left: solid 1px rgba(255, 255, 255, 0.6);
 			}
-			.close:before {
-				transform: rotate(45deg);
+			.button svg {
+				width: auto;
+				height: 100%;
 			}
-			.close:after {
-				transform: rotate(-45deg);
+			.close {
+				background-image: url("${getIcon("eyeOff")("#ffffff")}");
 			}
 			@media (prefers-color-scheme: dark) {
 				:host {
@@ -199,22 +193,13 @@ class InlineNote extends HTMLElement {
 					color: var(--inline-note-dark-font-color, #ffffff);
 				}
 				.area {
+					box-shadow: 0.4rem 0 0 var(--inline-note-dark-area-color, #000000), -0.4rem 0 0 var(--inline-note-dark-area-color, #000000);
+				}
+				.element {
 					background-color: #000000;
 					background-color: var(--inline-note-dark-area-color, #000000);
 				}
-			}
-			@media (max-width: 30rem) {
-				.area {
-					flex-direction: column;
-					padding: 1rem 2rem 1rem 2rem;
-				}
-				.marker {
-					margin: 0 0 0.5rem 0;
-				}
-				.close {
-					margin: 0.5rem 0 0 0;
-				}
-			}			
+			}		
 		`);
 		
 		const style = document.createElement('style');
@@ -237,21 +222,18 @@ class InlineNote extends HTMLElement {
 		call.setAttribute('part', 'call');
 		call.setAttribute('role', 'doc-noteref');
 		
-		/* Note marker */
-		const marker = document.createElement('sup');
-		marker.setAttribute('id', 'marker');
-		marker.classList.add('marker');
-		marker.setAttribute('part', 'marker');
-		
 		/* Slot */
 		const slot = document.createElement('slot');
 		
 		/* Note element */
-		const element = document.createElement('div');
+		const element = document.createElement('cite');
 		element.setAttribute('id', 'element');
 		element.classList.add('element');
 		element.setAttribute('part', 'element');
 		element.appendChild(slot);
+
+		/* Arrow element */
+		const triangle = document.createElement('right-pointing-triangle');
 
 		/* Close button */
 		const closeButton = document.createElement('button');
@@ -262,13 +244,13 @@ class InlineNote extends HTMLElement {
 		closeButton.setAttribute('tabindex', '-1');
 
 		/* Note area */
-		const area = document.createElement('aside');
+		const area = document.createElement('ins');
 		area.setAttribute('id', 'area');
 		area.classList.add('area');
 		area.setAttribute('part', 'area');
 		area.setAttribute('role', 'doc-footnote');
 		area.setAttribute('aria-hidden', 'true');
-		area.appendChild(marker);
+		area.appendChild(triangle);
 		area.appendChild(element);
 		area.appendChild(closeButton);
 		
@@ -319,7 +301,6 @@ class InlineNote extends HTMLElement {
 		/* Note Elements */
 		this.areaElement = root.getElementById('area');
 		this.callElement = root.getElementById('call');
-		this.markerElement = root.getElementById('marker');
 		this.elementElement = root.getElementById('element');
 		this.closeElement = root.getElementById('close-button');
 		
@@ -341,6 +322,7 @@ class InlineNote extends HTMLElement {
 		const language = (this.lang || this[documentLang]);
 		this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
 		this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
+		//this.closeElement.innerHTML = getIcon("eyeOff")({"fillColor":"#ffffff"});
 	}
 
 	disconnectedCallback() {
@@ -366,8 +348,6 @@ class InlineNote extends HTMLElement {
 				this.callElement.textContent = (newValue || "");
 				this.callElement.setAttribute('href', '#' + tagName + hrefIndexSuffix);
 				this.callElement.setAttribute('aria-label', this[translate]("callElementAriaLabel", language) + ariaIndexSuffix);
-				this.markerElement.textContent = (newValue || "");
-				this.markerElement.setAttribute('aria-label', this[translate]("markerElementAriaLabel", language) + ariaIndexSuffix);
 				break;
 			/* Attribute: visible */
 			case 'visible':
@@ -389,7 +369,6 @@ class InlineNote extends HTMLElement {
 				language = (newValue || this[documentLang]);
 				ariaIndexSuffix = ((this.index && ` ${this.index}`) || "");
 				this.callElement.setAttribute('aria-label', this[translate]("callElementAriaLabel", language) + ariaIndexSuffix);
-				this.markerElement.setAttribute('aria-label', this[translate]("markerElementAriaLabel",language) + ariaIndexSuffix);
 				this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
 				this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
 				break;
