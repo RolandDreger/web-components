@@ -159,7 +159,7 @@ class InlineNote extends HTMLElement {
 				width: 0; 
 				height: 0; 
 				margin-left: -0.6rem;
-				transform: translateX(0.3rem);
+				transform: translate(0.3rem, -0.05rem);
 				border-top: 0.6rem solid transparent;
 				border-bottom: 0.6rem solid transparent;
 				border-left: 0.6rem solid var(--inline-note-theme-color, #000000);
@@ -169,6 +169,7 @@ class InlineNote extends HTMLElement {
 				overflow: hidden;
 				vertical-align: middle;
 				padding: calc(2 * 0.4rem) 2rem;
+				transform: translateY(-0.05rem);
 				border: none;
 				text-decoration: none;
 				cursor: pointer;
