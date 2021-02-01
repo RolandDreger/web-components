@@ -21,7 +21,6 @@
 				--inline-note-dark-font-color: white;
 				font-size: 1.3em;
 				font-family: Vollkorn, serif;
-				counter-reset: inline-note;
 			}
 			.container { 
 				max-width: 55rem;
@@ -47,10 +46,6 @@
 			}
 			/* Fallback */
 			inline-note:not(:defined) {
-				margin-left: 0.5rem;
-				margin-right: 0.5rem;
-				padding-left: 0.5rem;
-				padding-right: 0.5rem;
 				color: #000000;
 				color: var(--inline-note-theme-color, #000000);
 			}
