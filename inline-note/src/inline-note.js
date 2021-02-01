@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 29 Jan. 2021
+	Date: 1 Feb. 2021
 */
 
 /* Configuration */
@@ -20,6 +20,7 @@ const VISIBLE_CHANGED_EVENT_NAME = 'visible-changed';
 const CALL_OPENING_BRACKET = '(';
 const CALL_CLOSING_BRACKET = ')';
 const FALLBACK_LANG = "en";
+const ICON_COLOR = "#ffffff";
 
 /* Internal identifier */
 const isInternal = Symbol('isInternal');
@@ -31,6 +32,7 @@ const handleKeydownDocument = Symbol('handleKeydownDocument');
 const documentLang = Symbol('documentLang');
 const translate = Symbol('translate');
 
+/* Icons */
 const getIcon = (iconName) => {
 	return (fillColor) => {
 		fillColor = fillColor.replace(/#/,"%23");
@@ -181,12 +183,8 @@ class InlineNote extends HTMLElement {
 			.button + .button {
 				border-left: solid 1px rgba(255, 255, 255, 0.6);
 			}
-			.button svg {
-				width: auto;
-				height: 100%;
-			}
 			.close {
-				background-image: url("${getIcon("eyeOff")("#ffffff")}");
+				background-image: url("${getIcon("eyeOff")(ICON_COLOR)}");
 			}
 			@media (prefers-color-scheme: dark) {
 				:host {
@@ -323,7 +321,6 @@ class InlineNote extends HTMLElement {
 		const language = (this.lang || this[documentLang]);
 		this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
 		this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
-		//this.closeElement.innerHTML = getIcon("eyeOff")({"fillColor":"#ffffff"});
 	}
 
 	disconnectedCallback() {
