@@ -3,7 +3,7 @@
 	
 	Custom Element: <inline-note></inline-note>
 	Shadow DOM: true, open
-	Attributes: index, visible (empty), lang 
+	Attributes: index, visible (empty), lang (default: "en-US")
 	Slots: default
 
 	Author: Roland Dreger, www.rolanddreger.net
@@ -54,7 +54,6 @@ class InlineNote extends HTMLElement {
 	}
 
 	static get translations() {
-		/* "en-US": default language */
 		return {
 			"en-US": {
 				"callElementAriaLabel": "Note call",
