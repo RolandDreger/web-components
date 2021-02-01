@@ -101,7 +101,7 @@ class InlineNote extends HTMLElement {
 				vertical-align: var(--inline-note-call-vertical-align, baseline); 
 				font-size: var(--inline-note-call-font-size, inherit);
 				color: #000000;
-				color: var(--inline-note-theme-color, #000000);
+				color: var(--inline-note-call-font-color, #000000);
 				text-decoration: underline dotted 1px;
 			}
 			.call::before {
@@ -126,6 +126,7 @@ class InlineNote extends HTMLElement {
 				-webkit-box-decoration-break: clone;
   			-o-box-decoration-break: clone;
 				box-decoration-break: clone;
+				color: var(--inline-note-area-font-color, #000000);
 				text-decoration: none;
 				background: var(--inline-note-theme-color, #000000);
 			}
