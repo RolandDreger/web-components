@@ -21,6 +21,7 @@ const CALL_OPENING_BRACKET = '(';
 const CALL_CLOSING_BRACKET = ')';
 const FALLBACK_LANG = "en";
 const ICON_COLOR = "#ffffff";
+const DARK_ICON_COLOR = "#000000";
 
 /* Internal identifier */
 const isInternal = Symbol('isInternal');
@@ -127,14 +128,13 @@ class InlineNote extends HTMLElement {
 				-webkit-box-decoration-break: clone;
   			-o-box-decoration-break: clone;
 				box-decoration-break: clone;
-				color: var(--inline-note-area-font-color, #000000);
 				text-decoration: none;
 				background: var(--inline-note-theme-color, #000000);
 			}
 			.area::before {
 				content: "";
 				padding: var(--inline-note-vertical-unit, 0.1rem) 0.4rem;
-				box-shadow: -0.4rem 0 0 var(--inline-note-theme-color, #000);
+				box-shadow: -0.4rem 0 0 var(--inline-note-theme-color, #000000);
 				border-top-left-radius: var(--inline-note-border-radius, 0.2rem);
 				border-bottom-left-radius: var(--inline-note-border-radius, 0.2rem);
 			}
@@ -191,12 +191,29 @@ class InlineNote extends HTMLElement {
 					color: #ffffff;
 					color: var(--inline-note-dark-font-color, #ffffff);
 				}
+				.call {
+					color: #ffffff;
+					color: var(--inline-note-dark-call-font-color, #ffffff);
+				}
 				.area {
 					box-shadow: 0.4rem 0 0 var(--inline-note-dark-area-color, #000000), -0.4rem 0 0 var(--inline-note-dark-area-color, #000000);
+					background: var(--inline-note-dark-theme-color, #ffffff);
+				}
+				.area::before {
+					box-shadow: -0.4rem 0 0 var(--inline-note-dark-theme-color, #ffffff);
+				}
+				.area::after {
+					box-shadow: 0.4rem 0 0 var(--inline-note-dark-theme-color, #ffffff);
 				}
 				.element {
 					background-color: #000000;
 					background-color: var(--inline-note-dark-area-color, #000000);
+				}
+				right-pointing-triangle {
+					border-left: 0.6rem solid var(--inline-note-dark-theme-color, #ffffff);
+				}
+				.close {
+					background-image: url("${getIcon("eyeOff")(DARK_ICON_COLOR)}");
 				}
 			}		
 		`);

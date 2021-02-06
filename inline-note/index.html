@@ -10,16 +10,18 @@
 				box-sizing: border-box;
 			}
 			body { 
-				--inline-note-area-font-color: black;
-				--inline-note-call-font-color: teal;
 				--inline-note-theme-color: teal;
-				--inline-note-call-vertical-align: baseline;
-				--inline-note-call-font-size: inherit;
+				--inline-note-font-color: #000000;
+				--inline-note-call-font-color: teal;
+				--inline-note-area-color: #f2f2f2; 
 				--inline-note-vertical-unit: 0;
 				--inline-note-border-radius: 0.2rem;
-				--inline-note-area-color: #f2f2f2; 
+				--inline-note-call-vertical-align: baseline;
+				--inline-note-call-font-size: inherit;
+				--inline-note-dark-theme-color: mediumturquoise;
 				--inline-note-dark-area-color: #464646;
-				--inline-note-dark-font-color: white;
+				--inline-note-dark-font-color: #fffff;
+				--inline-note-dark-call-font-color: mediumturquoise;
 				font-size: 1.3em;
 				font-family: Vollkorn, serif;
 			}
@@ -44,6 +46,12 @@
 			}
 			inline-note::part(close-button) {
 				/* Close button */
+			}
+			@media (prefers-color-scheme: dark) {
+				body {
+					color: #ffffff;
+					background-color: #000000;
+				}
 			}
 			/* Fallback */
 			inline-note:not(:defined) {
@@ -74,6 +82,12 @@
 			<p>Other experts have found that published replications do not have as many citations as original publications. <inline-note index="Hubbard et al., 1994">Raymond Hubbard and J. Scott Armstrong (1994). "Replications and Extensions in Marketing: Rarely Published But Quite Contrary" (PDF). International Journal of Research in Marketing. 11 (3): 233–248. doi:10.1016/0167-8116(94)90003-5.</inline-note></p>
 			<p>Another important issue is citation errors, which often occur due to carelessness on either the researcher or journal editor's part in the publication procedure. Experts have found that simple precautions, such as consulting the author of a cited source about proper citations, reduce the likelihood of citation errors and thus increase the quality of research. <inline-note index="Wright et al., 2008">Wright, Malcolm; Armstrong, J. Scott (2008). "The Ombudsman: Verification of Citations: Fawlty Towers of Knowledge?". Interfaces. 38 (2): 125–139. doi:10.1287/inte.1070.0317. eISSN 1526-551X. ISSN 0092-2102. JSTOR 25062982. OCLC 5582131729. SSRN 1941335.</inline-note></p>
 		</section>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+			<path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z"/>
+		</svg>
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M2 5C2 3.89543 2.89543 3 4 3H20C21.1046 3 22 3.89543 22 5V7C22 7.74708 21.5904 8.39848 20.9835 8.74188C20.9944 8.82638 21 8.91253 21 9V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V9C3 8.91253 3.00561 8.82638 3.0165 8.74188C2.40961 8.39848 2 7.74707 2 7V5ZM20 7V5H4V7H20ZM5 9V19H19V9H5ZM8 12C8 11.4477 8.44772 11 9 11H15C15.5523 11 16 11.4477 16 12C16 12.5523 15.5523 13 15 13H9C8.44772 13 8 12.5523 8 12Z" fill="#282828"/>
+			</svg>
 		<section>
 				<p>[...]</p>
 		</section>
