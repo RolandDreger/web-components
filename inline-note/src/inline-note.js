@@ -134,9 +134,9 @@ class InlineNote extends HTMLElement {
 			.area::before {
 				content: "";
 				padding: var(--inline-note-vertical-unit, 0.1rem) 0.4rem;
-				box-shadow: -0.4rem 0 0 var(--inline-note-theme-color, #000000);
 				border-top-left-radius: var(--inline-note-border-radius, 0.2rem);
 				border-bottom-left-radius: var(--inline-note-border-radius, 0.2rem);
+				box-shadow: -0.4rem 0 0 var(--inline-note-theme-color, #000000);
 			}
 			.area::after {
 				content: "";
@@ -144,7 +144,6 @@ class InlineNote extends HTMLElement {
 				border-top-right-radius: var(--inline-note-border-radius, 0.2rem);
 				border-bottom-right-radius: var(--inline-note-border-radius, 0.2rem);
 				box-shadow: 0.4rem 0 0 var(--inline-note-theme-color, #000000);
-				margin-left: calc(-3 * 0.4rem);
 			}
 			.visible {
 				display: inline;
@@ -181,7 +180,13 @@ class InlineNote extends HTMLElement {
 				-moz-appearance: none;
 			}
 			.button + .button {
-				border-left: solid 1px rgba(255, 255, 255, 0.6);
+				border-left: solid 1px rgba(255, 255, 255, 1);
+			}
+			.area .button:first-child {
+				margin-left: calc(-3 * 0.4rem);
+			}
+			.area .button:last-child {
+				margin-right: calc(-3 * 0.4rem);
 			}
 			.close {
 				background-image: url("${getIcon("eyeOff")(ICON_COLOR)}");
