@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 1 Feb. 2021
+	Date: 6 Feb. 2021
 */
 
 /* Configuration */
