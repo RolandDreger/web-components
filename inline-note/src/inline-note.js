@@ -356,16 +356,18 @@ class InlineNote extends HTMLElement {
 		
 		let language;
 		let indexSuffix;
-		
+		let callElementAriaLabelValue;
+
 		switch(name) {
 			/* Attribute: index */
 			case 'index':
 				language = (this.lang || this[documentLang]);
-				indexSuffix = ((newValue && ` ${newValue}`) || "");
+				indexSuffix = (newValue || "");
 				let tagName = (this.tagName || "");
-				let hrefValue = '#' + this[clearUpID](tagName + indexSuffix);
+				let hrefValue = '#' + this[clearUpID](tagName + "-" + indexSuffix);
 				this.callElement.setAttribute('href', hrefValue);
-				this.callElement.setAttribute('aria-label', this[translate]("callElementAriaLabel", language) + indexSuffix);
+				callElementAriaLabelValue = this[translate]("callElementAriaLabel", language) + ": " + indexSuffix;
+				this.callElement.setAttribute('aria-label', callElementAriaLabelValue);
 				this.callElement.textContent = (newValue || "");
 				break;
 			/* Attribute: visible */
@@ -386,8 +388,9 @@ class InlineNote extends HTMLElement {
 			/* Attribute: lang */
 			case 'lang':
 				language = (newValue || this[documentLang]);
-				indexSuffix = ((this.index && ` ${this.index}`) || "");
-				this.callElement.setAttribute('aria-label', this[translate]("callElementAriaLabel", language) + indexSuffix);
+				indexSuffix = (this.index || "");
+				callElementAriaLabelValue = this[translate]("callElementAriaLabel", language) + ": " + indexSuffix
+				this.callElement.setAttribute('aria-label', callElementAriaLabelValue);
 				this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
 				this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
 				break;
@@ -584,6 +587,7 @@ class InlineNote extends HTMLElement {
 		}
 
 		const SEPARATOR = "-";
+		
 		const cutWhitespaceRegExp = new RegExp("(^\\s+)|(\\s+$)", "ig");
 		const trimWhitespaceRegExp = new RegExp("\\s+", "ig");
 		const forbiddenCharsRegExp = new RegExp("[^a-z0-9 \\-]", "ig");
@@ -614,7 +618,7 @@ class InlineNote extends HTMLElement {
 		output = output.replace(/[ŕřŗ]/gi, "r");
 		output = output.replace(/[śšŝşș]/gi, "s");
 		output = output.replace(/[ţțťŧ]/gi, "t");
-		output = output.replace(/[úùûůūųũŭűų]/gi, "u");
+		output = output.replace(/[úùûůūųũŭű]/gi, "u");
 		output = output.replace(/[ŵ]/gi, "w");
 		output = output.replace(/[ÿýŷ]/gi, "y");
 		output = output.replace(/[źżž]/gi, "z");
