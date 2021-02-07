@@ -1,6 +1,6 @@
 ﻿{
   "name": "@rd-web-components/foot-note",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Web component that creates a custom element with the HTML tag <foot-note>.",
   "type": "module",
 	"main": "./src/foot-note.js",
