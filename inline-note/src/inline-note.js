@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 6 Feb. 2021
+	Date: 7 Feb. 2021
 */
 
 /* Configuration */
@@ -107,10 +107,10 @@ class InlineNote extends HTMLElement {
 				text-decoration: underline dotted 1px;
 			}
 			.call::before {
-				content: "${CALL_OPENING_BRACKET}"; 
+				content: var(--inline-note-call-opening-bracket, "["); 
 			}
 			.call::after {
-				content: "${CALL_CLOSING_BRACKET}"; 
+				content: var(--inline-note-call-closing-bracket, "]"); 
 			}
 			.call:hover,
 			.call:focus {
