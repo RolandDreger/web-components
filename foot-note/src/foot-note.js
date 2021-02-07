@@ -17,8 +17,6 @@ const TEMPLATE_ID = 'foot-note-template';
 const TEMPLATE_COMMENT = 'FootNote component template';
 const SHADOW_DOM_MODE = 'open';
 const VISIBLE_CHANGED_EVENT_NAME = 'visible-changed';
-const CALL_OPENING_BRACKET = '[';
-const CALL_CLOSING_BRACKET = ']';
 const FALLBACK_LANG = "en";
 
 /* Internal identifier */
@@ -90,10 +88,10 @@ class FootNote extends HTMLElement {
 				text-decoration: none;
 			}
 			.call::before {
-				content: "${CALL_OPENING_BRACKET}";
+				content: var(--footnote-call-opening-bracket, "[");
 			}
 			.call::after {
-				content: "${CALL_CLOSING_BRACKET}";
+				content: var(--footnote-call-closing-bracket, "]");
 			}
 			.call:hover {
 				text-decoration: underline;
