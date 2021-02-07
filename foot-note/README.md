@@ -2,7 +2,7 @@
 
 Web component that creates a custom element with the HTML tag `<foot-note>`. The element is displayed in the footer after clicking on the footnote call.
 
-<img src="https://github.com/RolandDreger/web-components/raw/master/foot-note/foot-note_web_component.png" title="Footnote web component" alt="Footnote web component">
+<img src="https://github.com/RolandDreger/web-components/raw/master/foot-note/foot-note_web_component.png" title="Footnote web component" alt="Screenshot foot-note web component">
 
 
 ## Demo
@@ -68,6 +68,8 @@ sections.forEach(section => {
 --footnote-font-size: 1rem;
 --footnote-font-color: black;
 --footnote-dark-font-color: white;
+--footnote-call-opening-bracket: "[";
+--footnote-call-closing-bracket: "]";
 ```
 
 ### Pseudoelement: part

@@ -3,9 +3,14 @@
 Components for typographic projects.
 
 ## `<foot-note>`
-Creates a new HTML tag `<foot-note>` displayed in the footer.
+Creates a new HTML element `<foot-note>` displayed in the footer.
 
-<img src="https://github.com/RolandDreger/web-components/raw/master/foot-note/foot-note_web_component.png" title="Footnote web component" alt="Footnote web component">
+<img src="https://github.com/RolandDreger/web-components/raw/master/foot-note/foot-note_web_component.png" title="Footnote web component" alt="Screenshot foot-note web component">
+
+## `<inline-note>`
+Creates a new HTML element `<inline-note>` displayed inline.
+
+<img src="https://github.com/RolandDreger/web-components/raw/master/inline-note/inline-note_web_component.png" title="Inline note web component" alt="Screenshot inline-note web component">
 
 ## License
 
