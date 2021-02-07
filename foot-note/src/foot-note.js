@@ -466,8 +466,8 @@ class FootNote extends HTMLElement {
 	}
 
 	hideOthers() {
-		const openNotes = document.querySelectorAll(this.tagName + '[visible]');
-		openNotes.forEach(note => {
+		const visibleNotes = document.querySelectorAll(this.tagName + '[visible]');
+		visibleNotes.forEach(note => {
 			if(note === this) {
 				return false;
 			}
@@ -476,8 +476,8 @@ class FootNote extends HTMLElement {
 	}
 
 	hideAll() {
-		const openNotes = document.querySelectorAll(this.tagName + '[visible]');
-		openNotes.forEach(note => {
+		const visibleNotes = document.querySelectorAll(this.tagName + '[visible]');
+		visibleNotes.forEach(note => {
 			note.removeAttribute('visible');
 		});
 	}

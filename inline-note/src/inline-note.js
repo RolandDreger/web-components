@@ -460,8 +460,8 @@ class InlineNote extends HTMLElement {
 	}
 
 	hideOthers() {
-		const openNotes = document.querySelectorAll(this.tagName + '[visible]');
-		openNotes.forEach(note => {
+		const visibleNotes = document.querySelectorAll(this.tagName + '[visible]');
+		visibleNotes.forEach(note => {
 			if(note === this) {
 				return false;
 			}
@@ -470,8 +470,8 @@ class InlineNote extends HTMLElement {
 	}
 
 	hideAll() {
-		const openNotes = document.querySelectorAll(this.tagName + '[visible]');
-		openNotes.forEach(note => {
+		const visibleNotes = document.querySelectorAll(this.tagName + '[visible]');
+		visibleNotes.forEach(note => {
 			note.removeAttribute('visible');
 		});
 	}
@@ -587,7 +587,7 @@ class InlineNote extends HTMLElement {
 		}
 
 		const SEPARATOR = "-";
-		
+
 		const cutWhitespaceRegExp = new RegExp("(^\\s+)|(\\s+$)", "ig");
 		const trimWhitespaceRegExp = new RegExp("\\s+", "ig");
 		const forbiddenCharsRegExp = new RegExp("[^a-z0-9 \\-]", "ig");
