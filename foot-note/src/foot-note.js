@@ -106,7 +106,7 @@ class FootNote extends HTMLElement {
 				position: fixed;
 				bottom: 0;
 				left: 50%;
-				transform: translateX(-50%);
+				transform: translate(-50%, 100%);
 				flex-direction: row;
 				flex-wrap: nowrap;
 				justify-content: space-between;
@@ -117,7 +117,6 @@ class FootNote extends HTMLElement {
 				max-width: var(--footnote-max-width, 58rem);
 				max-height: 100%;
 				min-height: 0;
-				margin-bottom: -100%;
 				overflow-y: auto;
 				padding: 2rem 4rem 2rem 4rem;
 				font-size: var(--footnote-font-size, 1rem);
@@ -127,14 +126,14 @@ class FootNote extends HTMLElement {
 			}
 			.visible {
 				display: flex;
-				-webkit-animation: slide-in 0.4s ease forwards;
-				-moz-animation: slide-in 0.4s ease forwards;
-				-o-animation: slide-in 0.4s ease forwards;
-				animation: slide-in 0.4s ease forwards;
+				-webkit-animation: slide-in 0.3s ease forwards;
+				-moz-animation: slide-in 0.3s ease forwards;
+				-o-animation: slide-in 0.3s ease forwards;
+				animation: slide-in 0.3s ease forwards;
 			}
 			@keyframes slide-in {
-				from { margin-bottom: -100%; }
-				to { margin-bottom: 0; }
+				from { transform: translate(-50%, 100%); }
+				to { transform: translate(-50%, 0); }
 			}
 			.element {
 				flex: 1 1 auto;
