@@ -235,6 +235,7 @@ class FootNote extends HTMLElement {
 		call.classList.add('call');
 		call.setAttribute('part', 'call');
 		call.setAttribute('role', 'doc-noteref');
+		call.setAttribute('aria-controls', 'element');
 		
 		/* Note marker */
 		const marker = document.createElement('sup');
@@ -250,6 +251,8 @@ class FootNote extends HTMLElement {
 		element.setAttribute('id', 'element');
 		element.classList.add('element');
 		element.setAttribute('part', 'element');
+		element.setAttribute('role', 'region');
+		element.setAttribute('aria-live', 'polite');
 		element.appendChild(slot);
 
 		/* Close button */
