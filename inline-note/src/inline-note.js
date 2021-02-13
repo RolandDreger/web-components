@@ -244,7 +244,7 @@ class InlineNote extends HTMLElement {
 		const slot = document.createElement('slot');
 		
 		/* Note element */
-		const element = document.createElement('cite');
+		const element = document.createElement('note-element');
 		element.setAttribute('id', 'element');
 		element.classList.add('element');
 		element.setAttribute('part', 'element');
@@ -259,7 +259,7 @@ class InlineNote extends HTMLElement {
 		closeButton.setAttribute('tabindex', '-1');
 
 		/* Note area */
-		const area = document.createElement('ins');
+		const area = document.createElement('note-area');
 		area.setAttribute('id', 'area');
 		area.classList.add('area');
 		area.setAttribute('part', 'area');
