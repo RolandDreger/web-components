@@ -246,7 +246,7 @@ class FootNote extends HTMLElement {
 		const slot = document.createElement('slot');
 		
 		/* Note element */
-		const element = document.createElement('div');
+		const element = document.createElement('note-element');
 		element.setAttribute('id', 'element');
 		element.classList.add('element');
 		element.setAttribute('part', 'element');
