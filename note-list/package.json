@@ -1,0 +1,34 @@
+﻿{
+  "name": "@rd-web-components/note-list",
+  "version": "2.0.4",
+  "description": "Web component that creates a custom element with the HTML tag <note-list>.",
+  "type": "module",
+	"main": "./src/note-list.js",
+	"module": "./src/note-list.js",
+  "scripts": {
+	},
+	"repository": {
+    "type": "git",
+    "url": "https://github.com/RolandDreger/web-components"
+	},
+	"author": {
+		"name": "Roland Dreger",
+		"email": "roland.dreger@a1.net"
+	},
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RolandDreger/web-components/issues"
+	},
+	"dependencies": {
+  },
+  "devDependencies": {
+	},
+  "keywords": [
+    "web-components",
+		"webcomponents",
+		"custom-elements",
+		"html",
+		"javascript",
+		"vanillajs"
+  ]
+}

@@ -1,4 +1,5 @@
 ﻿import FootNote from './src/foot-note.js';
+import NoteList from './../note-list/src/note-list.js';
 
 (function() {
 	
@@ -14,9 +15,11 @@
 	
 	/* Define <foot-note> element */
 	window.customElements.define('foot-note', FootNote);
+	window.customElements.define('note-list', NoteList);
 
 	const definePromiseArray = [
-		customElements.whenDefined('foot-note')
+		customElements.whenDefined('foot-note'),
+		customElements.whenDefined('note-list')
 	];
 
 	Promise.all(definePromiseArray)
