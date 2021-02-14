@@ -503,6 +503,8 @@ class FootNote extends HTMLElement {
 				context[isInternal] = true;
 				try {
 					Reflect.apply(target, context, args);
+				} catch(error) {
+					console.error(error);
 				} finally {
 					context[isInternal] = false;
 				}
