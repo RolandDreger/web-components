@@ -1,4 +1,4 @@
-# `<inline-note>`
+# `<note-list>`
 
 Web component that creates a custom element with the HTML tag `<inline-note>`. The element is displayed inline after clicking on the inline-note call.
 
@@ -90,21 +90,20 @@ inline-note:not(:defined)::after {
 
 ## Options
 
-| Attribute | Options  | Default | Description                                               | 
-| --------- | -------- | ------- | --------------------------------------------------------- | 
-| `index`   | *String* | unset   | Inline note index: can be set manually or via Javascript. | 
-| `visible` | Empty    | unset   | If the attribute has been set, the element is displayed.  |
-| `lang`    | *String* | unset   | Language support for aria-label, title, ...               |
+| Attribute   | Options  | Default | Description                                                    | 
+| ----------- | -------- | ------- | -------------------------------------------------------------- |  
+| `notetype`  | *String* | unset   | Note tag name                                                  |
+| `noterole`  | *String* | unset   | Note aria role in list                                         |
+| `noteindex` | empty    | unset   | Get list number from note index attribute                      |
+| `source`    | *String* | unset   | ID of source element, e.g. <section id="target">               |
+| `lang`      | *String* | unset   | Language support for aria-label, title, ... (default: "en-US") |
 
 
 ## Methods
 
 | Prototype      | Parameters | Returns | Description                   | 
 | ------------   | ---------- | ------- | ----------------------------- | 
-| `hide() `      | Event      | Nothing | Hide element (close button).  | 
-| `hideAll()`    | None       | Nothing | Hide all elements.            |
-| `hideOthers()` | None       | Nothing | Hide all elements but this.   |
-| `toggle()`     | Event      | Nothing | Toggle visibility of element. |
+| `update() `    | None       | Nothing | Update list                   | 
 
 
 ## Events
