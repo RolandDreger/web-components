@@ -32,6 +32,7 @@
 				padding: 40px;
 				margin: auto;
 			}
+			
 			/* 
 				Custom styles <foot-note>
 			*/
@@ -54,10 +55,8 @@
 			foot-note::part(close-button) {
 				/* Close button */
 			}
-			/* section {
-				counter-reset: foot-note;
-			} */
-			/* Fallback */
+			
+			/* Fallback <foot-note> */
 			foot-note:not(:defined) {
 				margin-left: 0.5rem;
 				margin-right: 0.5rem;
@@ -77,16 +76,31 @@
 			foot-note:not(:defined)::after {             
   			content: "]";
 			}
+
 			/* 
 				Custom styles <note-list> 
 			*/
 			#footnotes {
-				margin-top: 4rem;
-				margin-bottom: 7rem;
+				margin: 4rem 0 7rem 0;
 			}
 			note-list {
 				font-family: sans-serif;
 				font-size: 0.9rem;
+			}
+			note-list::part(area) {			
+				padding-left: 3rem;
+				padding-right: 3rem;
+			}
+			note-list::part(list-item) {			
+				margin-top: 0.8em;
+				line-height: 1.3;
+			}
+			note-list::part(list-item):before {
+				content: attr(value);
+				margin-right: 0;
+				position: absolute;
+				left: 0;
+				color: var(--footnote-theme-color, #000000);
 			}
 		</style>
 	</head>
@@ -101,7 +115,7 @@
 		</section>
 		<section id="target">
 			<h2>Legal writing</h2>
-			<p>Associate Justice Stephen Breyer of the Supreme Court of the United States is famous in the American legal community for his writing style, in which he never uses notes. He prefers to keep all citations within the text (which is permitted in American legal citation).<foot-note index="ABC"><strong>In Justice Breyer's Opinion, A Footnote Has No Place.</strong> <a href="https://en.wikipedia.org/wiki/The_New_York_Times">The New York Times.</a> 1995-07-28. Retrieved 2008-04-30.</foot-note> Richard A. Posner has also written against the use of notes in judicial opinions.<foot-note>Posner, Richard A. (Summer 2001). <a href="http://aja.ncsc.dni.us/courtrv/cr38-2/CR38-2Posner.pdf">Against Footnotes</a> (PDF). Court Review. American Judges Association. Retrieved 2014-10-13.</foot-note> Bryan A. Garner, however, advocates using notes instead of inline citations.<foot-note>Oddi, Marcia (2005-01-07). <strong>Indiana Courts - Footnotes in Judicial Opinions.</strong> The Indiana Law Blog. Retrieved 2015-11-04.</foot-note></p>
+			<p>Associate Justice Stephen Breyer of the Supreme Court of the United States is famous in the American legal community for his writing style, in which he never uses notes. He prefers to keep all citations within the text (which is permitted in American legal citation).<foot-note><strong>In Justice Breyer's Opinion, A Footnote Has No Place.</strong> <a href="https://en.wikipedia.org/wiki/The_New_York_Times">The New York Times.</a> 1995-07-28. Retrieved 2008-04-30.</foot-note> Richard A. Posner has also written against the use of notes in judicial opinions.<foot-note>Posner, Richard A. (Summer 2001). <a href="http://aja.ncsc.dni.us/courtrv/cr38-2/CR38-2Posner.pdf">Against Footnotes</a> (PDF). Court Review. American Judges Association. Retrieved 2014-10-13.</foot-note> Bryan A. Garner, however, advocates using notes instead of inline citations.<foot-note>Oddi, Marcia (2005-01-07). <strong>Indiana Courts - Footnotes in Judicial Opinions.</strong> The Indiana Law Blog. Retrieved 2015-11-04.</foot-note></p>
 		</section>
 		<section>
 			<h2>HTML</h2>

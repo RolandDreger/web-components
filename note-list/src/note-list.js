@@ -69,6 +69,9 @@ class NoteList extends HTMLElement {
 			*::after {
 				box-sizing: border-box;
 			}
+			.area {
+				display: block;
+			}
 			.area ol,
 			.area ul {
 				list-style-position: inside;
@@ -108,6 +111,8 @@ class NoteList extends HTMLElement {
 		/* List element */
 		const list = document.createElement('ol');
 		list.setAttribute('id', 'list');
+		list.classList.add('list');
+		list.setAttribute('part', 'list');
 
 		/* Area element */
 		const area = document.createElement('note-list-area');
@@ -271,10 +276,21 @@ class NoteList extends HTMLElement {
 		if(!!this.source) {
 			const sourceNodeSelector = '#' + this.source;
 			sourceNode = document.querySelector(sourceNodeSelector);
+			if(!sourceNode) {
+				throw new Error(`Source element for <note-list> does not exist. ID: ${this.source}`);
+			}
 		} 
 		const notes = sourceNode.querySelectorAll(noteType);
 		notes.forEach((note) => {
 			const listItem = document.createElement('li');
+			listItem.setAttribute('part', 'list-item');
+			if(this.noteindex) {
+				listItem.setAttribute('value', note.index);
+			}
+			const noteRole = this.noterole;
+			if(noteRole) {
+				listItem.setAttribute('role', noteRole);
+			}
 			const slotNodes = note.childNodes;
 			slotNodes.forEach((node) => {
 				const clonedNode = node.cloneNode(true);
@@ -283,9 +299,6 @@ class NoteList extends HTMLElement {
 				}
 				listItem.appendChild(clonedNode);
 			});
-			if(this.noteindex) {
-				listItem.setAttribute('value', note.index);
-			}
 			list.appendChild(listItem);
 		});
 
