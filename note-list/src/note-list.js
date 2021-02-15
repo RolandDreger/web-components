@@ -3,13 +3,13 @@
 	
 	Custom Element: <note-list></note-list>
 	Shadow DOM: true, open
-	Attributes: lang (default: "en-US")
+	Attributes: notetype, noterole, noteindex (empty), source, lang (default: "en-US")
 	Slots: default
 
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 14 Feb. 2021
+	Date: 15 Feb. 2021
 */
 
 /* Configuration */
@@ -21,22 +21,15 @@ const FALLBACK_LANG = "en";
 
 /* Internal identifier */
 const isInternal = Symbol('isInternal');
-const watchEsc = Symbol('watchEsc');
 const getInternalProxy = Symbol('getInternalProxy');
-const handleClickCallElement = Symbol('handleClickCallElement');
-const handleClickCloseElement = Symbol('handleClickCloseElement');
-const handleKeydownDocument = Symbol('handleKeydownDocument');
 const documentLang = Symbol('documentLang');
 const translate = Symbol('translate');
-const clearUpID = Symbol('clearUpID');
-
-
 
 
 class NoteList extends HTMLElement {
 	
 	static get observedAttributes() { 
-		return ['lang'];
+		return ['notetype', 'noterole', 'noteindex', 'source', 'lang'];
 	}
 
 	static get translations() {
@@ -63,27 +56,31 @@ class NoteList extends HTMLElement {
 		const styleString = document.createTextNode(`
 			:host {
 				contain: content;
+				display: block;
 				font-family: inherit;
 				color: #000000;
 				color: var(--note-list-font-color, #000000);
 			}
-			:host([visible]) .area {
-				
-			}
 			:host([hidden]) {
 				display: none;
-			}
-			::slotted(*) {
-				/* Elements in slot e.g. Links */
 			}
 			*,
 			*::before,
 			*::after {
 				box-sizing: border-box;
 			}
-			
-			
-			
+			.area ol,
+			.area ul {
+				list-style-position: inside;
+				padding-left: 0;
+			}
+			:host([noteindex]) li {
+				list-style-type: none;
+			}
+			:host([noteindex]) li::before {
+				content: attr(value) ":";
+				margin-right: 1ch;
+			}
 			@media (prefers-color-scheme: dark) {
 				:host {
 					color: #ffffff;
@@ -105,20 +102,20 @@ class NoteList extends HTMLElement {
 	/* Template */
 	static createTemplate() {
 
-		/* Slot */
+		/* Slot element */
 		const slot = document.createElement('slot');
 		
-		/* Note element */
-		const area = document.createElement('section');
+		/* List element */
+		const list = document.createElement('ol');
+		list.setAttribute('id', 'list');
+
+		/* Area element */
+		const area = document.createElement('note-list-area');
 		area.setAttribute('id', 'area');
 		area.classList.add('area');
 		area.setAttribute('part', 'area');
-		area.setAttribute('role', 'doc-footnotes');
 		area.appendChild(slot);
-
-		
-
-		
+		area.appendChild(list);
 		
 		/* Template */
 		const templateFragment = document.createDocumentFragment();
@@ -164,16 +161,8 @@ class NoteList extends HTMLElement {
 		root.appendChild(template.content.cloneNode(true));
 
 		/* NoteList Elements */
-		// this.areaElement = root.getElementById('area');
-		
-		
-		/* Event Handler */
-		// this[handleClickCallElement] = this[getInternalProxy](this.toggle);
-		
-		
-		/* Event Listener */
-		// this.callElement.addEventListener('click', this[handleClickCallElement]);
-		
+		this.areaElement = root.getElementById('area');
+		this.listElement = root.getElementById('list');
 	}
 
 	connectedCallback() {
@@ -181,14 +170,11 @@ class NoteList extends HTMLElement {
 			return false;
 		}
 		/* Set up */
-		const language = (this.lang || this[documentLang]);
-		// this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
-		// this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
+		this.update();
 	}
 
 	disconnectedCallback() {
 		/* Clean up */
-		// this.hide(); /* <- Remove event listener */
 	}
 	
 	attributeChangedCallback(name, oldValue, newValue) {
@@ -196,32 +182,67 @@ class NoteList extends HTMLElement {
 			return true;
 		}
 		
-		let language;
-		let indexSuffix;
-		let callElementAriaLabelValue;
-
 		switch(name) {
+			/* Attribute: notetype */
+			case 'notetype':
+				this.update();
+				break;
+			/* Attribute: noterole */
+			case 'noterole':
+				this.update();
+				break;
+			/* Attribute: noteindex */
+			case 'noteindex':
+				this.update();
+				break;
+			/* Attribute: source */
+			case 'source':
+				this.update();
+				break;
 			/* Attribute: lang */
 			case 'lang':
-				language = (newValue || this[documentLang]);
-				// indexSuffix = (this.index || "");
-				// callElementAriaLabelValue = this[translate]("callElementAriaLabel", language) + ": " + indexSuffix
-				// this.callElement.setAttribute('aria-label', callElementAriaLabelValue);
-				// this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
-				// this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
+				const language = (newValue || this[documentLang]);
 				break;
 		}
 	}
 
 	/* Getter/Setter */
-	// get index() {
-	// 	return (this.getAttribute('index') || "");
-	// }
-	// set index(value) {
-	// 	this.setAttribute('index', value);
-	// }
+	get notetype() {
+		return (this.getAttribute('notetype') || "");
+	}
+	set notetype(value) {
+		this.setAttribute('notetype', value);
+	}
 
-	
+	get noterole() {
+		return (this.getAttribute('noterole') || "");
+	}
+	set noterole(value) {
+		this.setAttribute('noterole', value);
+	}
+
+	get noteindex() {
+		return this.hasAttribute('noteindex');
+	}
+	set noteindex(value) {
+		const isNoteindex = Boolean(value);
+		const hasChanged = (this.noteindex !== isNoteindex);
+		if(!hasChanged) {
+			return false;
+		}
+		if(isNoteindex) {
+			this.setAttribute('noteindex', '');	
+		} else {
+			this.removeAttribute('noteindex');
+		}
+	}
+
+	get source() {
+		return (this.getAttribute('source') || "");
+	}
+	set source(value) {
+		this.setAttribute('source', value);
+	}
 
 	get [documentLang]() {
 		return (
@@ -234,12 +255,9 @@ class NoteList extends HTMLElement {
 	}
 
 	/* Methods (Prototype) */
-	// toggle(event) {
-	// 	if(event && event instanceof Event) {
-	// 		event.preventDefault();
-	// 	}
-	// 	this.visible = !this.visible;
-	// }
+	update() {
+		
+	}
 
 	
 	[getInternalProxy](externalHandler, context) {
