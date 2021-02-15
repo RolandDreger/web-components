@@ -256,7 +256,40 @@ class NoteList extends HTMLElement {
 
 	/* Methods (Prototype) */
 	update() {
-		
+		if(!this.listElement) {
+			throw new Error(`List element is not defined.`);
+		}
+		const list = this.listElement;
+		while(list.hasChildNodes()) {  
+			list.removeChild(list.firstChild);
+		}
+		const noteType = this.notetype;
+		if(!noteType) {
+			throw new Error(`Attribute [notetype] must be defined.`);
+		}
+		let sourceNode = document;
+		if(!!this.source) {
+			const sourceNodeSelector = '#' + this.source;
+			sourceNode = document.querySelector(sourceNodeSelector);
+		} 
+		const notes = sourceNode.querySelectorAll(noteType);
+		notes.forEach((note) => {
+			const listItem = document.createElement('li');
+			const slotNodes = note.childNodes;
+			slotNodes.forEach((node) => {
+				const clonedNode = node.cloneNode(true);
+				if(clonedNode instanceof HTMLElement && clonedNode.hasAttribute('id')) {
+					clonedNode.removeAttribute('id');
+				}
+				listItem.appendChild(clonedNode);
+			});
+			if(this.noteindex) {
+				listItem.setAttribute('value', note.index);
+			}
+			list.appendChild(listItem);
+		});
+
+		console.log("Updating ...", notes);
 	}
 
 	
