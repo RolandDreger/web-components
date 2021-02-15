@@ -32,7 +32,7 @@
 				padding: 40px;
 				margin: auto;
 			}
-			/* Custom styles */
+			/* Custom styles notes */
 			foot-note::part(call) {
 				/* Footnote call */
 				padding: 0.2em 0.4em;
@@ -75,6 +75,15 @@
 			foot-note:not(:defined)::after {             
   			content: "]";
 			}
+			/* Custom styles list */
+			#footnotes {
+				margin-top: 5em;
+				margin-bottom: 7em;
+			}
+			note-list {
+				font-family: sans-serif;
+				font-size: 1rem;
+			}
 		</style>
 	</head>
 <body>
@@ -98,13 +107,15 @@
 		<section>
 				<p>[...]</p>
 		</section>
+		<section id="footnotes" role="doc-footnotes" aria-labelledby="note-list-label">
+			<note-list notetype="foot-note" noterole="doc-footnote">
+				<h3 id="note-list-label">References:</h3>
+			</note-list>
+		</section>
 		<section>
 			<h3>Source:</h3> 
 			<p><a href="https://en.wikipedia.org/wiki/Note_(typography)">Note (typography)</a></p>
 		</section>
-		<note-list>
-			<h3>References:</h3>
-		</note-list>
 	</div>
 	<script src="index.js" type="module"></script>
 </body>
