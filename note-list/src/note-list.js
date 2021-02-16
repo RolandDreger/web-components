@@ -21,6 +21,7 @@ const FALLBACK_LANG = "en";
 
 /* Internal identifier */
 const isInternal = Symbol('isInternal');
+const updateID = Symbol('updateID');
 const getInternalProxy = Symbol('getInternalProxy');
 const documentLang = Symbol('documentLang');
 const translate = Symbol('translate');
@@ -168,6 +169,8 @@ class NoteList extends HTMLElement {
 		/* NoteList Elements */
 		this.areaElement = root.getElementById('area');
 		this.listElement = root.getElementById('list');
+
+		this[updateID] = null;
 	}
 
 	connectedCallback() {
@@ -175,7 +178,7 @@ class NoteList extends HTMLElement {
 			return false;
 		}
 		/* Set up */
-		this.update();
+		this.update(4000);
 	}
 
 	disconnectedCallback() {
@@ -260,7 +263,18 @@ class NoteList extends HTMLElement {
 	}
 
 	/* Methods (Prototype) */
-	update() {
+	update(delay = 0) {
+		clearTimeout(this[updateID]);
+		this[updateID] = setTimeout(() => { 
+				this.build(); 
+			}, 
+			delay, 
+			arguments
+		);
+	}
+
+	/* Build note list */
+	build() {
 		if(!this.listElement) {
 			throw new Error(`List element is not defined.`);
 		}
