@@ -26,6 +26,8 @@ if('customElements' in window) {
 
 **`<inline-note index="Begeja et al., 2010">`**`Bugeja, Michael and Daniela V. Dimitrova (2010). Vanishing Act: The Erosion of Online Footnotes and Implications for Scholarship in the Digital Age. Duluth, Minnesota: Litwin Books. ISBN 978-1-936117-14-7`**`</inline-note>`**
 
+If notes have the same index, only one list entry is created, but one backlink for each of them.
+
 
 ## Style (Document CSS)
 ### Custom properties
