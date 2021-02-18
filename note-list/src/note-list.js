@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 15 Feb. 2021
+	Date: 17 Feb. 2021
 */
 
 /* Configuration */
@@ -178,7 +178,7 @@ class NoteList extends HTMLElement {
 			return false;
 		}
 		/* Set up */
-		this.update(4000);
+		this.update();
 	}
 
 	disconnectedCallback() {
@@ -263,17 +263,18 @@ class NoteList extends HTMLElement {
 	}
 
 	/* Methods (Prototype) */
+	/* Update list (debounced)  */
 	update(delay = 0) {
 		clearTimeout(this[updateID]);
 		this[updateID] = setTimeout(() => { 
-				this.build(); 
+				this.build();
 			}, 
 			delay, 
 			arguments
 		);
 	}
 
-	/* Build note list */
+	/* Build list */
 	build() {
 		if(!this.listElement) {
 			throw new Error(`List element is not defined.`);
