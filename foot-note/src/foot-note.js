@@ -182,6 +182,7 @@ class FootNote extends HTMLElement {
 				content: ' ';
 				height: 0.8rem;
 				width: 2px;
+				border-radius: 2px;
 				margin-top: -0.4rem;
 				margin-left: -1px;
 				background-color: #ffffff;
