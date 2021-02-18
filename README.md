@@ -12,6 +12,11 @@ Creates a new HTML element `<inline-note>` displayed inline.
 
 <img src="https://github.com/RolandDreger/web-components/raw/master/inline-note/inline-note_web_component.png" title="Inline note web component" alt="Screenshot inline-note web component">
 
+## `<note-list>`
+Creates a new HTML element `<note-list>` to collect `<foot-note>` and `<inline-note>`.
+
+<img src="https://github.com/RolandDreger/web-components/raw/master/note-list/note-list_web_component.png" title="Note list web component" alt="Screenshot note-list web component">
+
 ## License
 
 [MIT](https://github.com/RolandDreger/web-components/blob/master/MIT-LICENSE.md)

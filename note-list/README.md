@@ -1,127 +1,87 @@
 # `<note-list>`
 
-Web component that creates a custom element with the HTML tag `<inline-note>`. The element is displayed inline after clicking on the inline-note call.
+Web component that creates a custom element with the HTML tag `<note-list>`. The element collects all notes with the specified tag name and displays their contents in a list.
 
 <img src="https://github.com/RolandDreger/web-components/raw/master/inline-note/inline-note_web_component.png" title="Inline note web component" alt="Screenshot inline-note web component">
 
 
 ## Demo
 
-[Check it life!](https://rolanddreger.github.io/web-component-demo/inline-note/) 
+[Check it life with <foot-note>!](https://rolanddreger.github.io/web-component-demo/foot-note/) 
+[Check it life with <inline-note>!](https://rolanddreger.github.io/web-component-demo/inline-note/) 
 
 
 ## Install
 
 ```javascript
-import InlineNote from './src/inline-note.js';
+import NoteList from './src/note-list.js';
 
 if('customElements' in window) {
-	window.customElements.define('inline-note', InlineNote);
+	window.customElements.define('note-list', NoteList);
 }
 ```
 
 
 ## Usage (Document HTML)
-### Manual inline note index
+```html
+<section id="footnotes" role="doc-endnotes" aria-labelledby="note-list-label">
+	<note-list notetype="foot-note" noterole="doc-endnote" noteindex source="target">
+		<h3 id="note-list-label">References:</h3>
+	</note-list>
+</section>
+```
 
-**`<inline-note index="Begeja et al., 2010">`**`Bugeja, Michael and Daniela V. Dimitrova (2010). Vanishing Act: The Erosion of Online Footnotes and Implications for Scholarship in the Digital Age. Duluth, Minnesota: Litwin Books. ISBN 978-1-936117-14-7`**`</inline-note>`**
-
-If notes have the same index, only one list entry is created, but one backlink for each of them.
+If notes have the same index, only one list entry is created, but one backlink for each of them. The `source` attribute can be used to select a specific text section in the document. This allows more than one `<note-list>` element to be inserted. If the `noteindex` attribute is set, the index value of the note is taken.
 
 
 ## Style (Document CSS)
 ### Custom properties
 ```css
---inline-note-theme-color: teal;
---inline-note-font-color: #000000;
---inline-note-call-font-color: teal;
---inline-note-area-color: #f2f2f2; 
---inline-note-vertical-unit: 0;
---inline-note-border-radius: 0.2rem;
---inline-note-call-vertical-align: baseline;
---inline-note-call-font-size: inherit;
---inline-note-dark-theme-color: mediumturquoise;
---inline-note-dark-area-color: #464646;
---inline-note-dark-font-color: #fffff;
---inline-note-dark-call-font-color: mediumturquoise;
---inline-note-call-opening-bracket: "(";
---inline-note-call-closing-bracket: ")";
+--note-list-font-color: #000000;
+--note-list-dark-font-color: #ffffff;
 ```
 
 ### Pseudoelement: part
 ```css
-inline-note::part(call) {
-	/* Custom styles: Inline note call */
+note-list::part(area) {			
+	/* Custom styles: Note list area */
 }
-inline-note::part(area) {
-	/* Custom styles: Inline note area */
+note-list::part(list) {			
+	/* Custom styles: Note list list */
 }
-inline-note::part(element) {
-	/* Custom styles: Inline note element */
+note-list::part(list-item) {			
+	/* Custom styles: Note list list item */
 }
-inline-note::part(button) {
-	/* Custom styles: Close button */
-}
-```
-
-### Fallback (JavaScript disabled)
-```css
-inline-note:not(:defined) {
-	color: #000000;
-	color: var(--inline-note-theme-color, #000000);
-}
-inline-note:not(:defined)::before {
-	padding-right: 0.5rem;
-	color: #000000;
-	color: var(--inline-note-theme-color, #000000);
-	text-decoration: none;
-	counter-increment: inline-note;                  
-	content: "(→"; /* attr(index) */
-}
-inline-note:not(:defined)::after {             
-	content: ")";
+note-list::part(backlink) {			
+	/* Custom styles: Backlink to note */
 }
 ```
-
-## Shortcuts
-
-| Key | Description             |
-| --- | ----------------------- |
-| ESC | Hide notes with ESC key.|
 
 
 ## Options
 
 | Attribute   | Options  | Default | Description                                                    | 
 | ----------- | -------- | ------- | -------------------------------------------------------------- |  
-| `notetype`  | *String* | unset   | Note tag name                                                  |
-| `noterole`  | *String* | unset   | Note aria role in list                                         |
-| `noteindex` | empty    | unset   | Get list number from note index attribute                      |
+| `notetype`  | *String* | unset   | Tag name of the notes for the list                             |
+| `noterole`  | *String* | unset   | Aria role for list items                                       |
+| `noteindex` | empty    | unset   | Get value of note `index` attribute for list number            |
 | `source`    | *String* | unset   | ID of source element, e.g. <section id="target">               |
 | `lang`      | *String* | unset   | Language support for aria-label, title, ... (default: "en-US") |
 
 
 ## Methods
 
-| Prototype      | Parameters | Returns | Description                   | 
-| ------------   | ---------- | ------- | ----------------------------- | 
-| `update() `    | None       | Nothing | Update list                   | 
+| Prototype    | Parameters                   | Returns | Description       | 
+| ------------ | ---------------------------- | ------- | ----------------- | 
+| `update() `  | delay (Number, Milliseconds) | Nothing | Update note list  | 
 
 
 ## Events
 
-| Event                | Description                                     | 
-| -------------------- | ----------------------------------------------- | 
-| `visible-changed`    | Triggered when the attribute `visible` changes. | 
+| Event         | Description                         | 
+| ------------- | ----------------------------------- | 
+| `update-done` | Triggered when list update is done. | 
 
-### Event Listener (optional)
-```javascript
-const inlineNotes.forEach((note, index) => {
-	inlineNotes.addEventListener('visible-changed', (event) => {
-		console.log(`Inline note ${note.getAttribute('index')}: visible = ${event.detail.visible}`);
-	}, false);
-});
-```
 
 
 ## License
