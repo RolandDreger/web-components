@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 7 Feb. 2021
+	Date: 18 Feb. 2021
 */
 
 /* Configuration */
@@ -336,9 +336,8 @@ class InlineNote extends HTMLElement {
 			return false;
 		}
 		/* Set up */
-		const language = (this.lang || this[documentLang]);
-		this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
-		this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
+		this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel"));
+		this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel"));
 	}
 
 	disconnectedCallback() {
@@ -351,19 +350,17 @@ class InlineNote extends HTMLElement {
 			return true;
 		}
 		
-		let language;
 		let indexSuffix;
 		let callElementAriaLabelValue;
 
 		switch(name) {
 			/* Attribute: index */
 			case 'index':
-				language = (this.lang || this[documentLang]);
 				indexSuffix = (newValue || "");
 				let tagName = (this.tagName || "");
 				let hrefValue = '#' + this[clearUpID](tagName + "-" + indexSuffix);
 				this.callElement.setAttribute('href', hrefValue);
-				callElementAriaLabelValue = this[translate]("callElementAriaLabel", language) + ": " + indexSuffix;
+				callElementAriaLabelValue = this[translate]("callElementAriaLabel") + ": " + indexSuffix;
 				this.callElement.setAttribute('aria-label', callElementAriaLabelValue);
 				this.callElement.textContent = (newValue || "");
 				break;
@@ -384,12 +381,11 @@ class InlineNote extends HTMLElement {
 				break;
 			/* Attribute: lang */
 			case 'lang':
-				language = (newValue || this[documentLang]);
 				indexSuffix = (this.index || "");
-				callElementAriaLabelValue = this[translate]("callElementAriaLabel", language) + ": " + indexSuffix
+				callElementAriaLabelValue = this[translate]("callElementAriaLabel") + ": " + indexSuffix
 				this.callElement.setAttribute('aria-label', callElementAriaLabelValue);
-				this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
-				this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
+				this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel"));
+				this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel"));
 				break;
 		}
 	}
@@ -506,7 +502,7 @@ class InlineNote extends HTMLElement {
 			throw new TypeError(`Argument [term] must be a string: ${typeof term}`); 
 		}
 		if(!lang || typeof lang !== "string") { 
-			throw new TypeError(`Argument [lang] must be a string: ${typeof lang}`); 
+			lang = (this.lang || this[documentLang]); 
 		}
 		const languageCodes = {
 			'en': 'en-US',

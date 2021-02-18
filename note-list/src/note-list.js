@@ -38,18 +38,12 @@ class NoteList extends HTMLElement {
 	static get translations() {
 		return {
 			"en-US": {
-				"callElementAriaLabel": "Note call",
-				"closeButtonAriaLabel": "Close",
 				"backlinkAriaLabel": "Back to content"
 			},
 			"de-DE": {
-				"callElementAriaLabel": "Notenaufruf",
-				"closeButtonAriaLabel": "Schließen",
 				"backlinkAriaLabel": "Zurück zum Inhalt"
 			},
 			"fr-FR": {
-				"callElementAriaLabel": "Appel de note",
-				"closeButtonAriaLabel": "Fermer"  ,
 				"backlinkAriaLabel": "Retour au contenu"
 			}
 		};
@@ -341,8 +335,7 @@ class NoteList extends HTMLElement {
 				noteElement.setAttribute('id', noteID);
 				hrefValue += noteID;
 			}
-			const language = (this.lang || this[documentLang]);
-			const backlinkAriaLabel = this[translate]("backlinkAriaLabel", language);
+			const backlinkAriaLabel = this[translate]("backlinkAriaLabel");
 			const backlink = document.createElement('a');
 			backlink.setAttribute('href', hrefValue);
 			backlink.setAttribute('title', backlinkAriaLabel);
@@ -392,7 +385,7 @@ class NoteList extends HTMLElement {
 			throw new TypeError(`Argument [term] must be a string: ${typeof term}`); 
 		}
 		if(!lang || typeof lang !== "string") { 
-			throw new TypeError(`Argument [lang] must be a string: ${typeof lang}`); 
+			lang = (this.lang || this[documentLang]); 
 		}
 		const languageCodes = {
 			'en': 'en-US',

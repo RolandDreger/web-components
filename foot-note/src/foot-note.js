@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 7 Feb. 2021
+	Date: 18 Feb. 2021
 */
 
 /* Configuration */
@@ -38,7 +38,6 @@ class FootNote extends HTMLElement {
 	}
 
 	static get translations() {
-		/* "en-US": default language */
 		return {
 			"en-US": {
 				"callElementAriaLabel": "Note call",
@@ -341,9 +340,8 @@ class FootNote extends HTMLElement {
 			return false;
 		}
 		/* Set up */
-		const language = (this.lang || this[documentLang]);
-		this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
-		this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
+		this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel"));
+		this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel"));
 	}
 
 	disconnectedCallback() {
@@ -356,7 +354,6 @@ class FootNote extends HTMLElement {
 			return true;
 		}
 
-		let language;
 		let indexSuffix;
 		let callElementAriaLabelValue;
 		let markerElementAriaLabelValue;
@@ -364,16 +361,15 @@ class FootNote extends HTMLElement {
 		switch(name) {
 			/* Attribute: index */
 			case 'index':
-				language = (this.lang || this[documentLang]);
 				indexSuffix = (newValue || "");
 				let tagName = (this.tagName || "");
 				let hrefValue = '#' + this[clearUpID](tagName + "-" + indexSuffix);
 				this.callElement.setAttribute('href', hrefValue);
-				callElementAriaLabelValue = this[translate]("callElementAriaLabel", language) + ": " + indexSuffix;
+				callElementAriaLabelValue = this[translate]("callElementAriaLabel") + ": " + indexSuffix;
 				this.callElement.setAttribute('aria-label', callElementAriaLabelValue);
 				this.callElement.textContent = (newValue || "");
 				this.markerElement.textContent = (newValue || "");
-				markerElementAriaLabelValue = this[translate]("markerElementAriaLabel", language) + ": " + indexSuffix;
+				markerElementAriaLabelValue = this[translate]("markerElementAriaLabel") + ": " + indexSuffix;
 				this.markerElement.setAttribute('aria-label', markerElementAriaLabelValue);
 				break;
 			/* Attribute: visible */
@@ -393,14 +389,13 @@ class FootNote extends HTMLElement {
 				break;
 			/* Attribute: lang */
 			case 'lang':
-				language = (newValue || this[documentLang]);
 				indexSuffix = (this.index || "");
-				callElementAriaLabelValue = this[translate]("callElementAriaLabel", language) + ": " + indexSuffix;
+				callElementAriaLabelValue = this[translate]("callElementAriaLabel") + ": " + indexSuffix;
 				this.callElement.setAttribute('aria-label', callElementAriaLabelValue);
-				markerElementAriaLabelValue = this[translate]("markerElementAriaLabel", language) + ": " + indexSuffix;
+				markerElementAriaLabelValue = this[translate]("markerElementAriaLabel") + ": " + indexSuffix;
 				this.markerElement.setAttribute('aria-label', markerElementAriaLabelValue);
-				this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel", language));
-				this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel", language));
+				this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel"));
+				this.closeElement.setAttribute('title', this[translate]("closeButtonAriaLabel"));
 				break;
 		}
 	}
@@ -518,7 +513,7 @@ class FootNote extends HTMLElement {
 			throw new TypeError(`Argument [term] must be a string: ${typeof term}`); 
 		}
 		if(!lang || typeof lang !== "string") { 
-			throw new TypeError(`Argument [lang] must be a string: ${typeof lang}`); 
+			lang = (this.lang || this[documentLang]); 
 		}
 
 		const languageCodes = {
