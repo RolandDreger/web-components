@@ -308,6 +308,7 @@ class NoteList extends HTMLElement {
 			let listNode;
 			/* Check: Identical entries? */
 			if(!listItemObj.hasOwnProperty(noteIndex)) {
+				/* List item */
 				const listItemElement = document.createElement('li');
 				listItemElement.setAttribute('part', 'list-item');
 				if(this.noteindex) {
