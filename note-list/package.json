@@ -1,6 +1,6 @@
 ﻿{
   "name": "@rd-web-components/note-list",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Web component that creates a custom element with the HTML tag <note-list>.",
   "type": "module",
 	"main": "./src/note-list.js",
