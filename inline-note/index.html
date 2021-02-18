@@ -36,6 +36,12 @@
 			[id] {
 				scroll-margin-top: 2rem;
 			}
+			@media (prefers-color-scheme: dark) {
+				body {
+					color: #ffffff;
+					background-color: #000000;
+				}
+			}
 
 			/* 
 				Custom styles <inline-note> 
@@ -58,12 +64,6 @@
 			}
 			inline-note::part(close-button) {
 				/* Close button */
-			}
-			@media (prefers-color-scheme: dark) {
-				body {
-					color: #ffffff;
-					background-color: #000000;
-				}
 			}
 			
 			/* Fallback <inline-note> */
