@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 17 Feb. 2021
+	Date: 18 Feb. 2021
 */
 
 /* Configuration */
@@ -25,6 +25,7 @@ const updateID = Symbol('updateID');
 const getInternalProxy = Symbol('getInternalProxy');
 const documentLang = Symbol('documentLang');
 const translate = Symbol('translate');
+const getID = Symbol('getID');
 
 
 class NoteList extends HTMLElement {
@@ -37,15 +38,18 @@ class NoteList extends HTMLElement {
 		return {
 			"en-US": {
 				"callElementAriaLabel": "Note call",
-				"closeButtonAriaLabel": "Close"
+				"closeButtonAriaLabel": "Close",
+				"backlinkAriaLabel": "Back to content"
 			},
 			"de-DE": {
 				"callElementAriaLabel": "Notenaufruf",
-				"closeButtonAriaLabel": "Schließen"
+				"closeButtonAriaLabel": "Schließen",
+				"backlinkAriaLabel": "Zurück zum Inhalt"
 			},
 			"fr-FR": {
 				"callElementAriaLabel": "Appel de note",
-				"closeButtonAriaLabel": "Fermer"  
+				"closeButtonAriaLabel": "Fermer"  ,
+				"backlinkAriaLabel": "Retour au contenu"
 			}
 		};
 	}
@@ -209,7 +213,7 @@ class NoteList extends HTMLElement {
 				break;
 			/* Attribute: lang */
 			case 'lang':
-				const language = (newValue || this[documentLang]);
+				this.update();
 				break;
 		}
 	}
@@ -285,41 +289,74 @@ class NoteList extends HTMLElement {
 		}
 		const noteType = this.notetype;
 		if(!noteType) {
-			throw new Error(`Attribute [notetype] must be defined.`);
+			throw new Error(`Attribute [notetype] must be defined for <note-list>.`);
 		}
 		let sourceNode = document;
 		if(!!this.source) {
-			const sourceNodeSelector = '#' + this.source;
-			sourceNode = document.querySelector(sourceNodeSelector);
+			sourceNode = document.getElementById(this.source);
 			if(!sourceNode) {
 				throw new Error(`Source element for <note-list> does not exist. ID: ${this.source}`);
 			}
 		} 
-		const notes = sourceNode.querySelectorAll(noteType);
-		notes.forEach((note) => {
-			const listItem = document.createElement('li');
-			listItem.setAttribute('part', 'list-item');
-			if(this.noteindex) {
-				listItem.setAttribute('value', note.index);
+		const listItemObj = {};
+		const noteNodeList = sourceNode.querySelectorAll(noteType);
+		noteNodeList.forEach((noteElement, i) => {
+			const noteIndex = noteElement.getAttribute('index');
+			if(!noteIndex) {
+				return false;
 			}
-			const noteRole = this.noterole;
-			if(noteRole) {
-				listItem.setAttribute('role', noteRole);
-			}
-			const slotNodes = note.childNodes;
-			slotNodes.forEach((node) => {
-				const clonedNode = node.cloneNode(true);
-				if(clonedNode instanceof HTMLElement && clonedNode.hasAttribute('id')) {
-					clonedNode.removeAttribute('id');
+			let listNode;
+			/* Check: Identical entries? */
+			if(!listItemObj.hasOwnProperty(noteIndex)) {
+				const listItemElement = document.createElement('li');
+				listItemElement.setAttribute('part', 'list-item');
+				if(this.noteindex) {
+					listItemElement.setAttribute('value', noteIndex);
 				}
-				listItem.appendChild(clonedNode);
-			});
-			list.appendChild(listItem);
+				const noteRole = this.noterole;
+				if(noteRole) {
+					listItemElement.setAttribute('role', noteRole);
+				}
+				const slotNodes = noteElement.childNodes;
+				slotNodes.forEach((node) => {
+					const clonedNode = node.cloneNode(true);
+					if(clonedNode instanceof HTMLElement && clonedNode.hasAttribute('id')) {
+						clonedNode.removeAttribute('id');
+					}
+					listItemElement.appendChild(clonedNode);
+				});
+				listNode = list.appendChild(listItemElement);
+				listItemObj[noteIndex] = listNode;
+			} else {
+				listNode = listItemObj[noteIndex];
+			} 
+			/* Backlink */
+			var hrefValue = '#';
+			if(noteElement.hasAttribute('id')) {
+				hrefValue += noteElement.getAttribute('id');
+			} else {
+				const noteID = 'ref-' + this[getID]() + '-' + i;
+				noteElement.setAttribute('id', noteID);
+				hrefValue += noteID;
+			}
+			const language = (this.lang || this[documentLang]);
+			const backlinkAriaLabel = this[translate]("backlinkAriaLabel", language);
+			const backlink = document.createElement('a');
+			backlink.setAttribute('href', hrefValue);
+			backlink.setAttribute('title', backlinkAriaLabel);
+			backlink.setAttribute('aria-label', backlinkAriaLabel);
+			backlink.setAttribute('part', 'backlink');
+			backlink.classList.add('backlink');
+			backlink.textContent = "↩";
+			listNode.appendChild(backlink);
 		});
 
-		console.log("Updating ...", notes);
+		console.log("Updating ...", noteNodeList);
 	}
 
+	[getID]() {
+		return parseInt(Math.random() * Date.now()).toString(36);
+	}
 	
 	[getInternalProxy](externalHandler, context) {
 		if(!externalHandler || !(externalHandler instanceof Function)) {
