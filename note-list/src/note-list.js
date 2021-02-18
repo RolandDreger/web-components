@@ -16,6 +16,7 @@
 const TEMPLATE_ID = 'note-list-template';
 const TEMPLATE_COMMENT = 'NoteList component template';
 const SHADOW_DOM_MODE = 'open';
+const UPDATE_DONE_EVENT_NAME = 'update-done';
 const FALLBACK_LANG = "en";
 
 
@@ -351,8 +352,16 @@ class NoteList extends HTMLElement {
 			backlink.textContent = "↩";
 			listNode.appendChild(backlink);
 		});
-
-		console.log("Updating ...", noteNodeList);
+		/* Update Event */
+		const updateDoneEvent = new CustomEvent(
+			UPDATE_DONE_EVENT_NAME, 
+			{ 
+				bubbles: true,
+				cancelable: true,
+				composed: true
+			}
+		);
+		this.dispatchEvent(updateDoneEvent);
 	}
 
 	[getID]() {
