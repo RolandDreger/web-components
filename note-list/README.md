@@ -60,13 +60,14 @@ note-list::part(backlink) {
 
 ## Options
 
-| Attribute   | Options  | Default | Description                                                    | 
-| ----------- | -------- | ------- | -------------------------------------------------------------- |  
-| `notetype`  | *String* | unset   | Tag name of the notes for the list                             |
-| `noterole`  | *String* | unset   | Aria role for list items                                       |
-| `noteindex` | empty    | unset   | Get value of note `index` attribute for list number            |
-| `source`    | *String* | unset   | ID of source element, e.g. <section id="target">               |
-| `lang`      | *String* | unset   | Language support for aria-label, title, ... (default: "en-US") |
+| Attribute   | Options  | Default | Description                                                                     | 
+| ----------- | -------- | ------- | ------------------------------------------------------------------------------- |  
+| `notetype`  | *String* | unset   | Tag name of the notes for the list                                              |
+| `noterole`  | *String* | unset   | Aria role for list items                                                        |
+| `noteindex` | empty    | unset   | Get value of note `index` attribute for list number                             |
+| `source`    | *String* | unset   | ID of source element, e.g. <section id="target">                                |
+| `sort`      | *String* | unset   | Sort notes by `index` attribute.                                                |
+| `lang`      | *String* | unset   | Language support for aria-label, title, ... and for sorting. (default: "en-US") |
 
 
 ## Methods

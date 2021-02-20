@@ -18,6 +18,9 @@ const TEMPLATE_COMMENT = 'NoteList component template';
 const SHADOW_DOM_MODE = 'open';
 const UPDATE_DONE_EVENT_NAME = 'update-done';
 const FALLBACK_LANG = "en";
+const SORT_OPTIONS = {
+	ignorePunctuation: true
+};
 
 
 /* Internal identifier */
@@ -32,7 +35,7 @@ const getID = Symbol('getID');
 class NoteList extends HTMLElement {
 	
 	static get observedAttributes() { 
-		return ['notetype', 'noterole', 'noteindex', 'source', 'lang'];
+		return ['notetype', 'noterole', 'noteindex', 'source', 'sort', 'lang'];
 	}
 
 	static get translations() {
@@ -206,6 +209,13 @@ class NoteList extends HTMLElement {
 			case 'source':
 				this.update();
 				break;
+			/* Attribute: sort */
+			case 'sort':
+				if(newValue !== 'number' && newValue !== 'text') {
+					return false;
+				}
+				this.update();
+				break;
 			/* Attribute: lang */
 			case 'lang':
 				this.update();
@@ -249,6 +259,13 @@ class NoteList extends HTMLElement {
 	}
 	set source(value) {
 		this.setAttribute('source', value);
+	}
+
+	get sort() {
+		return (this.getAttribute('sort') || "");
+	}
+	set sort(value) {
+		this.setAttribute('sort', value);
 	}
 
 	get [documentLang]() {
@@ -295,7 +312,22 @@ class NoteList extends HTMLElement {
 		} 
 		const listItemObj = {};
 		const noteNodeList = sourceNode.querySelectorAll(noteType);
-		noteNodeList.forEach((noteElement, i) => {
+		const noteElementArray = [...noteNodeList];
+		const sortType = this.sort.toLowerCase();
+		switch(sortType) {
+			case 'number':
+				noteElementArray.sort((a, b) => {
+						return a.index.localeCompare(b.index, undefined, { 'numeric': true, ...SORT_OPTIONS });
+				});
+				break;
+			case 'text':
+				const lang = this.lang || this[documentLang];
+				noteElementArray.sort((a, b) => {
+					return a.index.localeCompare(b.index, lang, SORT_OPTIONS);
+				});
+				break;
+		}
+		noteElementArray.forEach((noteElement, i) => {
 			const noteIndex = noteElement.getAttribute('index');
 			if(!noteIndex) {
 				return false;
