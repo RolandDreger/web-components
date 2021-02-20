@@ -32,6 +32,10 @@
 				padding: 40px;
 				margin: auto;
 			}
+			section {
+				content-visibility: auto;
+				contain-intrinsic-size: 0 20rem;
+			}
 			[id] {
 				scroll-margin-top: 2rem;
 			}
@@ -92,7 +96,7 @@
 			/* 
 				Custom styles <note-list> 
 			*/
-			#footnotes {
+			#endnotes {
 				margin: 4rem 0 7rem 0;
 			}
 			note-list {
@@ -146,7 +150,7 @@
 		<section>
 				<p>[...]</p>
 		</section>
-		<section id="footnotes" role="doc-endnotes" aria-labelledby="note-list-label">
+		<section id="endnotes" role="doc-endnotes" aria-labelledby="note-list-label">
 			<note-list notetype="foot-note" noterole="doc-endnote" noteindex source="target">
 				<h3 id="note-list-label">References:</h3>
 			</note-list>
