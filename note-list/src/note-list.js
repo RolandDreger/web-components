@@ -17,6 +17,7 @@ const TEMPLATE_ID = 'note-list-template';
 const TEMPLATE_COMMENT = 'NoteList component template';
 const SHADOW_DOM_MODE = 'open';
 const UPDATE_DONE_EVENT_NAME = 'update-done';
+const DEFAULT_DEBOUNCE_DELAY = 300;
 const FALLBACK_LANG = "en";
 const SORT_OPTIONS = {
 	ignorePunctuation: true
@@ -25,7 +26,7 @@ const SORT_OPTIONS = {
 
 /* Internal identifier */
 const isInternal = Symbol('isInternal');
-const updateID = Symbol('updateID');
+const getDebounceProxy = Symbol('getDebounceProxy');
 const getInternalProxy = Symbol('getInternalProxy');
 const documentLang = Symbol('documentLang');
 const translate = Symbol('translate');
@@ -172,12 +173,13 @@ class NoteList extends HTMLElement {
 		this.areaElement = root.getElementById('area');
 		this.listElement = root.getElementById('list');
 
-		this[updateID] = null;
+		/* Update Method */
+		this.update = this[getInternalProxy](this[getDebounceProxy](this.build, UPDATE_DONE_EVENT_NAME));
 	}
 
 	connectedCallback() {
 		if(!this.isConnected) {
-			return false;
+			return;
 		}
 		if(!this.notetype) {
 			throw new Error(`<note-list> needs an attribute [notetype] in order to be created.`);
@@ -248,7 +250,7 @@ class NoteList extends HTMLElement {
 		const isNoteindex = Boolean(value);
 		const hasChanged = (this.noteindex !== isNoteindex);
 		if(!hasChanged) {
-			return false;
+			return;
 		}
 		if(isNoteindex) {
 			this.setAttribute('noteindex', '');	
@@ -282,18 +284,6 @@ class NoteList extends HTMLElement {
 	}
 
 	/* Methods (Prototype) */
-	/* Update list (debounced)  */
-	update(delay = 0) {
-		clearTimeout(this[updateID]);
-		this[updateID] = setTimeout(() => { 
-				this.build();
-			}, 
-			delay, 
-			arguments
-		);
-	}
-
-	/* Build list */
 	build() {
 		if(!this.listElement) {
 			throw new Error(`List element is not defined.`);
@@ -333,7 +323,7 @@ class NoteList extends HTMLElement {
 		noteElementArray.forEach((noteElement, i) => {
 			const noteIndex = noteElement.getAttribute('index');
 			if(!noteIndex) {
-				return false;
+				return;
 			}
 			let listNode;
 			/* Check: Identical entries? */
@@ -380,16 +370,7 @@ class NoteList extends HTMLElement {
 			backlink.textContent = "↩";
 			listNode.appendChild(backlink);
 		});
-		/* Update Event */
-		const updateDoneEvent = new CustomEvent(
-			UPDATE_DONE_EVENT_NAME, 
-			{ 
-				bubbles: true,
-				cancelable: true,
-				composed: true
-			}
-		);
-		this.dispatchEvent(updateDoneEvent);
+		return list;
 	}
 
 	[getID]() {
@@ -411,6 +392,43 @@ class NoteList extends HTMLElement {
 				} finally {
 					context[isInternal] = false;
 				}
+			}
+		});
+	}
+
+	[getDebounceProxy](repetitiveHandler, eventName, context) {
+		if(!repetitiveHandler || !(repetitiveHandler instanceof Function)) {
+			return null;
+		}
+		if(!eventName || typeof eventName !== 'string') {
+			eventName = "";
+		}
+		context = (context || this);
+		let timeoutID;
+		return new Proxy(repetitiveHandler, {
+			apply(target, thisArg, args) {
+				let delay = (args[0] || DEFAULT_DEBOUNCE_DELAY || 0);
+				clearTimeout(timeoutID);
+				timeoutID = setTimeout(function() { 
+					let detail;
+					try {
+						const response = Reflect.apply(target, context, args);
+						detail = { 'status': 'OK', response };
+					} catch(error) {
+						console.error(error);
+						detail = { 'status': 'ERROR', error };
+					}
+					if(!eventName) {
+						return;
+					}
+					const statusEvent = new CustomEvent(eventName, { 
+						bubbles: true, 
+						cancelable: true, 
+						composed: true,
+						detail
+					});
+					context.dispatchEvent(statusEvent);
+				}, delay);
 			}
 		});
 	}
