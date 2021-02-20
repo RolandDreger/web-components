@@ -337,7 +337,7 @@ class FootNote extends HTMLElement {
 
 	connectedCallback() {
 		if(!this.isConnected) {
-			return false;
+			return;
 		}
 		/* Set up */
 		this.closeElement.setAttribute('aria-label', this[translate]("closeButtonAriaLabel"));
@@ -351,7 +351,7 @@ class FootNote extends HTMLElement {
 	
 	attributeChangedCallback(name, oldValue, newValue) {
 		if(oldValue === newValue) {
-			return true;
+			return;
 		}
 
 		let indexSuffix;
@@ -415,7 +415,7 @@ class FootNote extends HTMLElement {
 		const isVisible = Boolean(value);
 		const hasChanged = (this.visible !== isVisible);
 		if(!hasChanged) {
-			return false;
+			return;
 		}
 		if(isVisible) {
 			this.setAttribute('visible', '');	
@@ -467,7 +467,7 @@ class FootNote extends HTMLElement {
 		const visibleNotes = document.querySelectorAll(this.tagName + '[visible]');
 		visibleNotes.forEach(note => {
 			if(note === this) {
-				return false;
+				return;
 			}
 			note.removeAttribute('visible');
 		});
@@ -482,7 +482,7 @@ class FootNote extends HTMLElement {
 
 	[watchEsc](event) {
 		if(!event || !(event instanceof Event)) {
-			return false;
+			return;
 		}
 		if(event.key === 'Escape' || event.key === 'Esc') {
 			this.hide(event);
