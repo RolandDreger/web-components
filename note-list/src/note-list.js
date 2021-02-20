@@ -179,6 +179,9 @@ class NoteList extends HTMLElement {
 		if(!this.isConnected) {
 			return false;
 		}
+		if(!this.notetype) {
+			throw new Error(`<note-list> needs an attribute [notetype] in order to be created.`);
+		}
 		/* Set up */
 		this.update();
 	}
