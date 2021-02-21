@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 20 Feb. 2021
+	Date: 21 Feb. 2021
 */
 
 /* Configuration */
@@ -174,7 +174,7 @@ class NoteList extends HTMLElement {
 		this.listElement = root.getElementById('list');
 
 		/* Update Method */
-		this.update = this[getInternalProxy](this[getDebounceProxy](this.build, UPDATE_DONE_EVENT_NAME));
+		this.update = this[getDebounceProxy](this.update);
 	}
 
 	connectedCallback() {
@@ -216,9 +216,6 @@ class NoteList extends HTMLElement {
 				break;
 			/* Attribute: sort */
 			case 'sort':
-				if(newValue !== 'number' && newValue !== 'text') {
-					return false;
-				}
 				this.update();
 				break;
 			/* Attribute: lang */
@@ -284,6 +281,29 @@ class NoteList extends HTMLElement {
 	}
 
 	/* Methods (Prototype) */
+	update() {
+		let detailObj = {};
+		try {
+			const result = this.build();
+			detailObj['status'] = 'OK';
+			detailObj['result'] = result;
+		} catch(error) {
+			detailObj['status'] = 'ERROR';
+			detailObj['error'] = error;
+		} finally {
+			const updateEvent = new CustomEvent(
+				UPDATE_DONE_EVENT_NAME, 
+				{ 
+					bubbles: true, 
+					cancelable: true, 
+					composed: true,
+					detail: detailObj
+				}
+			);
+			this.dispatchEvent(updateEvent);
+		}
+	}
+
 	build() {
 		if(!this.listElement) {
 			throw new Error(`List element is not defined.`);
@@ -396,38 +416,18 @@ class NoteList extends HTMLElement {
 		});
 	}
 
-	[getDebounceProxy](repetitiveHandler, eventName, context) {
+	[getDebounceProxy](repetitiveHandler, context) {
 		if(!repetitiveHandler || !(repetitiveHandler instanceof Function)) {
 			return null;
 		}
-		if(!eventName || typeof eventName !== 'string') {
-			eventName = "";
-		}
-		context = (context || this);
 		let timeoutID;
+		context = (context || this);
 		return new Proxy(repetitiveHandler, {
 			apply(target, thisArg, args) {
 				let delay = (args[0] || DEFAULT_DEBOUNCE_DELAY || 0);
 				clearTimeout(timeoutID);
 				timeoutID = setTimeout(function() { 
-					let detail;
-					try {
-						const response = Reflect.apply(target, context, args);
-						detail = { 'status': 'OK', response };
-					} catch(error) {
-						console.error(error);
-						detail = { 'status': 'ERROR', error };
-					}
-					if(!eventName) {
-						return;
-					}
-					const statusEvent = new CustomEvent(eventName, { 
-						bubbles: true, 
-						cancelable: true, 
-						composed: true,
-						detail
-					});
-					context.dispatchEvent(statusEvent);
+					Reflect.apply(target, context, args);
 				}, delay);
 			}
 		});
