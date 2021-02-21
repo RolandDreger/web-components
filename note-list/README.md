@@ -2,13 +2,14 @@
 
 Web component that creates a custom element with the HTML tag `<note-list>`. The element collects all notes with the specified tag name and displays their contents in a list.
 
-<img src="https://github.com/RolandDreger/web-components/raw/master/inline-note/inline-note_web_component.png" title="Inline note web component" alt="Screenshot inline-note web component">
+<img src="https://github.com/RolandDreger/web-components/raw/master/note-list/note-list_web_component.png" title="Note list web component" alt="Screenshot note-list web component">
 
 
 ## Demo
 
-[Check it life with <foot-note>!](https://rolanddreger.github.io/web-component-demo/foot-note/) 
-[Check it life with <inline-note>!](https://rolanddreger.github.io/web-component-demo/inline-note/) 
+[Check it life with `<foot-note>`!](https://rolanddreger.github.io/web-component-demo/foot-note/)
+
+[Check it life with `<inline-note`>!](https://rolanddreger.github.io/web-component-demo/inline-note/) 
 
 
 ## Install
