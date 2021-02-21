@@ -35,11 +35,16 @@ import NoteList from './../note-list/src/note-list.js';
 		});
 		
 		/* Add Event Listener (optional) */
+		/* Notes */
 		inlineNotes.forEach((note, index) => {
 			note.addEventListener('visible-changed', (event) => {
 				console.log(`Inline note ${note.getAttribute('index')}: visible = ${event.detail.visible}`);
 			}, false);
 		});
+		/* Note list */
+		document.addEventListener('update-done', (event) => {
+			console.log(`Update done`, event.detail);
+		}, false);
 		
 	})
 	.catch(error => {
