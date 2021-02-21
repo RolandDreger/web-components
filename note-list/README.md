@@ -67,7 +67,7 @@ note-list::part(backlink) {
 | `noterole`  | *String* | unset   | Aria role for list items                                                        |
 | `noteindex` | empty    | unset   | Get value of note `index` attribute for list number                             |
 | `source`    | *String* | unset   | ID of source element, e.g. <section id="target">                                |
-| `sort`      | *String* | unset   | Sort notes by `index` attribute.                                                |
+| `sort`      | *String* | unset   | Sort notes by `index` attribute. Values: `text` or `number`.                    |
 | `lang`      | *String* | unset   | Language support for aria-label, title, ... and for sorting. (default: "en-US") |
 
 
