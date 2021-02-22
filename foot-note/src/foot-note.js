@@ -106,6 +106,7 @@ class FootNote extends HTMLElement {
 				bottom: 0;
 				left: 50%;
 				transform: translate(-50%, 100%);
+				will-change: transform;
 				flex-direction: row;
 				flex-wrap: nowrap;
 				justify-content: space-between;
