@@ -30,6 +30,7 @@ const getDebounceProxy = Symbol('getDebounceProxy');
 const getInternalProxy = Symbol('getInternalProxy');
 const documentLang = Symbol('documentLang');
 const translate = Symbol('translate');
+const emitEvent = Symbol('emitEvent');
 const getID = Symbol('getID');
 
 
@@ -282,25 +283,19 @@ class NoteList extends HTMLElement {
 
 	/* Methods (Prototype) */
 	update() {
-		let detailObj = {};
+		let eventDetailObj = {};
 		try {
 			const result = this.build();
-			detailObj['status'] = 'OK';
-			detailObj['result'] = result;
+			eventDetailObj['status'] = 'OK';
+			eventDetailObj['result'] = result;
 		} catch(error) {
-			detailObj['status'] = 'ERROR';
-			detailObj['error'] = error;
+			eventDetailObj['status'] = 'ERROR';
+			eventDetailObj['error'] = error;
 		} finally {
-			const updateEvent = new CustomEvent(
-				UPDATE_DONE_EVENT_NAME, 
-				{ 
-					bubbles: true, 
-					cancelable: true, 
-					composed: true,
-					detail: detailObj
-				}
-			);
-			this.dispatchEvent(updateEvent);
+			const eventOptions = { 
+				detail: eventDetailObj 
+			};
+			this[emitEvent](UPDATE_DONE_EVENT_NAME, eventOptions);
 		}
 	}
 
@@ -517,6 +512,19 @@ class NoteList extends HTMLElement {
 		}
 
 		return translation;
+	}
+
+	[emitEvent](name, { bubbles = true, cancelable = true, composed = true, detail = {}} = {}) {
+		const event = new CustomEvent(
+			name, 
+			{ 
+				bubbles, 
+				cancelable, 
+				composed,
+				detail
+			}
+		);
+		this.dispatchEvent(event);
 	}
 }
 

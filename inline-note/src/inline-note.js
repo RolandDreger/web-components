@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 20 Feb. 2021
+	Date: 28 Feb. 2021
 */
 
 /* Configuration */
@@ -30,6 +30,7 @@ const handleClickCloseElement = Symbol('handleClickCloseElement');
 const handleKeydownDocument = Symbol('handleKeydownDocument');
 const documentLang = Symbol('documentLang');
 const translate = Symbol('translate');
+const emitEvent = Symbol('emitEvent');
 const clearUpID = Symbol('clearUpID');
 
 /* Icons */
@@ -413,18 +414,8 @@ class InlineNote extends HTMLElement {
 			this.removeAttribute('visible');
 		}
 		if(this[isInternal]) {
-			const visibleChangedEvent = new CustomEvent(
-				VISIBLE_CHANGED_EVENT_NAME, 
-				{ 
-					bubbles: true,
-					cancelable: true,
-					composed: true,
-					detail: { 
-						visible: this.visible
-					}
-				}
-			);
-			this.dispatchEvent(visibleChangedEvent);
+			const eventOptions = { detail: { visible: this.visible } };
+			this[emitEvent](VISIBLE_CHANGED_EVENT_NAME, eventOptions);
 		}
 	}
 
@@ -574,6 +565,19 @@ class InlineNote extends HTMLElement {
 		}
 
 		return translation;
+	}
+
+	[emitEvent](name, { bubbles = true, cancelable = true, composed = true, detail = {}} = {}) {
+		const event = new CustomEvent(
+			name, 
+			{ 
+				bubbles, 
+				cancelable, 
+				composed,
+				detail
+			}
+		);
+		this.dispatchEvent(event);
 	}
 
 	[clearUpID](input) {
