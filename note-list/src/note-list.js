@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 21 Feb. 2021
+	Date: 28 Feb. 2021
 */
 
 /* Configuration */
@@ -424,7 +424,14 @@ class NoteList extends HTMLElement {
 		context = (context || this);
 		return new Proxy(repetitiveHandler, {
 			apply(target, thisArg, args) {
-				let delay = (args[0] || DEFAULT_DEBOUNCE_DELAY || 0);
+				let delay = Number(args[0]);
+				if(isNaN(delay)) {
+					if(typeof DEFAULT_DEBOUNCE_DELAY === 'number'){
+						delay = DEFAULT_DEBOUNCE_DELAY;
+					} else {
+						delay = 0;
+					}
+				}
 				clearTimeout(timeoutID);
 				timeoutID = setTimeout(function() { 
 					Reflect.apply(target, context, args);
