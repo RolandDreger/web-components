@@ -187,10 +187,43 @@ class NoteList extends HTMLElement {
 		}
 		/* Set up */
 		this.update();
+		
+		/* MutationObserver */
+		this.observer = new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				/* add note, remove note, change content of note, change text of note */
+				console.log(mutation.type);
+				switch(mutation.type) {
+					case 'attributes':
+						console.log('attributes');
+						console.log(mutation.target); /* <foot-note> */
+						console.log(mutation.attributeName);
+						break;
+					case 'characterData':
+						console.log('characterData');
+						console.log(mutation.target);
+						break;
+					case 'childList':
+						console.log(mutation.target); /* <p> */
+						console.log(mutation.removedNodes); /* removed node array */
+						console.log(mutation.addedNodes); /* added node array */
+						break;
+					default:
+						return;	
+				}
+			});
+		});
+		const config = { attributes: true, childList: true, subtree: true, attributeFilter: ['index'] };
+		setTimeout(() => {
+			this.observer.observe(document.body, config);
+		}, 300);
+		
+		/* MutationSummary */
 	}
 
 	disconnectedCallback() {
 		/* Clean up */
+		this.observer.disconnect();
 	}
 	
 	attributeChangedCallback(name, oldValue, newValue) {
@@ -277,6 +310,7 @@ class NoteList extends HTMLElement {
 			document.body.getAttribute("lang") ||
 			document.documentElement.getAttribute("xml:lang") || 
 			document.documentElement.getAttribute("lang") || 
+			window.navigator.language ||
 			FALLBACK_LANG
 		);
 	}

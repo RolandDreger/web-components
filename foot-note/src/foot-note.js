@@ -436,6 +436,7 @@ class FootNote extends HTMLElement {
 			document.body.getAttribute("lang") ||
 			document.documentElement.getAttribute("xml:lang") || 
 			document.documentElement.getAttribute("lang") || 
+			window.navigator.language ||
 			FALLBACK_LANG
 		);
 	}
