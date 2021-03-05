@@ -251,7 +251,6 @@ class InlineNote extends HTMLElement {
 		element.classList.add('element');
 		element.setAttribute('part', 'element');
 		element.setAttribute('role', 'region');
-		element.setAttribute('aria-live', 'polite');
 		element.appendChild(slot);
 
 		/* Close button */
