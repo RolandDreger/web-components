@@ -9,7 +9,7 @@
 	Author: Roland Dreger, www.rolanddreger.net
 	License: MIT
 
-	Date: 28 Feb. 2021
+	Date: 5 Mar. 2021
 */
 
 /* Configuration */
@@ -22,12 +22,21 @@ const FALLBACK_LANG = "en";
 const SORT_OPTIONS = {
 	ignorePunctuation: true
 };
+const MUTATION_OBSERVER_DELAY = 300;
+const MUTATION_OBSERVER_OPTIONS = { 
+	attributes: true, 
+	childList: true, 
+	subtree: true, 
+	attributeFilter: ['id', 'index', 'lang'] 
+};
 
 
 /* Internal identifier */
 const isInternal = Symbol('isInternal');
 const getDebounceProxy = Symbol('getDebounceProxy');
 const getInternalProxy = Symbol('getInternalProxy');
+const mutationObserver = Symbol('mutationObserver');
+const mutationHandler = Symbol('mutationHandler');
 const documentLang = Symbol('documentLang');
 const translate = Symbol('translate');
 const emitEvent = Symbol('emitEvent');
@@ -189,41 +198,15 @@ class NoteList extends HTMLElement {
 		this.update();
 		
 		/* MutationObserver */
-		this.observer = new MutationObserver(function(mutations) {
-			mutations.forEach(function(mutation) {
-				/* add note, remove note, change content of note, change text of note */
-				console.log(mutation.type);
-				switch(mutation.type) {
-					case 'attributes':
-						console.log('attributes');
-						console.log(mutation.target); /* <foot-note> */
-						console.log(mutation.attributeName);
-						break;
-					case 'characterData':
-						console.log('characterData');
-						console.log(mutation.target);
-						break;
-					case 'childList':
-						console.log(mutation.target); /* <p> */
-						console.log(mutation.removedNodes); /* removed node array */
-						console.log(mutation.addedNodes); /* added node array */
-						break;
-					default:
-						return;	
-				}
-			});
-		});
-		const config = { attributes: true, childList: true, subtree: true, attributeFilter: ['index'] };
+		this[mutationObserver] = new MutationObserver(this[mutationHandler].bind(this)); 
 		setTimeout(() => {
-			this.observer.observe(document.body, config);
-		}, 300);
-		
-		/* MutationSummary */
+			this[mutationObserver].observe(document.body, MUTATION_OBSERVER_OPTIONS);
+		}, MUTATION_OBSERVER_DELAY);
 	}
 
 	disconnectedCallback() {
 		/* Clean up */
-		this.observer.disconnect();
+		this[mutationObserver].disconnect();
 	}
 	
 	attributeChangedCallback(name, oldValue, newValue) {
@@ -469,6 +452,44 @@ class NoteList extends HTMLElement {
 		});
 	}
 
+	[emitEvent](name, { bubbles = true, cancelable = true, composed = true, detail = {}} = {}) {
+		const event = new CustomEvent(
+			name, 
+			{ 
+				bubbles, 
+				cancelable, 
+				composed,
+				detail
+			}
+		);
+		this.dispatchEvent(event);
+	}
+
+	[mutationHandler](mutationArray) {
+		if(!mutationArray || !(mutationArray instanceof Array)) {
+			throw new TypeError(`Argument [mutationArray] must be an array: ${typeof mutationArray}`); 
+		}
+		mutationArray.forEach((mutation) => {
+			const noteType = this.notetype.toUpperCase();
+			if(noteType === mutation.target.tagName) {
+				this.update();
+				return;
+			}
+			if(mutation.type === 'childList') {
+				const mutationNodeArray = [...mutation.removedNodes, ...mutation.addedNodes];
+				mutationNodeArray.forEach((node) => {
+					if(!(node instanceof HTMLElement)) {
+						return;
+					}
+					if(noteType === node.tagName || node.querySelector(noteType)) {
+						this.update();
+						return;
+					}
+				});
+			}
+		});
+	}
+
 	[translate](term, lang) {
 		if(!term || typeof term !== "string") { 
 			throw new TypeError(`Argument [term] must be a string: ${typeof term}`); 
@@ -546,19 +567,6 @@ class NoteList extends HTMLElement {
 		}
 
 		return translation;
-	}
-
-	[emitEvent](name, { bubbles = true, cancelable = true, composed = true, detail = {}} = {}) {
-		const event = new CustomEvent(
-			name, 
-			{ 
-				bubbles, 
-				cancelable, 
-				composed,
-				detail
-			}
-		);
-		this.dispatchEvent(event);
 	}
 }
 
