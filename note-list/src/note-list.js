@@ -63,8 +63,8 @@ class NoteList extends HTMLElement {
 				contain: content;
 				display: block;
 				font-family: inherit;
-				color: #000000;
-				color: var(--note-list-font-color, #000000);
+				color: inherit;
+				color: var(--note-list-font-color, inherit);
 			}
 			:host([hidden]) {
 				display: none;

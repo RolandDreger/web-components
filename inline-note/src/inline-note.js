@@ -79,8 +79,8 @@ class InlineNote extends HTMLElement {
 			:host {
 				contain: content;
 				font-family: inherit;
-				color: #000000;
-				color: var(--inline-note-font-color, #000000);
+				color: inherit;
+				color: var(--inline-note-font-color, inherit);
 			}
 			:host([visible]) .area {
 				

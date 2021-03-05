@@ -66,8 +66,8 @@ class FootNote extends HTMLElement {
 			:host {
 				contain: content;
 				font-family: inherit;
-				color: #000000;
-				color: var(--footnote-font-color, #000000);
+				color: inherit;
+				color: var(--footnote-font-color, inherit);
 			}
 			:host([hidden]) {
 				display: none;
