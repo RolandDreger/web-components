@@ -367,13 +367,17 @@ class InlineNote extends HTMLElement {
 			/* Attribute: visible */
 			case 'visible':
 				if(newValue !== null) {
-					this.areaElement.classList.add('visible');
+					window.requestAnimationFrame(() => {
+						this.areaElement.classList.add('visible');
+					});
 					this.areaElement.setAttribute('aria-hidden', "false");
 					this.closeElement.setAttribute('tabindex', '0');
 					document.addEventListener('keydown', this[handleKeydownDocument]);
 					this.areaElement.focus();
 				} else {
-					this.areaElement.classList.remove('visible');
+					window.requestAnimationFrame(() => {
+						this.areaElement.classList.remove('visible');
+					});
 					this.areaElement.setAttribute('aria-hidden', "true");
 					this.closeElement.setAttribute('tabindex', '-1');
 					document.removeEventListener('keydown', this[handleKeydownDocument]);
